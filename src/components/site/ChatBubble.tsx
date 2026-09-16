@@ -99,36 +99,36 @@ export function ChatBubble() {
   return (
     <>
       {open ? (
-        <div className="fixed inset-x-3 bottom-3 z-50 flex max-h-[78vh] flex-col overflow-hidden rounded-xl border bg-card shadow-xl sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-96">
+        <div className="fixed inset-x-0 bottom-0 z-50 flex h-[85dvh] max-h-[85dvh] flex-col overflow-hidden rounded-t-2xl border bg-card shadow-xl pb-[env(safe-area-inset-bottom)] sm:inset-x-auto sm:right-5 sm:bottom-5 sm:h-[min(640px,80dvh)] sm:max-h-[80dvh] sm:w-96 sm:rounded-xl sm:pb-0">
           <div className="flex items-center justify-between gap-2 border-b bg-primary px-4 py-3 text-primary-foreground">
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">Emir · Enes Yapı</p>
               <p className="text-xs opacity-80">Dijital karşılama asistanı</p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex shrink-0 items-center gap-1">
               <a
                 href="https://wa.me/905333992540"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp'tan yazın"
-                className="rounded p-1.5 hover:bg-white/10"
+                className="rounded-full p-2.5 hover:bg-white/10"
               >
-                <MessageCircle className="h-4 w-4" />
+                <MessageCircle className="h-5 w-5" />
               </a>
-              <a href="tel:+905333992540" aria-label="Telefonla arayın" className="rounded p-1.5 hover:bg-white/10">
-                <Phone className="h-4 w-4" />
+              <a href="tel:+905333992540" aria-label="Telefonla arayın" className="rounded-full p-2.5 hover:bg-white/10">
+                <Phone className="h-5 w-5" />
               </a>
-              <button aria-label="Sohbeti kapat" onClick={() => setOpen(false)} className="rounded p-1.5 hover:bg-white/10">
-                <X className="h-4 w-4" />
+              <button aria-label="Sohbeti kapat" onClick={() => setOpen(false)} className="rounded-full p-2.5 hover:bg-white/10">
+                <X className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto p-4">
+          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto overscroll-contain p-4 [-webkit-overflow-scrolling:touch]">
             {shown.map((m, i) => (
               <div
                 key={i}
-                className={`max-w-[88%] rounded-lg px-3 py-2 text-sm whitespace-pre-line ${
+                className={`max-w-[88%] rounded-lg px-3 py-2 text-[15px] leading-relaxed whitespace-pre-line ${
                   m.role === "user" ? "ml-auto bg-primary text-primary-foreground" : "bg-muted text-foreground"
                 }`}
               >
