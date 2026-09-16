@@ -581,29 +581,6 @@ function RequestDetail() {
               </select>
             </CardContent>
           </Card>
-
-
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-base">Fırsat işaretle</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <select
-                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
-                defaultValue=""
-                onChange={(e) => {
-                  if (e.target.value) createOpportunity.mutate(e.target.value);
-                }}
-              >
-                <option value="">Fırsat türü seçin</option>
-                {Object.entries(OPPORTUNITY_TYPE).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
-                  </option>
-                ))}
-              </select>
-            </CardContent>
-          </Card>
         </div>
       </div>
 
