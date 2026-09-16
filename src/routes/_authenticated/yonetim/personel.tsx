@@ -191,11 +191,101 @@ function Staff() {
         </CardContent>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Ekip e-postaları (davet listesi)</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Ekibinizin e-posta adreslerini ve vermek istediğiniz rolü şimdiden yazın. Kişi bu e-posta ile kayıt
+            olduğunda rolü otomatik verilir ve aşağıdaki personel listesinde görünür.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-4">
+            <div className="sm:col-span-2">
+              <Label htmlFor="inv-email">E-posta</Label>
+              <Input
+                id="inv-email"
+                type="email"
+                placeholder="ad@ornek.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="inv-name">Ad soyad (opsiyonel)</Label>
+              <Input
+                id="inv-name"
+                value={form.full_name}
+                onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="inv-role">Rol</Label>
+              <select
+                id="inv-role"
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                value={form.role}
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
+              >
+                {Object.entries(ROLE_LABELS).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="sm:col-span-4">
+              <Button className="w-full sm:w-auto" onClick={() => addInvite.mutate()} disabled={addInvite.isPending}>
+                E-postayı listeye ekle
+              </Button>
+            </div>
+          </div>
+
+          {invites.length > 0 && (
+            <div className="overflow-x-auto rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>E-posta</TableHead>
+                    <TableHead>Ad soyad</TableHead>
+                    <TableHead>Verilecek rol</TableHead>
+                    <TableHead>Durum</TableHead>
+                    <TableHead className="text-right">İşlem</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {invites.map((inv) => (
+                    <TableRow key={inv.id}>
+                      <TableCell className="max-w-[220px] truncate">{inv.email}</TableCell>
+                      <TableCell>{inv.full_name ?? "—"}</TableCell>
+                      <TableCell>{ROLE_LABELS[inv.role as keyof typeof ROLE_LABELS] ?? inv.role}</TableCell>
+                      <TableCell>
+                        {inv.accepted_at ? (
+                          <Badge variant="secondary">Kayıt oldu · {trDate(inv.accepted_at)}</Badge>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">Kayıt bekleniyor</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button size="sm" variant="ghost" onClick={() => removeInvite.mutate(inv.id)}>
+                          Sil
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       <div className="overflow-x-auto rounded-lg border bg-card">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Ad soyad</TableHead>
+              <TableHead>E-posta</TableHead>
               <TableHead>Telefon</TableHead>
               <TableHead>Kayıt</TableHead>
               <TableHead>Durum</TableHead>
