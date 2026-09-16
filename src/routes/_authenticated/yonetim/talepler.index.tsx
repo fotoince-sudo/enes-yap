@@ -46,6 +46,9 @@ function RequestList() {
           <p className="text-sm text-muted-foreground">Web sitesinden ve elle girilen tüm talepler.</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Button variant="outline" asChild>
+            <Link to="/yonetim/emir-talepleri">Emir Talepleri</Link>
+          </Button>
           <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Ara…" className="w-40 sm:w-56" />
           <select
             className="h-10 rounded-md border border-input bg-background px-3 text-sm"
