@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 
@@ -35,7 +36,8 @@ const schema = z.object({
 
 function AuthPage() {
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
+  const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
@@ -53,6 +55,36 @@ function AuthPage() {
     e.preventDefault();
     setNotice(null);
     setErrorText(null);
+
+    if (mode === "forgot") {
+      const mail = z.string().trim().email().safeParse(email);
+      if (!mail.success) {
+        setErrorText("Geçerli bir e-posta yazın.");
+        return;
+      }
+      setLoading(true);
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(mail.data, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        setNotice(
+          `${mail.data} adresine şifre sıfırlama bağlantısı gönderildi. E-postadaki bağlantıya tıklayıp yeni şifrenizi belirleyin.`,
+        );
+        toast.success("Şifre sıfırlama e-postası gönderildi.");
+      } catch (err) {
+        const raw = err instanceof Error ? err.message : "";
+        const msg = /after \d+ seconds/i.test(raw)
+          ? "Çok sık denediniz. Lütfen bir dakika bekleyip tekrar deneyin."
+          : raw || "Bir hata oluştu.";
+        setErrorText(msg);
+        toast.error(msg);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     const parsed = schema.safeParse({ email, password, fullName });
     if (!parsed.success) {
       setErrorText(parsed.error.issues[0]!.message);
@@ -147,29 +179,68 @@ function AuthPage() {
               <Label htmlFor="email">E-posta</Label>
               <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
             </div>
-            <div>
-              <Label htmlFor="password">Şifre</Label>
-              <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-            </div>
+            {mode !== "forgot" ? (
+              <div>
+                <Label htmlFor="password">Şifre</Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="pr-10"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((v) => !v)}
+                    aria-label={showPassword ? "Şifreyi gizle" : "Şifreyi göster"}
+                    className="absolute inset-y-0 right-0 flex w-10 items-center justify-center text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+            ) : null}
             <Button type="submit" className="w-full" disabled={loading}>
-              {loading ? "İşleniyor…" : mode === "signin" ? "Giriş yap" : "Kayıt ol"}
+              {loading
+                ? "İşleniyor…"
+                : mode === "signin"
+                  ? "Giriş yap"
+                  : mode === "signup"
+                    ? "Kayıt ol"
+                    : "Sıfırlama bağlantısı gönder"}
             </Button>
           </form>
 
-          <Button variant="outline" className="w-full" onClick={google}>
-            Google ile devam et
-          </Button>
+          {mode === "signin" ? (
+            <button
+              type="button"
+              className="w-full text-sm text-muted-foreground underline"
+              onClick={() => {
+                setMode("forgot");
+                setNotice(null);
+                setErrorText(null);
+              }}
+            >
+              Şifremi unuttum
+            </button>
+          ) : null}
+
+          {mode !== "forgot" ? (
+            <Button variant="outline" className="w-full" onClick={google}>
+              Google ile devam et
+            </Button>
+          ) : null}
 
           <button
             type="button"
             className="w-full text-sm text-muted-foreground underline"
-            onClick={() => setMode(mode === "signin" ? "signup" : "signin")}
+            onClick={() => {
+              setMode(mode === "signin" ? "signup" : "signin");
+              setNotice(null);
+              setErrorText(null);
+            }}
           >
             {mode === "signin" ? "Hesabınız yok mu? Kayıt olun" : "Zaten hesabınız var mı? Giriş yapın"}
           </button>
