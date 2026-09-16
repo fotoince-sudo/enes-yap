@@ -20,7 +20,7 @@ export const Route = createFileRoute("/_authenticated/yonetim/teklifler/$id")({
   errorComponent: ({ error }) => <p className="text-sm text-destructive">Teklif açılamadı: {error.message}</p>,
 });
 
-const emptyItem = { title: "", description: "", quantity: "1", unit: "adet", unit_price: "0", material_cost: "0", labor_cost: "0" };
+const emptyItem = { title: "", description: "", quantity: "1", unit: "adet", material_cost: "0", labor_cost: "0" };
 
 function QuoteDetail() {
   const { id } = Route.useParams();
@@ -60,8 +60,10 @@ function QuoteDetail() {
   });
 
   const itemsTotal = items.reduce((s, i) => s + Number(i.line_total ?? 0), 0);
-  const materials = items.reduce((s, i) => s + Number(i.material_cost ?? 0), 0);
-  const labor = items.reduce((s, i) => s + Number(i.labor_cost ?? 0), 0);
+  const materials = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.material_cost ?? 0), 0);
+  const labor = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.labor_cost ?? 0), 0);
+  const newUnitPrice = (Number(item.material_cost) || 0) + (Number(item.labor_cost) || 0);
+  const newLineTotal = (Number(item.quantity) || 0) * newUnitPrice;
   const extra = Number(quote?.extra_total ?? 0);
   const discount = Number(quote?.discount ?? 0);
   const vatRate = Number(quote?.vat_rate ?? 20);
@@ -81,15 +83,6 @@ function QuoteDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const saveTotals = () =>
-    update.mutate(
-      {
-        materials_total: materials,
-        labor_total: labor,
-        grand_total: grandTotal,
-      },
-      { onSuccess: () => toast.success("Toplamlar güncellendi.") },
-    );
 
   const addItem = useMutation({
     mutationFn: async () => {
@@ -100,7 +93,6 @@ function QuoteDetail() {
         description: item.description.trim() || null,
         quantity: Number(item.quantity) || 0,
         unit: item.unit,
-        unit_price: Number(item.unit_price) || 0,
         material_cost: Number(item.material_cost) || 0,
         labor_cost: Number(item.labor_cost) || 0,
         sort_order: items.length,
@@ -110,6 +102,9 @@ function QuoteDetail() {
     onSuccess: () => {
       setItem({ ...emptyItem });
       queryClient.invalidateQueries({ queryKey: ["quote-items", id] });
+      queryClient.invalidateQueries({ queryKey: ["quote", id] });
+      queryClient.invalidateQueries({ queryKey: ["quotes"] });
+      toast.success("Kalem eklendi, teklif toplamları güncellendi.");
     },
     onError: (e: Error) => toast.error(e.message),
   });
@@ -119,7 +114,11 @@ function QuoteDetail() {
       const { error } = await supabase.from("quote_items").delete().eq("id", itemId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["quote-items", id] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["quote-items", id] });
+      queryClient.invalidateQueries({ queryKey: ["quote", id] });
+      queryClient.invalidateQueries({ queryKey: ["quotes"] });
+    },
   });
 
   const toProject = useMutation({
@@ -365,9 +364,10 @@ function QuoteDetail() {
               <span>Genel toplam</span>
               <span>{tl(grandTotal)}</span>
             </div>
-            <Button className="mt-3 w-full" variant="outline" onClick={saveTotals}>
-              Toplamları kaydet
-            </Button>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Malzeme ve işçilik fiyatları kayıtla birlikte saklanır; kalem eklediğinizde veya iskonto, ek gider, KDV
+              oranını değiştirdiğinizde toplamlar otomatik hesaplanır.
+            </p>
           </CardContent>
         </Card>
       </div>
@@ -385,8 +385,8 @@ function QuoteDetail() {
                   <TableHead>Miktar</TableHead>
                   <TableHead>Birim</TableHead>
                   <TableHead>Birim fiyat</TableHead>
-                  <TableHead>Malzeme</TableHead>
-                  <TableHead>İşçilik</TableHead>
+                  <TableHead>Malzeme (birim)</TableHead>
+                  <TableHead>İşçilik (birim)</TableHead>
                   <TableHead>Toplam</TableHead>
                   <TableHead />
                 </TableRow>
@@ -454,21 +454,27 @@ function QuoteDetail() {
               </select>
             </div>
             <div>
-              <Label htmlFor="i-price">Birim fiyat</Label>
-              <Input id="i-price" type="number" value={item.unit_price} onChange={(e) => setItem({ ...item, unit_price: e.target.value })} />
-            </div>
-            <div className="flex items-end">
-              <Button className="w-full" onClick={() => addItem.mutate()} disabled={addItem.isPending}>
-                Kalem ekle
-              </Button>
-            </div>
-            <div>
-              <Label htmlFor="i-mat">Malzeme bedeli</Label>
+              <Label htmlFor="i-mat">Malzeme birim fiyatı</Label>
               <Input id="i-mat" type="number" value={item.material_cost} onChange={(e) => setItem({ ...item, material_cost: e.target.value })} />
             </div>
             <div>
-              <Label htmlFor="i-lab">İşçilik bedeli</Label>
+              <Label htmlFor="i-lab">İşçilik birim fiyatı</Label>
               <Input id="i-lab" type="number" value={item.labor_cost} onChange={(e) => setItem({ ...item, labor_cost: e.target.value })} />
+            </div>
+            <div className="rounded-md border bg-muted/40 p-3 text-sm sm:col-span-2">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Birim fiyat (malzeme + işçilik)</span>
+                <span>{tl(newUnitPrice)}</span>
+              </div>
+              <div className="mt-1 flex justify-between font-medium">
+                <span>Kalem toplamı</span>
+                <span>{tl(newLineTotal)}</span>
+              </div>
+            </div>
+            <div className="flex items-end sm:col-span-2">
+              <Button className="w-full" onClick={() => addItem.mutate()} disabled={addItem.isPending}>
+                Kalem ekle
+              </Button>
             </div>
           </div>
         </CardContent>
