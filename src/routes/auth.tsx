@@ -147,7 +147,7 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/yonetim", replace: true });
+    await goToPanel();
   };
 
   return (
