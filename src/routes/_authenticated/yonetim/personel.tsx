@@ -32,7 +32,7 @@ function Staff() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, full_name, phone, created_at")
+        .select("id, full_name, phone, created_at, last_login_at")
         .order("created_at", { ascending: true });
       if (error) throw error;
       return (data ?? []) as Profile[];
