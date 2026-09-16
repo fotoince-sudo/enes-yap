@@ -60,7 +60,7 @@ export function SourceResearchPanel() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("engine_runs")
-        .select("id, trigger, status, message, checked, allowed, blocked, unreachable, new_prospects, created_at")
+        .select("id, trigger, status, message, checked, allowed, blocked, unreachable, new_prospects, collected, created_at")
         .eq("engine_key", "source_research")
         .order("created_at", { ascending: false })
         .limit(15);
