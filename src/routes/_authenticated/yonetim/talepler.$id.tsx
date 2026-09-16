@@ -31,6 +31,15 @@ function RequestDetail() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [note, setNote] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState({
+    address: "",
+    neighborhood: "",
+    district: "",
+    city: "",
+    area_m2: "",
+    description: "",
+  });
   const [fileLinks, setFileLinks] = useState<{ path: string; url: string; isVideo: boolean }[]>([]);
 
   const { data: request, isLoading } = useQuery({
