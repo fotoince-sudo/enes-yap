@@ -22,7 +22,7 @@ function RequestList() {
     queryFn: async () => {
       let q = supabase
         .from("renovation_requests")
-        .select("id, full_name, phone, city, district, renovation_type, area_m2, budget_range, status, created_at")
+        .select("id, full_name, phone, city, district, renovation_type, area_m2, budget_range, status, source, created_at")
         .order("created_at", { ascending: false })
         .limit(500);
       if (status) q = q.eq("status", status as never);
@@ -46,6 +46,9 @@ function RequestList() {
           <p className="text-sm text-muted-foreground">Web sitesinden ve elle girilen tüm talepler.</p>
         </div>
         <div className="flex flex-wrap gap-2">
+          <Button variant="outline" asChild>
+            <Link to="/yonetim/emir-talepleri">Emir Talepleri</Link>
+          </Button>
           <Input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Ara…" className="w-40 sm:w-56" />
           <select
             className="h-10 rounded-md border border-input bg-background px-3 text-sm"
@@ -72,6 +75,7 @@ function RequestList() {
               <TableHead>Konum</TableHead>
               <TableHead>Tadilat türü</TableHead>
               <TableHead>m²</TableHead>
+              <TableHead>Kaynak</TableHead>
               <TableHead>Durum</TableHead>
               <TableHead className="text-right">Detay</TableHead>
             </TableRow>
@@ -79,11 +83,11 @@ function RequestList() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={8}>Yükleniyor…</TableCell>
+                <TableCell colSpan={9}>Yükleniyor…</TableCell>
               </TableRow>
             ) : filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-muted-foreground">
+                <TableCell colSpan={9} className="text-muted-foreground">
                   Talep bulunamadı.
                 </TableCell>
               </TableRow>
@@ -98,6 +102,13 @@ function RequestList() {
                   </TableCell>
                   <TableCell className="max-w-[180px] truncate">{r.renovation_type ?? "—"}</TableCell>
                   <TableCell>{r.area_m2 ?? "—"}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {r.source === "web-emir" ? (
+                      <Badge variant="outline">WEB / EMİR</Badge>
+                    ) : (
+                      <span className="text-muted-foreground">{r.source ?? "—"}</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={r.status === "yeni" ? "default" : "secondary"}>
                       {REQUEST_STATUS[r.status as keyof typeof REQUEST_STATUS]}
