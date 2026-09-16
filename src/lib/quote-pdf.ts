@@ -131,7 +131,7 @@ function buildHtml(data: QuotePdfData) {
     <tr><td>Malzeme</td><td class="r">${tl(data.materials)}</td></tr>
     <tr><td>İşçilik</td><td class="r">${tl(data.labor)}</td></tr>
     <tr><td>Ek gider</td><td class="r">${tl(data.extra)}</td></tr>
-    <tr><td>İskonto</td><td class="r">-${tl(data.discount)}</td></tr>
+    <tr><td>İskonto</td><td class="r">&#8722;&nbsp;${tl(data.discount)}</td></tr>
     <tr><td>KDV (%${num(data.vatRate)})</td><td class="r">${tl(data.vat)}</td></tr>
     <tr class="grand"><td>Genel toplam</td><td class="r">${tl(data.grandTotal)}</td></tr>
   </table>
