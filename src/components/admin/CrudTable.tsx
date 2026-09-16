@@ -30,6 +30,8 @@ export type CrudField = {
   inList?: boolean;
   required?: boolean;
   placeholder?: string;
+  /** Yeni kayıt için varsayılan değer */
+  defaultValue?: string | boolean | number;
   /** Listede özel gösterim */
   render?: (row: Record<string, unknown>) => React.ReactNode;
 };
@@ -44,8 +46,10 @@ type Props = {
 };
 
 const emptyValue = (f: CrudField) => {
+  if (f.defaultValue !== undefined) return f.defaultValue;
   if (f.type === "boolean") return false;
   if (f.type === "tags") return "";
+  if (f.type === "select" && f.options?.length) return f.options[0]!.value;
   return "";
 };
 
@@ -89,6 +93,7 @@ export function CrudTable({ table, title, description, fields, orderBy, searchKe
         } else if (f.type === "boolean") v = Boolean(v);
         else if (f.type === "datetime") v = v ? new Date(v as string).toISOString() : null;
         else if (v === "") v = null;
+        if (v === null && !editing?.['id']) continue;
         payload[f.key] = v;
       }
       if (editing?.['id']) {

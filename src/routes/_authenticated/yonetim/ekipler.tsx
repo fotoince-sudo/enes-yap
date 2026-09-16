@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/yonetim/ekipler")({
         { key: "phone", label: "Telefon" },
         { key: "specialty", label: "Uzmanlık" },
         { key: "service_areas", label: "Hizmet alanları", type: "tags" },
-        { key: "is_active", label: "Aktif", type: "boolean" },
+        { key: "is_active", label: "Aktif", type: "boolean", defaultValue: true },
         { key: "email", label: "E-posta", inList: false },
         { key: "district", label: "İlçe", inList: false },
         { key: "work_regions", label: "Çalışma bölgeleri", type: "tags", inList: false },

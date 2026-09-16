@@ -36,7 +36,7 @@ function Settings() {
           { key: "name", label: "Kategori adı" },
           { key: "slug", label: "Kısa kod (slug)" },
           { key: "sort_order", label: "Sıra", type: "number" },
-          { key: "is_active", label: "Aktif", type: "boolean" },
+          { key: "is_active", label: "Aktif", type: "boolean", defaultValue: true },
           { key: "description", label: "Açıklama", type: "textarea", inList: false },
         ]}
       />
