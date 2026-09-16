@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { QUOTE_STATUS, UNITS, tl } from "@/lib/domain";
+import { downloadQuotePdf } from "@/lib/quote-pdf";
 import { ActivityPanel } from "@/components/admin/ActivityPanel";
 
 export const Route = createFileRoute("/_authenticated/yonetim/teklifler/$id")({
@@ -149,6 +150,41 @@ function QuoteDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  const createPdf = () => {
+    if (!quote) return;
+    try {
+      downloadQuotePdf({
+        quoteNo: quote.quote_no,
+        title: quote.title,
+        customerName: (quote.customers as { full_name: string } | null)?.full_name ?? null,
+        status: quote.status,
+        createdAt: quote.created_at,
+        validUntil: quote.valid_until,
+        notes: quote.notes,
+        items: items.map((i) => ({
+          title: i.title ?? "",
+          description: i.description,
+          quantity: Number(i.quantity ?? 0),
+          unit: i.unit ?? "",
+          unit_price: Number(i.unit_price ?? 0),
+          material_cost: Number(i.material_cost ?? 0),
+          labor_cost: Number(i.labor_cost ?? 0),
+          line_total: Number(i.line_total ?? 0),
+        })),
+        itemsTotal,
+        materials,
+        labor,
+        extra,
+        discount,
+        vatRate,
+        vat,
+        grandTotal,
+      });
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  };
+
   if (isLoading) return <p className="text-sm text-muted-foreground">Yükleniyor…</p>;
   if (!quote) return <p className="text-sm text-muted-foreground">Teklif bulunamadı.</p>;
 
@@ -161,9 +197,12 @@ function QuoteDetail() {
             {(quote.customers as { full_name: string } | null)?.full_name ?? "Müşteri seçilmedi"}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button variant="outline" asChild>
             <Link to="/yonetim/teklifler">Listeye dön</Link>
+          </Button>
+          <Button variant="outline" onClick={createPdf}>
+            PDF teklif oluştur
           </Button>
           <Button onClick={() => toProject.mutate()}>Projeye dönüştür</Button>
         </div>
