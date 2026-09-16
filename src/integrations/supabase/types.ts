@@ -241,6 +241,7 @@ export type Database = {
           allowed: number
           blocked: number
           checked: number
+          collected: number
           created_at: string
           details: Json
           engine_key: string
@@ -255,6 +256,7 @@ export type Database = {
           allowed?: number
           blocked?: number
           checked?: number
+          collected?: number
           created_at?: string
           details?: Json
           engine_key: string
@@ -269,6 +271,7 @@ export type Database = {
           allowed?: number
           blocked?: number
           checked?: number
+          collected?: number
           created_at?: string
           details?: Json
           engine_key?: string
@@ -975,12 +978,18 @@ export type Database = {
       prospect_sources: {
         Row: {
           active: boolean
+          approved_at: string | null
+          approved_by: string | null
           auto_scan_allowed: boolean
           category: string
           created_at: string
+          feed_type: string | null
+          feed_url: string | null
           http_status: number | null
           id: string
           last_checked_at: string | null
+          last_collect_at: string | null
+          last_collect_count: number
           last_result: string | null
           name: string
           notes: string | null
@@ -994,12 +1003,18 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          approved_at?: string | null
+          approved_by?: string | null
           auto_scan_allowed?: boolean
           category?: string
           created_at?: string
+          feed_type?: string | null
+          feed_url?: string | null
           http_status?: number | null
           id?: string
           last_checked_at?: string | null
+          last_collect_at?: string | null
+          last_collect_count?: number
           last_result?: string | null
           name: string
           notes?: string | null
@@ -1013,12 +1028,18 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          approved_at?: string | null
+          approved_by?: string | null
           auto_scan_allowed?: boolean
           category?: string
           created_at?: string
+          feed_type?: string | null
+          feed_url?: string | null
           http_status?: number | null
           id?: string
           last_checked_at?: string | null
+          last_collect_at?: string | null
+          last_collect_count?: number
           last_result?: string | null
           name?: string
           notes?: string | null
