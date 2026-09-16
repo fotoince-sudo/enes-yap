@@ -39,7 +39,8 @@ function Dashboard() {
         newRequests,
         activeSurveys,
         pendingQuotes,
-        approvedRequests,
+        sentQuotes,
+        newOpportunities,
         activeProjects,
         completedProjects,
         quotesSum,
@@ -49,9 +50,12 @@ function Dashboard() {
       ] = await Promise.all([
         count("renovation_requests", (q) => q.eq("status", "yeni")),
         count("surveys", (q) => q.eq("is_done", false)),
-        count("quotes", (q) => q.in("status", ["taslak", "hazirlaniyor", "gonderildi", "musteri_inceliyor"])),
-        count("renovation_requests", (q) => q.eq("status", "onaylandi")),
-        count("projects", (q) => q.in("status", ["hazirlik", "malzeme_bekleniyor", "basladi", "devam", "kontrol"])),
+        count("renovation_requests", (q) => q.in("status", ["kesif_yapildi", "teklif_hazirlaniyor"])),
+        count("quotes", (q) => q.in("status", ["gonderildi", "musteri_inceliyor", "revizyon"])),
+        count("opportunities", (q) => q.in("status", ["yeni", "incelenecek", "iletisim_kurulacak"])),
+        count("projects", (q) =>
+          q.in("status", ["planlandi", "hazirlik", "malzeme_bekleniyor", "basladi", "devam", "kontrol", "beklemede"]),
+        ),
         count("projects", (q) => q.eq("status", "tamamlandi")),
         supabase.from("quotes").select("grand_total"),
         supabase.from("projects").select("contract_total"),
@@ -72,7 +76,8 @@ function Dashboard() {
         newRequests,
         activeSurveys,
         pendingQuotes,
-        approvedRequests,
+        sentQuotes,
+        newOpportunities,
         activeProjects,
         completedProjects,
         quotesTotal: (quotesSum.data ?? []).reduce((s, q) => s + Number(q.grand_total ?? 0), 0),
@@ -94,11 +99,12 @@ function Dashboard() {
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Stat label="Yeni talepler" value={data.newRequests} />
-        <Stat label="Aktif keşifler" value={data.activeSurveys} />
-        <Stat label="Bekleyen teklifler" value={data.pendingQuotes} />
-        <Stat label="Onaylanan işler" value={data.approvedRequests} />
+        <Stat label="Bekleyen keşifler" value={data.activeSurveys} />
+        <Stat label="Teklif bekleyen işler" value={data.pendingQuotes} />
+        <Stat label="Teklif verilen işler" value={data.sentQuotes} />
+        <Stat label="Yeni tadilat fırsatları" value={data.newOpportunities} />
         <Stat label="Devam eden projeler" value={data.activeProjects} />
-        <Stat label="Tamamlanan işler" value={data.completedProjects} />
+        <Stat label="Tamamlanan projeler" value={data.completedProjects} />
         <Stat label="Toplam teklif tutarı" value={tl(data.quotesTotal)} />
         <Stat label="Toplam proje tutarı" value={tl(data.projectsTotal)} />
       </div>

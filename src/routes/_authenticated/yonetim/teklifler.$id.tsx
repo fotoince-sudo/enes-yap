@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { QUOTE_STATUS, UNITS, tl } from "@/lib/domain";
+import { ActivityPanel } from "@/components/admin/ActivityPanel";
 
 export const Route = createFileRoute("/_authenticated/yonetim/teklifler/$id")({
   component: QuoteDetail,
@@ -402,6 +403,8 @@ function QuoteDetail() {
           </div>
         </CardContent>
       </Card>
+
+      <ActivityPanel entity="quote" entityId={id} />
     </div>
   );
 }
