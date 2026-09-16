@@ -164,8 +164,10 @@ export type Database = {
           flags: Json
           id: string
           last_flag_at: string | null
+          logged_message_count: number
           message_count: number
           messages: Json
+          quote_id: string | null
           request_id: string | null
           status: string
           stop_reason: string | null
@@ -180,8 +182,10 @@ export type Database = {
           flags?: Json
           id?: string
           last_flag_at?: string | null
+          logged_message_count?: number
           message_count?: number
           messages?: Json
+          quote_id?: string | null
           request_id?: string | null
           status?: string
           stop_reason?: string | null
@@ -196,8 +200,10 @@ export type Database = {
           flags?: Json
           id?: string
           last_flag_at?: string | null
+          logged_message_count?: number
           message_count?: number
           messages?: Json
+          quote_id?: string | null
           request_id?: string | null
           status?: string
           stop_reason?: string | null
@@ -207,6 +213,13 @@ export type Database = {
           wants_survey?: boolean
         }
         Relationships: [
+          {
+            foreignKeyName: "emir_chat_sessions_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "emir_chat_sessions_request_id_fkey"
             columns: ["request_id"]

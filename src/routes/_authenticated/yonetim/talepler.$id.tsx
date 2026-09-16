@@ -91,7 +91,7 @@ function RequestDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("emir_chat_sessions")
-        .select("id, summary, wants_survey, message_count, created_at")
+        .select("id, summary, wants_survey, message_count, created_at, messages, stop_reason")
         .eq("request_id", id)
         .order("created_at", { ascending: false })
         .maybeSingle();
@@ -112,6 +112,13 @@ function RequestDetail() {
       return data ?? [];
     },
   });
+
+  const chatMessages = (
+    Array.isArray(emirSession?.messages) ? (emirSession?.messages as unknown[]) : []
+  )
+    .map((m) => m as { role?: string; content?: string; at?: string | null })
+    .filter((m) => typeof m.content === "string" && m.content.length > 0)
+    .map((m) => ({ role: m.role === "user" ? "user" : "assistant", content: m.content as string, at: m.at ?? null }));
 
   useEffect(() => {
     const photos = (request?.photo_urls as string[] | null) ?? [];
@@ -511,6 +518,32 @@ function RequestDetail() {
                   </p>
                   {emirSession?.wants_survey ? (
                     <p className="text-xs text-muted-foreground">Müşteri keşif talep etti.</p>
+                  ) : null}
+                  {emirSession?.stop_reason ? (
+                    <p className="text-xs text-muted-foreground">Sohbet durdurma nedeni: {emirSession.stop_reason}</p>
+                  ) : null}
+                  {chatMessages.length > 0 ? (
+                    <details className="rounded-md border bg-background p-2">
+                      <summary className="cursor-pointer text-sm font-medium">
+                        Sohbet akışını oku ({chatMessages.length} mesaj)
+                      </summary>
+                      <div className="mt-2 space-y-2">
+                        {chatMessages.map((m, i) => (
+                          <div
+                            key={i}
+                            className={`rounded-md px-2.5 py-1.5 text-sm whitespace-pre-wrap ${
+                              m.role === "user" ? "bg-primary/10" : "bg-muted"
+                            }`}
+                          >
+                            <span className="block text-[11px] font-medium text-muted-foreground">
+                              {m.role === "user" ? "Ziyaretçi" : "Emir"}
+                              {m.at ? ` · ${new Date(m.at).toLocaleString("tr-TR", { dateStyle: "short", timeStyle: "short" })}` : ""}
+                            </span>
+                            {m.content}
+                          </div>
+                        ))}
+                      </div>
+                    </details>
                   ) : null}
                 </div>
               ) : null}

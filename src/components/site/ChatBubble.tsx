@@ -166,6 +166,32 @@ export function ChatBubble() {
     if (typeof window !== "undefined") window.localStorage.removeItem(STORAGE_KEY);
   };
 
+  // Emir sohbetinden WhatsApp'a geçiş: konuşma özeti mesaja hazır olarak taşınır.
+  const waText = messages.length
+    ? [
+        "Merhaba, sitenizde Emir ile görüşüyordum, WhatsApp'tan devam etmek istiyorum.",
+        "",
+        "Emir ile konuştuklarım:",
+        ...messages.slice(-8).map((m) => `${m.role === "user" ? "Ben" : "Emir"}: ${m.content}`),
+        files.length ? `(${files.length} fotoğraf sitede paylaşıldı.)` : "",
+      ]
+        .filter((l) => l !== undefined)
+        .join("\n")
+    : "Merhaba, Enes Yapı ile tadilat / yenileme işi için görüşmek istiyorum.";
+  const waHref = `https://wa.me/905333992540?text=${encodeURIComponent(waText.slice(0, 1400))}`;
+
+  const noteHandoff = () => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content:
+          "Sohbetimizi WhatsApp'a aktardım; oradaki mesaj kutusunda konuştuklarımızın özeti hazır. İstediğiniz zaman buradan da devam edebilirsiniz.",
+        at: new Date().toISOString(),
+      },
+    ]);
+  };
+
   return (
     <>
       {open ? (
@@ -177,7 +203,8 @@ export function ChatBubble() {
             </div>
             <div className="flex shrink-0 items-center gap-1">
               <a
-                href="https://wa.me/905333992540"
+                href={waHref}
+                onClick={noteHandoff}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp'tan yazın"
@@ -276,13 +303,14 @@ export function ChatBubble() {
               Fotoğraf ekle
             </button>
             <a
-              href="https://wa.me/905333992540"
+              href={waHref}
+              onClick={noteHandoff}
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-1 items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent"
             >
               <MessageCircle className="h-4 w-4" />
-              WhatsApp'tan yazın
+              {messages.length > 0 ? "WhatsApp'a aktar" : "WhatsApp'tan yazın"}
             </a>
           </div>
 

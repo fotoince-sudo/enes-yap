@@ -169,15 +169,17 @@ export const emirChat = createServerFn({ method: "POST" })
     let sessionId = data.sessionId ?? null;
     let existingRequestId: string | null = null;
     let existingFlags: unknown[] = [];
+    let loggedCount = 0;
     if (sessionId) {
       const { data: row } = await supabaseAdmin
         .from("emir_chat_sessions")
-        .select("id, request_id, flags")
+        .select("id, request_id, flags, logged_message_count")
         .eq("id", sessionId)
         .maybeSingle();
       if (row) {
         existingRequestId = row.request_id;
         existingFlags = Array.isArray(row.flags) ? (row.flags as unknown[]) : [];
+        loggedCount = row.logged_message_count ?? 0;
       } else sessionId = null;
     }
     if (!sessionId) {
@@ -343,12 +345,52 @@ export const emirChat = createServerFn({ method: "POST" })
               surveyId = survey?.id ?? null;
             }
 
+            // Teklif akışına otomatik geçiş: taslak teklif hazırlanır, yönetici fiyatlayıp tamamlar.
+            const quoteNotes = [
+              "Talep kaynağı: WEB / EMİR (site asistanı) — teklif akışına otomatik aktarıldı.",
+              `Müşteri: ${fullName} · ${phoneRaw}`,
+              [args["district"], args["neighborhood"]].filter(Boolean).join(" / ") || null,
+              args["property_type"] ? `Mekân: ${String(args["property_type"]).slice(0, 80)}` : null,
+              typeof args["area_m2"] === "number" ? `Alan: ${args["area_m2"]} m²` : null,
+              args["budget_range"] ? `Bütçe: ${String(args["budget_range"]).slice(0, 80)}` : null,
+              `İş açıklaması: ${description}`,
+              summary ? `Emir sohbet özeti: ${summary}` : null,
+              wantsSurvey ? "Müşteri keşif talep etti." : null,
+            ]
+              .filter(Boolean)
+              .join("\n");
+
+            const { data: quote, error: quoteError } = await supabaseAdmin
+              .from("quotes")
+              .insert({
+                request_id: inserted.id,
+                title: `${args["renovation_type"] ? String(args["renovation_type"]).slice(0, 80) : "Tadilat"} — ${fullName}`,
+                status: "taslak" as const,
+                notes: quoteNotes.slice(0, 4000),
+              })
+              .select("id")
+              .single();
+            if (quoteError) console.error("emir quote insert failed", quoteError);
+
+            await supabaseAdmin.from("request_activities").insert({
+              request_id: inserted.id,
+              activity_type: "emir_akis",
+              note: [
+                "Talep Emir sohbetinden oluşturuldu.",
+                surveyId ? "Keşif kaydı açıldı." : null,
+                quote?.id ? "Taslak teklif oluşturuldu; fiyatlandırma bekliyor." : null,
+              ]
+                .filter(Boolean)
+                .join(" "),
+            });
+
             if (sessionId) {
               await supabaseAdmin
                 .from("emir_chat_sessions")
                 .update({
                   request_id: inserted.id,
                   survey_id: surveyId,
+                  quote_id: quote?.id ?? null,
                   wants_survey: wantsSurvey,
                   summary,
                   collected: collected as never,
@@ -394,11 +436,30 @@ export const emirChat = createServerFn({ method: "POST" })
         ...data.messages.map((m) => ({ role: m.role, content: m.content, at: m.at ?? null })),
         { role: "assistant" as const, content: reply, at: replyAt },
       ];
+
+      // Sohbetin her mesajı, bağlı talebin geçmişine mesaj olarak yazılır.
+      const linkedRequestId = requestId ?? existingRequestId;
+      let newLoggedCount = loggedCount;
+      if (linkedRequestId) {
+        const pending = transcript.slice(loggedCount);
+        if (pending.length) {
+          const rows = pending.map((m) => ({
+            request_id: linkedRequestId,
+            activity_type: m.role === "user" ? "emir_mesaj_musteri" : "emir_mesaj_emir",
+            note: `${m.role === "user" ? "Ziyaretçi" : "Emir"}: ${m.content}`.slice(0, 4000),
+          }));
+          const { error: logError } = await supabaseAdmin.from("request_activities").insert(rows);
+          if (logError) console.error("emir transcript log failed", logError);
+          else newLoggedCount = transcript.length;
+        }
+      }
+
       await supabaseAdmin
         .from("emir_chat_sessions")
         .update({
           messages: transcript as never,
           message_count: transcript.length,
+          logged_message_count: newLoggedCount,
           ...(summary ? { summary } : {}),
           ...(newFlags.length
             ? {
