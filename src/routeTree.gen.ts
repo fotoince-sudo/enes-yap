@@ -16,6 +16,7 @@ import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedHesabimRouteRouteImport } from './routes/_authenticated/hesabim/route'
 import { Route as AuthenticatedYonetimRouteRouteImport } from './routes/_authenticated/yonetim/route'
 import { Route as AuthenticatedHesabimIndexRouteImport } from './routes/_authenticated/hesabim/index'
+import { Route as AuthenticatedHesabimProjelerRouteImport } from './routes/_authenticated/hesabim/projeler'
 import { Route as AuthenticatedHesabimTaleplerRouteImport } from './routes/_authenticated/hesabim/talepler'
 import { Route as AuthenticatedHesabimTekliflerRouteImport } from './routes/_authenticated/hesabim/teklifler'
 import { Route as AuthenticatedYonetimIndexRouteImport } from './routes/_authenticated/yonetim/index'
@@ -76,6 +77,12 @@ const AuthenticatedHesabimIndexRoute =
   AuthenticatedHesabimIndexRouteImport.update({
     id: '/',
     path: '/',
+    getParentRoute: () => AuthenticatedHesabimRouteRoute,
+  } as any)
+const AuthenticatedHesabimProjelerRoute =
+  AuthenticatedHesabimProjelerRouteImport.update({
+    id: '/projeler',
+    path: '/projeler',
     getParentRoute: () => AuthenticatedHesabimRouteRoute,
   } as any)
 const AuthenticatedHesabimTaleplerRoute =
@@ -229,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
   '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
@@ -259,6 +267,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
   '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
@@ -293,6 +302,7 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/_authenticated/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/_authenticated/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/_authenticated/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/_authenticated/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
   '/_authenticated/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
@@ -327,6 +337,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/hesabim'
     | '/yonetim'
+    | '/hesabim/projeler'
     | '/hesabim/talepler'
     | '/hesabim/teklifler'
     | '/yonetim/akis'
@@ -357,6 +368,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/hesabim/projeler'
     | '/hesabim/talepler'
     | '/hesabim/teklifler'
     | '/yonetim/akis'
@@ -390,6 +402,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/hesabim'
     | '/_authenticated/yonetim'
+    | '/_authenticated/hesabim/projeler'
     | '/_authenticated/hesabim/talepler'
     | '/_authenticated/hesabim/teklifler'
     | '/_authenticated/yonetim/akis'
@@ -473,6 +486,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/hesabim/'
       preLoaderRoute: typeof AuthenticatedHesabimIndexRouteImport
+      parentRoute: typeof AuthenticatedHesabimRouteRoute
+    }
+    '/_authenticated/hesabim/projeler': {
+      id: '/_authenticated/hesabim/projeler'
+      path: '/projeler'
+      fullPath: '/hesabim/projeler'
+      preLoaderRoute: typeof AuthenticatedHesabimProjelerRouteImport
       parentRoute: typeof AuthenticatedHesabimRouteRoute
     }
     '/_authenticated/hesabim/talepler': {
@@ -647,6 +667,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedHesabimRouteRouteChildren {
+  AuthenticatedHesabimProjelerRoute: typeof AuthenticatedHesabimProjelerRoute
   AuthenticatedHesabimTaleplerRoute: typeof AuthenticatedHesabimTaleplerRoute
   AuthenticatedHesabimTekliflerRoute: typeof AuthenticatedHesabimTekliflerRoute
   AuthenticatedHesabimIndexRoute: typeof AuthenticatedHesabimIndexRoute
@@ -654,6 +675,7 @@ interface AuthenticatedHesabimRouteRouteChildren {
 
 const AuthenticatedHesabimRouteRouteChildren: AuthenticatedHesabimRouteRouteChildren =
   {
+    AuthenticatedHesabimProjelerRoute: AuthenticatedHesabimProjelerRoute,
     AuthenticatedHesabimTaleplerRoute: AuthenticatedHesabimTaleplerRoute,
     AuthenticatedHesabimTekliflerRoute: AuthenticatedHesabimTekliflerRoute,
     AuthenticatedHesabimIndexRoute: AuthenticatedHesabimIndexRoute,
