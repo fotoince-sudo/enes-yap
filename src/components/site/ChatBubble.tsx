@@ -144,12 +144,12 @@ export function ChatBubble() {
             {loading ? <div className="text-xs text-muted-foreground">Emir yazıyor…</div> : null}
             {uploading ? <div className="text-xs text-muted-foreground">Fotoğraflar yükleniyor…</div> : null}
             {messages.length === 0 ? (
-              <div className="flex flex-wrap gap-2 pt-1">
+              <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:flex-wrap">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => void send(s)}
-                    className="rounded-full border px-3 py-1 text-xs text-muted-foreground hover:bg-accent"
+                    className="rounded-full border px-3.5 py-2.5 text-left text-[13px] text-muted-foreground hover:bg-accent sm:py-1.5"
                   >
                     {s}
                   </button>
@@ -164,8 +164,29 @@ export function ChatBubble() {
             </div>
           ) : null}
 
+          <div className="flex items-center gap-2 border-t px-3 pt-2 sm:hidden">
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent disabled:opacity-50"
+            >
+              <Paperclip className="h-4 w-4" />
+              Fotoğraf ekle
+            </button>
+            <a
+              href="https://wa.me/905333992540"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp'tan yazın
+            </a>
+          </div>
+
           <form
-            className="flex items-center gap-2 border-t p-3"
+            className="flex items-center gap-2 border-t p-3 sm:border-t-0"
             onSubmit={(e) => {
               e.preventDefault();
               void send(input);
@@ -186,8 +207,9 @@ export function ChatBubble() {
               aria-label="Fotoğraf ekle"
               disabled={uploading}
               onClick={() => fileRef.current?.click()}
+              className="hidden h-11 w-11 shrink-0 sm:inline-flex"
             >
-              <Paperclip className="h-4 w-4" />
+              <Paperclip className="h-5 w-5" />
             </Button>
             <Input
               ref={inputRef}
@@ -195,9 +217,11 @@ export function ChatBubble() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Mesajınızı yazın…"
               aria-label="Mesajınız"
+              enterKeyHint="send"
+              className="h-11 text-base sm:h-10 sm:text-sm"
             />
-            <Button type="submit" size="icon" disabled={loading || !input.trim()} aria-label="Gönder">
-              <Send className="h-4 w-4" />
+            <Button type="submit" size="icon" disabled={loading || !input.trim()} aria-label="Gönder" className="h-11 w-11 shrink-0 sm:h-10 sm:w-10">
+              <Send className="h-5 w-5" />
             </Button>
           </form>
         </div>
@@ -205,7 +229,7 @@ export function ChatBubble() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Emir ile yazışmaya başla"
-          className="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground shadow-lg hover:opacity-90"
+          className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-lg hover:opacity-90"
         >
           <MessageCircle className="h-5 w-5" />
           Emir'e sorun
