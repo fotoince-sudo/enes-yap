@@ -15,6 +15,7 @@ export const Route = createFileRoute("/_authenticated/yonetim")({
 
 const NAV = [
   { to: "/yonetim", label: "Dashboard" },
+  { to: "/yonetim/akis", label: "İş Akışı" },
   { to: "/yonetim/talepler", label: "Tadilat Talepleri" },
   { to: "/yonetim/musteriler", label: "Müşteriler" },
   { to: "/yonetim/gayrimenkuller", label: "Gayrimenkuller" },

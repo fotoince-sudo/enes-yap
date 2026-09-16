@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedYonetimRouteRouteImport } from './routes/_authenticated/yonetim/route'
 import { Route as AuthenticatedYonetimIndexRouteImport } from './routes/_authenticated/yonetim/index'
+import { Route as AuthenticatedYonetimAkisRouteImport } from './routes/_authenticated/yonetim/akis'
 import { Route as AuthenticatedYonetimAyarlarRouteImport } from './routes/_authenticated/yonetim/ayarlar'
 import { Route as AuthenticatedYonetimBildirimlerRouteImport } from './routes/_authenticated/yonetim/bildirimler'
 import { Route as AuthenticatedYonetimCozumOrtaklariRouteImport } from './routes/_authenticated/yonetim/cozum-ortaklari'
@@ -65,6 +66,12 @@ const AuthenticatedYonetimIndexRoute =
   AuthenticatedYonetimIndexRouteImport.update({
     id: '/',
     path: '/',
+    getParentRoute: () => AuthenticatedYonetimRouteRoute,
+  } as any)
+const AuthenticatedYonetimAkisRoute =
+  AuthenticatedYonetimAkisRouteImport.update({
+    id: '/akis',
+    path: '/akis',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
 const AuthenticatedYonetimAyarlarRoute =
@@ -193,6 +200,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
   '/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
   '/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
   '/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
@@ -219,6 +227,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
   '/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
   '/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
   '/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
@@ -248,6 +257,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/_authenticated/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
   '/_authenticated/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
   '/_authenticated/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
   '/_authenticated/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
@@ -277,6 +287,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/yonetim'
+    | '/yonetim/akis'
     | '/yonetim/ayarlar'
     | '/yonetim/bildirimler'
     | '/yonetim/cozum-ortaklari'
@@ -303,6 +314,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/yonetim/akis'
     | '/yonetim/ayarlar'
     | '/yonetim/bildirimler'
     | '/yonetim/cozum-ortaklari'
@@ -331,6 +343,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/_authenticated/yonetim'
+    | '/_authenticated/yonetim/akis'
     | '/_authenticated/yonetim/ayarlar'
     | '/_authenticated/yonetim/bildirimler'
     | '/_authenticated/yonetim/cozum-ortaklari'
@@ -403,6 +416,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/yonetim/'
       preLoaderRoute: typeof AuthenticatedYonetimIndexRouteImport
+      parentRoute: typeof AuthenticatedYonetimRouteRoute
+    }
+    '/_authenticated/yonetim/akis': {
+      id: '/_authenticated/yonetim/akis'
+      path: '/akis'
+      fullPath: '/yonetim/akis'
+      preLoaderRoute: typeof AuthenticatedYonetimAkisRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
     '/_authenticated/yonetim/ayarlar': {
@@ -549,6 +569,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedYonetimRouteRouteChildren {
+  AuthenticatedYonetimAkisRoute: typeof AuthenticatedYonetimAkisRoute
   AuthenticatedYonetimAyarlarRoute: typeof AuthenticatedYonetimAyarlarRoute
   AuthenticatedYonetimBildirimlerRoute: typeof AuthenticatedYonetimBildirimlerRoute
   AuthenticatedYonetimCozumOrtaklariRoute: typeof AuthenticatedYonetimCozumOrtaklariRoute
@@ -574,6 +595,7 @@ interface AuthenticatedYonetimRouteRouteChildren {
 
 const AuthenticatedYonetimRouteRouteChildren: AuthenticatedYonetimRouteRouteChildren =
   {
+    AuthenticatedYonetimAkisRoute: AuthenticatedYonetimAkisRoute,
     AuthenticatedYonetimAyarlarRoute: AuthenticatedYonetimAyarlarRoute,
     AuthenticatedYonetimBildirimlerRoute: AuthenticatedYonetimBildirimlerRoute,
     AuthenticatedYonetimCozumOrtaklariRoute:
