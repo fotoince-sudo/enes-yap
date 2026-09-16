@@ -211,7 +211,7 @@ function QuoteDetail() {
       );
       queryClient.invalidateQueries({ queryKey: ["quote", id] });
       queryClient.invalidateQueries({ queryKey: ["quotes"] });
-      queryClient.invalidateQueries({ queryKey: ["activities", "quote", id] });
+      queryClient.invalidateQueries({ queryKey: ["activity", "quote", id] });
     },
     onError: (e: Error) => toast.error(e.message),
   });
