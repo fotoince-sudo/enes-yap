@@ -14,7 +14,13 @@ export const Route = createFileRoute("/_authenticated/yonetim/personel")({
   component: Staff,
 });
 
-type Profile = { id: string; full_name: string | null; phone: string | null; created_at: string };
+type Profile = {
+  id: string;
+  full_name: string | null;
+  phone: string | null;
+  created_at: string;
+  last_login_at: string | null;
+};
 type RoleRow = { id: string; user_id: string; role: string };
 
 function Staff() {
