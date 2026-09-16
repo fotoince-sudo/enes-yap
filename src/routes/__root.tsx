@@ -77,11 +77,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Enes Yapı — İnşaat, Tadilat ve Mimari Proje | İstanbul" },
+      { title: "Enes Yapı — Tadilat, Renovasyon ve Dekorasyon | İstanbul" },
       {
         name: "description",
         content:
-          "Enes Yapı: konut ve ticari inşaat, tadilat-renovasyon ve mimari proje hizmetleri. 15+ yıl deneyim, anahtar teslim yapı çözümleri.",
+          "Enes Yapı: daire, ofis ve iş yeri tadilatı, dekorasyon ve komple yenileme hizmetleri. 15+ yıl deneyim, ücretsiz keşif, zamanında teslim.",
       },
       { property: "og:site_name", content: "Enes Yapı" },
       { property: "og:type", content: "website" },
