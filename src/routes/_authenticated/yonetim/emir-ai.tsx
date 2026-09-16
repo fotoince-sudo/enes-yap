@@ -9,6 +9,20 @@ export const Route = createFileRoute("/_authenticated/yonetim/emir-ai")({
   component: EmirAiPage,
 });
 
+type EmirFlag = { tip?: string; detay?: string | null; soru?: string | null; sonraki_adim?: string | null; at?: string };
+
+const FLAG_LABELS: Record<string, string> = {
+  anlasilamadi: "Anlaşılamadı",
+  celiskili_cevap: "Çelişkili cevap",
+  konu_disi: "Konu dışı",
+  bilgi_verilmedi: "Bilgi verilmedi",
+  akis_durduruldu: "Akış durduruldu",
+};
+
+function parseFlags(value: unknown): EmirFlag[] {
+  return Array.isArray(value) ? (value as EmirFlag[]) : [];
+}
+
 function EmirAiPage() {
   const { data: sessions = [] } = useQuery({
     queryKey: ["emir-sessions"],
