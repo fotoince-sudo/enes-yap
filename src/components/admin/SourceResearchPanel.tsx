@@ -7,7 +7,12 @@ import { supabase } from "@/integrations/supabase/client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { runSourceResearch, setSourceResearchStatus } from "@/lib/source-research.functions";
+import { Input } from "@/components/ui/input";
+import {
+  runSourceResearch,
+  setSourcePermission,
+  setSourceResearchStatus,
+} from "@/lib/source-research.functions";
 import { trDate } from "@/lib/domain";
 
 const PERMISSION_LABEL: Record<string, string> = {
