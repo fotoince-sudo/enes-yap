@@ -111,6 +111,9 @@ function QuoteDetail() {
     onSuccess: () => {
       setItem({ ...emptyItem });
       queryClient.invalidateQueries({ queryKey: ["quote-items", id] });
+      queryClient.invalidateQueries({ queryKey: ["quote", id] });
+      queryClient.invalidateQueries({ queryKey: ["quotes"] });
+      toast.success("Kalem eklendi, teklif toplamları güncellendi.");
     },
     onError: (e: Error) => toast.error(e.message),
   });
