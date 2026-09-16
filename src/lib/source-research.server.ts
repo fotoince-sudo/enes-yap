@@ -120,6 +120,7 @@ async function runSourceResearchInner(): Promise<SourceResearchResult> {
       allowed: 0,
       blocked: 0,
       unreachable: 0,
+      collected: 0,
       details: [],
     };
   }
@@ -143,6 +144,7 @@ async function runSourceResearchInner(): Promise<SourceResearchResult> {
       allowed: 0,
       blocked: 0,
       unreachable: 0,
+      collected: 0,
       details: [],
     };
   }
@@ -234,17 +236,22 @@ async function runSourceResearchInner(): Promise<SourceResearchResult> {
     details.push({ name: row.name, url: row.url, result: resultText, autoScanAllowed });
   }
 
+  // Onaylı (izinli + robots uygun + resmî besleme tanımlı) kaynaklardan aday toplama.
+  const collect = await collectFromApprovedSources();
+  details.push(...collect.details);
+
   const result: SourceResearchResult = {
     ok: true,
     status: rows.length === 0 ? "kaynak-yok" : "tamamlandi",
     message:
       rows.length === 0
         ? "Denetlenecek aktif kaynak yok."
-        : `${rows.length} kaynak denetlendi; ${allowed} kaynak otomatik taramaya uygun.`,
+        : `${rows.length} kaynak denetlendi; ${allowed} kaynak otomatik taramaya uygun; ${collect.collected} yeni aday eklendi.`,
     checked: rows.length,
     allowed,
     blocked,
     unreachable,
+    collected: collect.collected,
     details,
   };
 
