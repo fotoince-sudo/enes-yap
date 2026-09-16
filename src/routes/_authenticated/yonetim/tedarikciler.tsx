@@ -15,7 +15,7 @@ export const Route = createFileRoute("/_authenticated/yonetim/tedarikciler")({
         { key: "phone", label: "Telefon" },
         { key: "email", label: "E-posta" },
         { key: "categories", label: "Ürün/hizmet kategorileri", type: "tags" },
-        { key: "is_active", label: "Aktif", type: "boolean" },
+        { key: "is_active", label: "Aktif", type: "boolean", defaultValue: true },
         { key: "price_info", label: "Fiyat bilgileri", type: "textarea", inList: false },
         { key: "notes", label: "Notlar", type: "textarea", inList: false },
       ]}

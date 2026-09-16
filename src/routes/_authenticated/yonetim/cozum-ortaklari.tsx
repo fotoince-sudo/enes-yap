@@ -21,7 +21,7 @@ export const Route = createFileRoute("/_authenticated/yonetim/cozum-ortaklari")(
         { key: "contact_person", label: "Yetkili kişi" },
         { key: "phone", label: "Telefon" },
         { key: "service_areas", label: "Hizmet alanları", type: "tags" },
-        { key: "is_active", label: "Aktif", type: "boolean" },
+        { key: "is_active", label: "Aktif", type: "boolean", defaultValue: true },
         { key: "whatsapp", label: "WhatsApp", inList: false },
         { key: "email", label: "E-posta", inList: false },
         { key: "specialty", label: "Uzmanlık", inList: false },
