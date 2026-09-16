@@ -157,6 +157,124 @@ export type Database = {
         }
         Relationships: []
       }
+      lead_prospects: {
+        Row: {
+          assigned_to: string | null
+          city: string | null
+          contact_email: string | null
+          contact_name: string | null
+          contact_phone: string | null
+          contact_source_note: string | null
+          created_at: string
+          created_by: string | null
+          customer_id: string | null
+          description: string | null
+          district: string | null
+          estimated_value: number | null
+          estimated_work_type: string | null
+          first_contact_at: string | null
+          id: string
+          last_contact_at: string | null
+          listing_date: string | null
+          listing_url: string | null
+          need_type: string | null
+          neighborhood: string | null
+          normalized_url: string | null
+          notes: string | null
+          opportunity_id: string | null
+          property_id: string | null
+          source: string
+          source_permission: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          assigned_to?: string | null
+          city?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          contact_source_note?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          description?: string | null
+          district?: string | null
+          estimated_value?: number | null
+          estimated_work_type?: string | null
+          first_contact_at?: string | null
+          id?: string
+          last_contact_at?: string | null
+          listing_date?: string | null
+          listing_url?: string | null
+          need_type?: string | null
+          neighborhood?: string | null
+          normalized_url?: string | null
+          notes?: string | null
+          opportunity_id?: string | null
+          property_id?: string | null
+          source?: string
+          source_permission?: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          assigned_to?: string | null
+          city?: string | null
+          contact_email?: string | null
+          contact_name?: string | null
+          contact_phone?: string | null
+          contact_source_note?: string | null
+          created_at?: string
+          created_by?: string | null
+          customer_id?: string | null
+          description?: string | null
+          district?: string | null
+          estimated_value?: number | null
+          estimated_work_type?: string | null
+          first_contact_at?: string | null
+          id?: string
+          last_contact_at?: string | null
+          listing_date?: string | null
+          listing_url?: string | null
+          need_type?: string | null
+          neighborhood?: string | null
+          normalized_url?: string | null
+          notes?: string | null
+          opportunity_id?: string | null
+          property_id?: string | null
+          source?: string
+          source_permission?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lead_prospects_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_prospects_opportunity_id_fkey"
+            columns: ["opportunity_id"]
+            isOneToOne: false
+            referencedRelation: "opportunities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_prospects_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       materials: {
         Row: {
           category: string | null
@@ -1235,6 +1353,7 @@ export type Database = {
       my_project_ids: { Args: never; Returns: string[] }
       my_quote_ids: { Args: never; Returns: string[] }
       my_request_ids: { Args: never; Returns: string[] }
+      normalize_prospect_url: { Args: { _url: string }; Returns: string }
       recalc_quote_totals: { Args: { _quote_id: string }; Returns: undefined }
     }
     Enums: {

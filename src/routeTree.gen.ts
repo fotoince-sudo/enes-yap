@@ -32,6 +32,7 @@ import { Route as AuthenticatedYonetimMalzemelerRouteImport } from './routes/_au
 import { Route as AuthenticatedYonetimMusterilerRouteImport } from './routes/_authenticated/yonetim/musteriler'
 import { Route as AuthenticatedYonetimOnceSonraRouteImport } from './routes/_authenticated/yonetim/once-sonra'
 import { Route as AuthenticatedYonetimPersonelRouteImport } from './routes/_authenticated/yonetim/personel'
+import { Route as AuthenticatedYonetimPotansiyelMusterilerRouteImport } from './routes/_authenticated/yonetim/potansiyel-musteriler'
 import { Route as AuthenticatedYonetimRaporlarRouteImport } from './routes/_authenticated/yonetim/raporlar'
 import { Route as AuthenticatedYonetimTamamlananProjelerRouteImport } from './routes/_authenticated/yonetim/tamamlanan-projeler'
 import { Route as AuthenticatedYonetimTedarikcilerRouteImport } from './routes/_authenticated/yonetim/tedarikciler'
@@ -175,6 +176,12 @@ const AuthenticatedYonetimPersonelRoute =
     path: '/personel',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
+const AuthenticatedYonetimPotansiyelMusterilerRoute =
+  AuthenticatedYonetimPotansiyelMusterilerRouteImport.update({
+    id: '/potansiyel-musteriler',
+    path: '/potansiyel-musteriler',
+    getParentRoute: () => AuthenticatedYonetimRouteRoute,
+  } as any)
 const AuthenticatedYonetimRaporlarRoute =
   AuthenticatedYonetimRaporlarRouteImport.update({
     id: '/raporlar',
@@ -251,6 +258,7 @@ export interface FileRoutesByFullPath {
   '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
   '/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
+  '/yonetim/potansiyel-musteriler': typeof AuthenticatedYonetimPotansiyelMusterilerRoute
   '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
   '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
@@ -282,6 +290,7 @@ export interface FileRoutesByTo {
   '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
   '/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
+  '/yonetim/potansiyel-musteriler': typeof AuthenticatedYonetimPotansiyelMusterilerRoute
   '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
   '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
@@ -317,6 +326,7 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/_authenticated/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
   '/_authenticated/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
+  '/_authenticated/yonetim/potansiyel-musteriler': typeof AuthenticatedYonetimPotansiyelMusterilerRoute
   '/_authenticated/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
   '/_authenticated/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/_authenticated/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
@@ -352,6 +362,7 @@ export interface FileRouteTypes {
     | '/yonetim/musteriler'
     | '/yonetim/once-sonra'
     | '/yonetim/personel'
+    | '/yonetim/potansiyel-musteriler'
     | '/yonetim/raporlar'
     | '/yonetim/tamamlanan-projeler'
     | '/yonetim/tedarikciler'
@@ -383,6 +394,7 @@ export interface FileRouteTypes {
     | '/yonetim/musteriler'
     | '/yonetim/once-sonra'
     | '/yonetim/personel'
+    | '/yonetim/potansiyel-musteriler'
     | '/yonetim/raporlar'
     | '/yonetim/tamamlanan-projeler'
     | '/yonetim/tedarikciler'
@@ -417,6 +429,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/musteriler'
     | '/_authenticated/yonetim/once-sonra'
     | '/_authenticated/yonetim/personel'
+    | '/_authenticated/yonetim/potansiyel-musteriler'
     | '/_authenticated/yonetim/raporlar'
     | '/_authenticated/yonetim/tamamlanan-projeler'
     | '/_authenticated/yonetim/tedarikciler'
@@ -600,6 +613,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedYonetimPersonelRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
+    '/_authenticated/yonetim/potansiyel-musteriler': {
+      id: '/_authenticated/yonetim/potansiyel-musteriler'
+      path: '/potansiyel-musteriler'
+      fullPath: '/yonetim/potansiyel-musteriler'
+      preLoaderRoute: typeof AuthenticatedYonetimPotansiyelMusterilerRouteImport
+      parentRoute: typeof AuthenticatedYonetimRouteRoute
+    }
     '/_authenticated/yonetim/raporlar': {
       id: '/_authenticated/yonetim/raporlar'
       path: '/raporlar'
@@ -699,6 +719,7 @@ interface AuthenticatedYonetimRouteRouteChildren {
   AuthenticatedYonetimMusterilerRoute: typeof AuthenticatedYonetimMusterilerRoute
   AuthenticatedYonetimOnceSonraRoute: typeof AuthenticatedYonetimOnceSonraRoute
   AuthenticatedYonetimPersonelRoute: typeof AuthenticatedYonetimPersonelRoute
+  AuthenticatedYonetimPotansiyelMusterilerRoute: typeof AuthenticatedYonetimPotansiyelMusterilerRoute
   AuthenticatedYonetimRaporlarRoute: typeof AuthenticatedYonetimRaporlarRoute
   AuthenticatedYonetimTamamlananProjelerRoute: typeof AuthenticatedYonetimTamamlananProjelerRoute
   AuthenticatedYonetimTedarikcilerRoute: typeof AuthenticatedYonetimTedarikcilerRoute
@@ -727,6 +748,8 @@ const AuthenticatedYonetimRouteRouteChildren: AuthenticatedYonetimRouteRouteChil
     AuthenticatedYonetimMusterilerRoute: AuthenticatedYonetimMusterilerRoute,
     AuthenticatedYonetimOnceSonraRoute: AuthenticatedYonetimOnceSonraRoute,
     AuthenticatedYonetimPersonelRoute: AuthenticatedYonetimPersonelRoute,
+    AuthenticatedYonetimPotansiyelMusterilerRoute:
+      AuthenticatedYonetimPotansiyelMusterilerRoute,
     AuthenticatedYonetimRaporlarRoute: AuthenticatedYonetimRaporlarRoute,
     AuthenticatedYonetimTamamlananProjelerRoute:
       AuthenticatedYonetimTamamlananProjelerRoute,
