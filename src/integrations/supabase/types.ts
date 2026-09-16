@@ -1225,6 +1225,10 @@ export type Database = {
       }
       is_manager: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      my_customer_ids: { Args: never; Returns: string[] }
+      my_project_ids: { Args: never; Returns: string[] }
+      my_quote_ids: { Args: never; Returns: string[] }
+      my_request_ids: { Args: never; Returns: string[] }
       recalc_quote_totals: { Args: { _quote_id: string }; Returns: undefined }
     }
     Enums: {
