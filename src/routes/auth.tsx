@@ -54,6 +54,36 @@ function AuthPage() {
     e.preventDefault();
     setNotice(null);
     setErrorText(null);
+
+    if (mode === "forgot") {
+      const mail = z.string().trim().email().safeParse(email);
+      if (!mail.success) {
+        setErrorText("Geçerli bir e-posta yazın.");
+        return;
+      }
+      setLoading(true);
+      try {
+        const { error } = await supabase.auth.resetPasswordForEmail(mail.data, {
+          redirectTo: `${window.location.origin}/reset-password`,
+        });
+        if (error) throw error;
+        setNotice(
+          `${mail.data} adresine şifre sıfırlama bağlantısı gönderildi. E-postadaki bağlantıya tıklayıp yeni şifrenizi belirleyin.`,
+        );
+        toast.success("Şifre sıfırlama e-postası gönderildi.");
+      } catch (err) {
+        const raw = err instanceof Error ? err.message : "";
+        const msg = /after \d+ seconds/i.test(raw)
+          ? "Çok sık denediniz. Lütfen bir dakika bekleyip tekrar deneyin."
+          : raw || "Bir hata oluştu.";
+        setErrorText(msg);
+        toast.error(msg);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
     const parsed = schema.safeParse({ email, password, fullName });
     if (!parsed.success) {
       setErrorText(parsed.error.issues[0]!.message);
