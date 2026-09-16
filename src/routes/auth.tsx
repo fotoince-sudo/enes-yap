@@ -86,7 +86,19 @@ function AuthPage() {
         navigate({ to: "/yonetim", replace: true });
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Bir hata oluştu.");
+      const raw = err instanceof Error ? err.message : "";
+      let msg = raw || "Bir hata oluştu.";
+      if (/already registered|already been registered/i.test(raw)) {
+        msg = "Bu e-posta ile zaten bir kayıt var. Giriş yapmayı deneyin veya e-posta onayınızı tamamlayın.";
+      } else if (/Invalid login credentials/i.test(raw)) {
+        msg = "E-posta veya şifre hatalı. Kayıt olduysanız e-posta onayını tamamladığınızdan emin olun.";
+      } else if (/Email not confirmed/i.test(raw)) {
+        msg = "E-posta adresiniz henüz onaylanmadı. Gelen kutunuzdaki onay bağlantısına tıklayın.";
+      } else if (/after \d+ seconds/i.test(raw)) {
+        msg = "Çok sık denediniz. Lütfen bir dakika bekleyip tekrar deneyin.";
+      }
+      setErrorText(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
