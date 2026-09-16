@@ -41,6 +41,15 @@ function RequestDetail() {
     },
   });
 
+  const { data: staff = [] } = useQuery({
+    queryKey: ["staff-options"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("profiles").select("id, full_name").order("full_name");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
   const { data: activities = [] } = useQuery({
     queryKey: ["request-activities", id],
     queryFn: async () => {
@@ -166,7 +175,8 @@ function RequestDetail() {
         request_id: id,
         customer_id: request.customer_id,
         property_id: request.property_id,
-        address: [request.neighborhood, request.district, request.city].filter(Boolean).join(", "),
+        address: request.address || [request.neighborhood, request.district, request.city].filter(Boolean).join(", "),
+        responsible_id: request.assigned_to,
       });
       if (error) throw error;
       await supabase.from("renovation_requests").update({ status: "kesif_planlandi" }).eq("id", id);
@@ -249,6 +259,7 @@ function RequestDetail() {
             <Row label="Telefon" value={request.phone} />
             <Row label="E-posta" value={request.email} />
             <Row label="Konum" value={[request.neighborhood, request.district, request.city].filter(Boolean).join(" / ")} />
+            <Row label="Açık adres" value={request.address} />
             <Row label="Gayrimenkul tipi" value={request.property_type} />
             <Row label="Tadilat türü" value={request.renovation_type} />
             <Row label="Yaklaşık m²" value={request.area_m2} />

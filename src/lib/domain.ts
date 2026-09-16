@@ -3,38 +3,110 @@
 export const REQUEST_STATUS = {
   yeni: "Yeni",
   inceleniyor: "İnceleniyor",
-  gorusuldu: "Müşteriyle görüşüldü",
+  gorusuldu: "İletişim kuruldu",
   kesif_planlandi: "Keşif planlandı",
   kesif_yapildi: "Keşif yapıldı",
   teklif_hazirlaniyor: "Teklif hazırlanıyor",
   teklif_gonderildi: "Teklif gönderildi",
   onaylandi: "Onaylandı",
-  uygulamada: "Uygulamada",
+  is_basladi: "İş başladı",
+  uygulamada: "Devam ediyor",
+  beklemede: "Beklemede",
   tamamlandi: "Tamamlandı",
-  iptal: "İptal",
+  iptal: "İptal edildi",
 } as const;
 export type RequestStatus = keyof typeof REQUEST_STATUS;
 
 export const QUOTE_STATUS = {
   taslak: "Taslak",
   hazirlaniyor: "Hazırlanıyor",
-  gonderildi: "Gönderildi",
+  gonderildi: "Müşteriye gönderildi",
   musteri_inceliyor: "Müşteri inceliyor",
-  kabul: "Kabul edildi",
+  revizyon: "Revizyon istendi",
+  kabul: "Onaylandı",
   red: "Reddedildi",
 } as const;
 export type QuoteStatus = keyof typeof QUOTE_STATUS;
 
 export const PROJECT_STATUS = {
+  planlandi: "Planlandı",
   baslamadi: "Başlamadı",
   hazirlik: "Hazırlık",
   malzeme_bekleniyor: "Malzeme bekleniyor",
   basladi: "Başladı",
   devam: "Devam ediyor",
   kontrol: "Kontrolde",
+  beklemede: "Beklemede",
   tamamlandi: "Tamamlandı",
+  iptal: "İptal",
 } as const;
 export type ProjectStatus = keyof typeof PROJECT_STATUS;
+
+/** Tadilat fırsatı durumları (CRM akışı). */
+export const OPPORTUNITY_STATUS = {
+  yeni: "Yeni",
+  incelenecek: "İncelenecek",
+  iletisim_kurulacak: "İletişim kurulacak",
+  iletisim_kuruldu: "İletişim kuruldu",
+  ilgileniyor: "İlgileniyor",
+  ilgilenmiyor: "İlgilenmiyor",
+  takipte: "Takipte",
+  musteri_oldu: "Müşteri oldu",
+  kapandi: "Fırsat kapandı",
+} as const;
+
+export const RENOVATION_LIKELIHOOD = {
+  yuksek: "Yüksek",
+  orta: "Orta",
+  dusuk: "Düşük",
+  belirsiz: "Belirsiz",
+} as const;
+
+export const SALE_RENT_STATUS = {
+  satilik: "Satılık",
+  kiralik: "Kiralık",
+  bilinmiyor: "Bilinmiyor",
+} as const;
+
+export const OPPORTUNITY_SOURCE = ["manuel", "telefon", "web-formu", "tavsiye", "saha", "ilan-taramasi", "diger"] as const;
+
+export const CUSTOMER_STATUS = {
+  aktif: "Aktif",
+  potansiyel: "Potansiyel",
+  pasif: "Pasif",
+  kaybedildi: "Kaybedildi",
+} as const;
+
+export const PROPERTY_USAGE = ["Boş", "Sahibi oturuyor", "Kiracı var", "Satışta", "Kirada", "İnşaat halinde"] as const;
+
+export const PAYMENT_STATUS = {
+  odenmedi: "Ödenmedi",
+  kismi: "Kısmi ödeme",
+  odendi: "Ödendi",
+  gecikmede: "Gecikmede",
+} as const;
+
+export const ROLE_LABELS = {
+  admin: "Yönetici (admin)",
+  yonetici: "Yönetici",
+  operasyon: "Operasyon",
+  saha: "Saha personeli",
+  personel: "Personel",
+  ekip: "Ekip / usta",
+} as const;
+
+/** Aktivite geçmişi işlem türleri. */
+export const ACTIVITY_TYPES = {
+  note: "Not eklendi",
+  created: "Kayıt oluşturuldu",
+  phone: "Telefon görüşmesi yapıldı",
+  whatsapp: "WhatsApp görüşmesi yapıldı",
+  survey_planned: "Keşif planlandı",
+  survey_done: "Keşif tamamlandı",
+  quote_created: "Teklif oluşturuldu",
+  quote_sent: "Teklif gönderildi",
+  status_change: "Durum değiştirildi",
+} as const;
 
 export const PARTNER_TYPE = {
   usta: "Usta",

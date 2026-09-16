@@ -11,7 +11,16 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 
-export type FieldType = "text" | "number" | "textarea" | "select" | "date" | "time" | "boolean" | "tags";
+export type FieldType =
+  | "text"
+  | "number"
+  | "textarea"
+  | "select"
+  | "date"
+  | "datetime"
+  | "time"
+  | "boolean"
+  | "tags";
 
 export type CrudField = {
   key: string;
@@ -78,6 +87,7 @@ export function CrudTable({ table, title, description, fields, orderBy, searchKe
         else if (f.type === "tags") {
           v = typeof v === "string" ? v.split(",").map((s) => s.trim()).filter(Boolean) : (v ?? []);
         } else if (f.type === "boolean") v = Boolean(v);
+        else if (f.type === "datetime") v = v ? new Date(v as string).toISOString() : null;
         else if (v === "") v = null;
         payload[f.key] = v;
       }
@@ -120,7 +130,16 @@ export function CrudTable({ table, title, description, fields, orderBy, searchKe
     setEditing(row);
     setForm(
       Object.fromEntries(
-        fields.map((f) => [f.key, f.type === "tags" ? (row[f.key] ?? []).join(", ") : (row[f.key] ?? emptyValue(f))]),
+        fields.map((f) => [
+          f.key,
+          f.type === "tags"
+            ? (row[f.key] ?? []).join(", ")
+            : f.type === "datetime"
+              ? row[f.key]
+                ? new Date(row[f.key] as string).toISOString().slice(0, 16)
+                : ""
+              : (row[f.key] ?? emptyValue(f)),
+        ]),
       ),
     );
     setOpen(true);
@@ -246,7 +265,17 @@ export function CrudTable({ table, title, description, fields, orderBy, searchKe
                 ) : (
                   <Input
                     id={f.key}
-                    type={f.type === "number" ? "number" : f.type === "date" ? "date" : f.type === "time" ? "time" : "text"}
+                    type={
+                      f.type === "number"
+                        ? "number"
+                        : f.type === "date"
+                          ? "date"
+                          : f.type === "datetime"
+                            ? "datetime-local"
+                            : f.type === "time"
+                              ? "time"
+                              : "text"
+                    }
                     value={form[f.key] ?? ""}
                     placeholder={f.placeholder}
                     onChange={(e) => setForm({ ...form, [f.key]: e.target.value })}

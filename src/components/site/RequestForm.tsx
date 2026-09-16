@@ -18,6 +18,7 @@ const schema = z.object({
   city: z.string().trim().max(80).optional().or(z.literal("")),
   district: z.string().trim().max(80).optional().or(z.literal("")),
   neighborhood: z.string().trim().max(80).optional().or(z.literal("")),
+  address: z.string().trim().max(400).optional().or(z.literal("")),
   property_type: z.string().max(80).optional().or(z.literal("")),
   service_category_id: z.string().optional().or(z.literal("")),
   area_m2: z.string().optional().or(z.literal("")),
@@ -34,6 +35,7 @@ const initial = {
   city: "",
   district: "",
   neighborhood: "",
+  address: "",
   property_type: "",
   service_category_id: "",
   area_m2: "",
@@ -79,6 +81,7 @@ export function RequestForm() {
         city: v.city || null,
         district: v.district || null,
         neighborhood: v.neighborhood || null,
+        address: v.address || null,
         property_type: v.property_type || null,
         service_category_id: v.service_category_id || null,
         renovation_type: category?.name ?? null,
@@ -149,6 +152,15 @@ export function RequestForm() {
       <div>
         <Label htmlFor="f-hood">Mahalle</Label>
         <Input id="f-hood" value={form.neighborhood} onChange={(e) => set("neighborhood")(e.target.value)} />
+      </div>
+      <div className="sm:col-span-2">
+        <Label htmlFor="f-address">Açık adres</Label>
+        <Input
+          id="f-address"
+          value={form.address}
+          onChange={(e) => set("address")(e.target.value)}
+          placeholder="Sokak, bina, daire no"
+        />
       </div>
       <div>
         <Label htmlFor="f-ptype">Gayrimenkul tipi</Label>

@@ -14,42 +14,146 @@ export type Database = {
   }
   public: {
     Tables: {
+      activity_log: {
+        Row: {
+          activity_type: string
+          actor_id: string | null
+          created_at: string
+          entity_id: string
+          entity_type: string
+          id: string
+          new_status: string | null
+          note: string | null
+          old_status: string | null
+        }
+        Insert: {
+          activity_type?: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          id?: string
+          new_status?: string | null
+          note?: string | null
+          old_status?: string | null
+        }
+        Update: {
+          activity_type?: string
+          actor_id?: string | null
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          id?: string
+          new_status?: string | null
+          note?: string | null
+          old_status?: string | null
+        }
+        Relationships: []
+      }
+      before_after: {
+        Row: {
+          after_url: string | null
+          before_url: string | null
+          created_at: string
+          description: string | null
+          happened_on: string | null
+          id: string
+          is_published: boolean
+          progress_urls: Json
+          project_id: string | null
+          sort_order: number
+          title: string | null
+          updated_at: string
+          work_type: string | null
+        }
+        Insert: {
+          after_url?: string | null
+          before_url?: string | null
+          created_at?: string
+          description?: string | null
+          happened_on?: string | null
+          id?: string
+          is_published?: boolean
+          progress_urls?: Json
+          project_id?: string | null
+          sort_order?: number
+          title?: string | null
+          updated_at?: string
+          work_type?: string | null
+        }
+        Update: {
+          after_url?: string | null
+          before_url?: string | null
+          created_at?: string
+          description?: string | null
+          happened_on?: string | null
+          id?: string
+          is_published?: boolean
+          progress_urls?: Json
+          project_id?: string | null
+          sort_order?: number
+          title?: string | null
+          updated_at?: string
+          work_type?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "before_after_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
+          address: string | null
           city: string | null
           created_at: string
           district: string | null
           email: string | null
           full_name: string
           id: string
+          last_contact_at: string | null
           neighborhood: string | null
           notes: string | null
           phone: string | null
+          status: string
           updated_at: string
+          whatsapp: string | null
         }
         Insert: {
+          address?: string | null
           city?: string | null
           created_at?: string
           district?: string | null
           email?: string | null
           full_name: string
           id?: string
+          last_contact_at?: string | null
           neighborhood?: string | null
           notes?: string | null
           phone?: string | null
+          status?: string
           updated_at?: string
+          whatsapp?: string | null
         }
         Update: {
+          address?: string | null
           city?: string | null
           created_at?: string
           district?: string | null
           email?: string | null
           full_name?: string
           id?: string
+          last_contact_at?: string | null
           neighborhood?: string | null
           notes?: string | null
           phone?: string | null
+          status?: string
           updated_at?: string
+          whatsapp?: string | null
         }
         Relationships: []
       }
@@ -97,40 +201,121 @@ export type Database = {
           },
         ]
       }
+      notifications: {
+        Row: {
+          body: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string | null
+          id: string
+          is_read: boolean
+          kind: string
+          title: string
+          user_id: string | null
+        }
+        Insert: {
+          body?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          is_read?: boolean
+          kind?: string
+          title: string
+          user_id?: string | null
+        }
+        Update: {
+          body?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string | null
+          id?: string
+          is_read?: boolean
+          kind?: string
+          title?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       opportunities: {
         Row: {
+          assigned_to: string | null
+          city: string | null
           created_at: string
           customer_id: string | null
+          description: string | null
+          district: string | null
           estimated_value: number | null
+          first_contact_at: string | null
           id: string
+          last_contact_at: string | null
+          listing_date: string | null
+          listing_title: string | null
+          listing_url: string | null
+          neighborhood: string | null
           notes: string | null
           opportunity_type: Database["public"]["Enums"]["opportunity_type"]
+          phone: string | null
           property_id: string | null
+          property_type: string | null
+          renovation_likelihood: string | null
           request_id: string | null
+          sale_rent_status: string | null
+          source: string
           status: string
           updated_at: string
         }
         Insert: {
+          assigned_to?: string | null
+          city?: string | null
           created_at?: string
           customer_id?: string | null
+          description?: string | null
+          district?: string | null
           estimated_value?: number | null
+          first_contact_at?: string | null
           id?: string
+          last_contact_at?: string | null
+          listing_date?: string | null
+          listing_title?: string | null
+          listing_url?: string | null
+          neighborhood?: string | null
           notes?: string | null
           opportunity_type: Database["public"]["Enums"]["opportunity_type"]
+          phone?: string | null
           property_id?: string | null
+          property_type?: string | null
+          renovation_likelihood?: string | null
           request_id?: string | null
+          sale_rent_status?: string | null
+          source?: string
           status?: string
           updated_at?: string
         }
         Update: {
+          assigned_to?: string | null
+          city?: string | null
           created_at?: string
           customer_id?: string | null
+          description?: string | null
+          district?: string | null
           estimated_value?: number | null
+          first_contact_at?: string | null
           id?: string
+          last_contact_at?: string | null
+          listing_date?: string | null
+          listing_title?: string | null
+          listing_url?: string | null
+          neighborhood?: string | null
           notes?: string | null
           opportunity_type?: Database["public"]["Enums"]["opportunity_type"]
+          phone?: string | null
           property_id?: string | null
+          property_type?: string | null
+          renovation_likelihood?: string | null
           request_id?: string | null
+          sale_rent_status?: string | null
+          source?: string
           status?: string
           updated_at?: string
         }
@@ -160,6 +345,7 @@ export type Database = {
       }
       partners: {
         Row: {
+          contact_person: string | null
           created_at: string
           district: string | null
           documents: Json
@@ -175,9 +361,11 @@ export type Database = {
           service_areas: string[]
           specialty: string | null
           updated_at: string
+          whatsapp: string | null
           work_regions: string[]
         }
         Insert: {
+          contact_person?: string | null
           created_at?: string
           district?: string | null
           documents?: Json
@@ -193,9 +381,11 @@ export type Database = {
           service_areas?: string[]
           specialty?: string | null
           updated_at?: string
+          whatsapp?: string | null
           work_regions?: string[]
         }
         Update: {
+          contact_person?: string | null
           created_at?: string
           district?: string | null
           documents?: Json
@@ -211,6 +401,7 @@ export type Database = {
           service_areas?: string[]
           specialty?: string | null
           updated_at?: string
+          whatsapp?: string | null
           work_regions?: string[]
         }
         Relationships: []
@@ -329,13 +520,17 @@ export type Database = {
           estimated_end_date: string | null
           id: string
           is_public_reference: boolean
+          material_notes: string | null
           notes: string | null
           paid_total: number
           payment_notes: string | null
+          payment_status: string | null
           project_no: number
           property_id: string | null
           quote_id: string | null
           request_id: string | null
+          responsible_id: string | null
+          scope: string | null
           start_date: string | null
           status: Database["public"]["Enums"]["project_status"]
           title: string
@@ -350,13 +545,17 @@ export type Database = {
           estimated_end_date?: string | null
           id?: string
           is_public_reference?: boolean
+          material_notes?: string | null
           notes?: string | null
           paid_total?: number
           payment_notes?: string | null
+          payment_status?: string | null
           project_no?: number
           property_id?: string | null
           quote_id?: string | null
           request_id?: string | null
+          responsible_id?: string | null
+          scope?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["project_status"]
           title: string
@@ -371,13 +570,17 @@ export type Database = {
           estimated_end_date?: string | null
           id?: string
           is_public_reference?: boolean
+          material_notes?: string | null
           notes?: string | null
           paid_total?: number
           payment_notes?: string | null
+          payment_status?: string | null
           project_no?: number
           property_id?: string | null
           quote_id?: string | null
           request_id?: string | null
+          responsible_id?: string | null
+          scope?: string | null
           start_date?: string | null
           status?: Database["public"]["Enums"]["project_status"]
           title?: string
@@ -432,6 +635,8 @@ export type Database = {
           property_type: string | null
           room_count: string | null
           updated_at: string
+          usage_status: string | null
+          videos: Json
         }
         Insert: {
           address?: string | null
@@ -450,6 +655,8 @@ export type Database = {
           property_type?: string | null
           room_count?: string | null
           updated_at?: string
+          usage_status?: string | null
+          videos?: Json
         }
         Update: {
           address?: string | null
@@ -468,6 +675,8 @@ export type Database = {
           property_type?: string | null
           room_count?: string | null
           updated_at?: string
+          usage_status?: string | null
+          videos?: Json
         }
         Relationships: [
           {
@@ -616,6 +825,7 @@ export type Database = {
       }
       renovation_requests: {
         Row: {
+          address: string | null
           area_m2: number | null
           assigned_to: string | null
           budget_range: string | null
@@ -644,6 +854,7 @@ export type Database = {
           video_urls: Json
         }
         Insert: {
+          address?: string | null
           area_m2?: number | null
           assigned_to?: string | null
           budget_range?: string | null
@@ -672,6 +883,7 @@ export type Database = {
           video_urls?: Json
         }
         Update: {
+          address?: string | null
           area_m2?: number | null
           assigned_to?: string | null
           budget_range?: string | null
@@ -844,6 +1056,8 @@ export type Database = {
           estimated_cost: number | null
           id: string
           is_done: boolean
+          labor_notes: string | null
+          material_notes: string | null
           measurements: Json
           notes: string | null
           photos: Json
@@ -856,6 +1070,8 @@ export type Database = {
           scheduled_date: string | null
           scheduled_time: string | null
           updated_at: string
+          videos: Json
+          work_items: string | null
         }
         Insert: {
           address?: string | null
@@ -864,6 +1080,8 @@ export type Database = {
           estimated_cost?: number | null
           id?: string
           is_done?: boolean
+          labor_notes?: string | null
+          material_notes?: string | null
           measurements?: Json
           notes?: string | null
           photos?: Json
@@ -876,6 +1094,8 @@ export type Database = {
           scheduled_date?: string | null
           scheduled_time?: string | null
           updated_at?: string
+          videos?: Json
+          work_items?: string | null
         }
         Update: {
           address?: string | null
@@ -884,6 +1104,8 @@ export type Database = {
           estimated_cost?: number | null
           id?: string
           is_done?: boolean
+          labor_notes?: string | null
+          material_notes?: string | null
           measurements?: Json
           notes?: string | null
           photos?: Json
@@ -896,6 +1118,8 @@ export type Database = {
           scheduled_date?: string | null
           scheduled_time?: string | null
           updated_at?: string
+          videos?: Json
+          work_items?: string | null
         }
         Relationships: [
           {
@@ -954,10 +1178,17 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_manager: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
     }
     Enums: {
-      app_role: "admin" | "yonetici" | "operasyon" | "saha" | "ekip"
+      app_role:
+        | "admin"
+        | "yonetici"
+        | "operasyon"
+        | "saha"
+        | "ekip"
+        | "personel"
       opportunity_type:
         | "satisa_hazirlik"
         | "kiraya_hazirlik"
@@ -975,6 +1206,9 @@ export type Database = {
         | "devam"
         | "kontrol"
         | "tamamlandi"
+        | "planlandi"
+        | "beklemede"
+        | "iptal"
       quote_status:
         | "taslak"
         | "hazirlaniyor"
@@ -982,6 +1216,7 @@ export type Database = {
         | "musteri_inceliyor"
         | "kabul"
         | "red"
+        | "revizyon"
       request_status:
         | "yeni"
         | "inceleniyor"
@@ -994,6 +1229,8 @@ export type Database = {
         | "uygulamada"
         | "tamamlandi"
         | "iptal"
+        | "is_basladi"
+        | "beklemede"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -1121,7 +1358,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "yonetici", "operasyon", "saha", "ekip"],
+      app_role: ["admin", "yonetici", "operasyon", "saha", "ekip", "personel"],
       opportunity_type: [
         "satisa_hazirlik",
         "kiraya_hazirlik",
@@ -1140,6 +1377,9 @@ export const Constants = {
         "devam",
         "kontrol",
         "tamamlandi",
+        "planlandi",
+        "beklemede",
+        "iptal",
       ],
       quote_status: [
         "taslak",
@@ -1148,6 +1388,7 @@ export const Constants = {
         "musteri_inceliyor",
         "kabul",
         "red",
+        "revizyon",
       ],
       request_status: [
         "yeni",
@@ -1161,6 +1402,8 @@ export const Constants = {
         "uygulamada",
         "tamamlandi",
         "iptal",
+        "is_basladi",
+        "beklemede",
       ],
     },
   },

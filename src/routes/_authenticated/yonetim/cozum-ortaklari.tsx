@@ -8,8 +8,8 @@ export const Route = createFileRoute("/_authenticated/yonetim/cozum-ortaklari")(
     <CrudTable
       table="partners"
       title="Çözüm Ortakları"
-      description="Firmalar ve çözüm ortakları da aynı kayıt havuzunda tutulur; tür alanından ayrışır."
-      searchKeys={["name", "phone", "specialty", "district"]}
+      description="Ustalar, ekipler ve firmalar aynı kayıt havuzunda tutulur; tür alanından ayrışır. Bir projeye birden fazla çözüm ortağı atanabilir."
+      searchKeys={["name", "contact_person", "phone", "whatsapp", "specialty", "district"]}
       fields={[
         {
           key: "partner_type",
@@ -17,13 +17,17 @@ export const Route = createFileRoute("/_authenticated/yonetim/cozum-ortaklari")(
           type: "select",
           options: Object.entries(PARTNER_TYPE).map(([value, label]) => ({ value, label })),
         },
-        { key: "name", label: "Firma / ortak adı" },
+        { key: "name", label: "Firma / usta adı" },
+        { key: "contact_person", label: "Yetkili kişi" },
         { key: "phone", label: "Telefon" },
-        { key: "email", label: "E-posta" },
         { key: "service_areas", label: "Hizmet alanları", type: "tags" },
         { key: "is_active", label: "Aktif", type: "boolean" },
+        { key: "whatsapp", label: "WhatsApp", inList: false },
+        { key: "email", label: "E-posta", inList: false },
         { key: "specialty", label: "Uzmanlık", inList: false },
-        { key: "work_regions", label: "Çalışma bölgeleri", type: "tags", inList: false },
+        { key: "district", label: "İlçe", inList: false },
+        { key: "work_regions", label: "Hizmet bölgeleri", type: "tags", inList: false },
+        { key: "rating", label: "Puan (1-5)", type: "number", inList: false },
         { key: "references_text", label: "Referanslar", type: "textarea", inList: false },
         { key: "notes", label: "Notlar", type: "textarea", inList: false },
       ]}
