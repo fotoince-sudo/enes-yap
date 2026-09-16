@@ -5,6 +5,7 @@ import { CrudTable } from "@/components/admin/CrudTable";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  IZMIR_DISTRICTS,
   PROSPECT_NEED_TYPES,
   PROSPECT_PERMISSION,
   PROSPECT_SOURCE,
@@ -52,7 +53,12 @@ function Prospects() {
             type: "select",
             options: Object.entries(PROSPECT_STATUS).map(([value, label]) => ({ value, label })),
           },
-          { key: "district", label: "İlçe" },
+          {
+            key: "district",
+            label: "İlçe",
+            type: "select",
+            options: IZMIR_DISTRICTS.map((d) => ({ value: d, label: d })),
+          },
           {
             key: "need_type",
             label: "İhtiyaç türü",
@@ -78,7 +84,7 @@ function Prospects() {
             options: Object.entries(PROSPECT_PERMISSION).map(([value, label]) => ({ value, label })),
           },
           { key: "listing_url", label: "İlan / başvuru bağlantısı", inList: false },
-          { key: "city", label: "İl", inList: false, defaultValue: "İzmir" },
+          { key: "city", label: "İl (yalnızca İzmir)", inList: false, defaultValue: "İzmir" },
           { key: "neighborhood", label: "Mahalle", inList: false },
           { key: "estimated_work_type", label: "Tahmini iş türü", inList: false },
           { key: "estimated_value", label: "Tahmini iş değeri", type: "number", inList: false },
@@ -125,6 +131,10 @@ function Prospects() {
           <p>
             Bu bölüm şu an elle (veya izinli kaynaklardan kopyalayarak) aday girişi için hazırdır. Otomatik tarama henüz
             kurulmadı; onayınız olmadan hiçbir dış siteye tarama başlatılmaz.
+          </p>
+          <p>
+            Tarama bölgesi yalnızca İzmir ilidir: İzmir dışındaki ilan, talep ve fırsatlar taranmaz ve kaydedilemez
+            (il alanı sistem tarafından İzmir ile sınırlıdır).
           </p>
           <p>
             Yalnızca erişimine ve otomatik kullanımına açıkça izin verilen kaynaklar kullanılır: resmî API, açık veri,
