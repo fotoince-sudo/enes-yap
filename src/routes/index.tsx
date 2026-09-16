@@ -341,7 +341,7 @@ function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 text-sm text-muted-foreground">
           <span>© {new Date().getFullYear()} Enes Yapı · Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir · 0533 399 25 40</span>
           <Link to="/auth" className="hover:text-foreground">
-            Personel girişi
+            Müşteri / personel girişi
           </Link>
         </div>
       </footer>
