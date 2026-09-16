@@ -73,6 +73,46 @@ function RequestDetail() {
     },
   });
 
+  const { data: surveys = [] } = useQuery({
+    queryKey: ["request-surveys", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("surveys")
+        .select("id, scheduled_date, scheduled_time, address, work_items, result, estimated_cost, is_done, notes, photos")
+        .eq("request_id", id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const { data: emirSession } = useQuery({
+    queryKey: ["request-emir-session", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("emir_chat_sessions")
+        .select("id, summary, wants_survey, message_count, created_at")
+        .eq("request_id", id)
+        .order("created_at", { ascending: false })
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: quotes = [] } = useQuery({
+    queryKey: ["request-quotes", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("quotes")
+        .select("id, quote_no, status, grand_total")
+        .eq("request_id", id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
   useEffect(() => {
     const photos = (request?.photo_urls as string[] | null) ?? [];
     const videos = (request?.video_urls as string[] | null) ?? [];
