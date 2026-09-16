@@ -70,6 +70,7 @@ export function SourceResearchPanel() {
       toast.success(result.message);
       void queryClient.invalidateQueries({ queryKey: ["prospect-sources"] });
       void queryClient.invalidateQueries({ queryKey: ["engine-state", "source_research"] });
+      void queryClient.invalidateQueries({ queryKey: ["engine-runs", "source_research"] });
     },
     onError: (error: Error) => toast.error(error.message),
   });
