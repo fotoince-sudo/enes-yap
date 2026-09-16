@@ -453,21 +453,27 @@ function QuoteDetail() {
               </select>
             </div>
             <div>
-              <Label htmlFor="i-price">Birim fiyat</Label>
-              <Input id="i-price" type="number" value={item.unit_price} onChange={(e) => setItem({ ...item, unit_price: e.target.value })} />
-            </div>
-            <div className="flex items-end">
-              <Button className="w-full" onClick={() => addItem.mutate()} disabled={addItem.isPending}>
-                Kalem ekle
-              </Button>
-            </div>
-            <div>
-              <Label htmlFor="i-mat">Malzeme bedeli</Label>
+              <Label htmlFor="i-mat">Malzeme birim fiyatı</Label>
               <Input id="i-mat" type="number" value={item.material_cost} onChange={(e) => setItem({ ...item, material_cost: e.target.value })} />
             </div>
             <div>
-              <Label htmlFor="i-lab">İşçilik bedeli</Label>
+              <Label htmlFor="i-lab">İşçilik birim fiyatı</Label>
               <Input id="i-lab" type="number" value={item.labor_cost} onChange={(e) => setItem({ ...item, labor_cost: e.target.value })} />
+            </div>
+            <div className="rounded-md border bg-muted/40 p-3 text-sm sm:col-span-2">
+              <div className="flex justify-between">
+                <span className="text-muted-foreground">Birim fiyat (malzeme + işçilik)</span>
+                <span>{tl(newUnitPrice)}</span>
+              </div>
+              <div className="mt-1 flex justify-between font-medium">
+                <span>Kalem toplamı</span>
+                <span>{tl(newLineTotal)}</span>
+              </div>
+            </div>
+            <div className="flex items-end sm:col-span-2">
+              <Button className="w-full" onClick={() => addItem.mutate()} disabled={addItem.isPending}>
+                Kalem ekle
+              </Button>
             </div>
           </div>
         </CardContent>
