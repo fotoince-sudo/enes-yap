@@ -10,7 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PHOTO_PHASE, PROJECT_STATUS, tl } from "@/lib/domain";
+import { PAYMENT_STATUS, PHOTO_PHASE, PROJECT_STATUS, tl } from "@/lib/domain";
+import { ActivityPanel } from "@/components/admin/ActivityPanel";
 
 export const Route = createFileRoute("/_authenticated/yonetim/projeler/$id")({
   component: ProjectDetail,
@@ -232,6 +233,56 @@ function ProjectDetail() {
                 type="date"
                 defaultValue={project.actual_end_date ?? ""}
                 onBlur={(e) => update.mutate({ actual_end_date: e.target.value || null })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="p-resp">Sorumlu personel</Label>
+              <select
+                id="p-resp"
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                value={project.responsible_id ?? ""}
+                onChange={(e) => update.mutate({ responsible_id: e.target.value || null })}
+              >
+                <option value="">Atanmadı</option>
+                {staff.map((s) => (
+                  <option key={s.id} value={s.id}>
+                    {s.full_name ?? s.id}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <Label htmlFor="p-paystatus">Ödeme durumu</Label>
+              <select
+                id="p-paystatus"
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                value={project.payment_status ?? ""}
+                onChange={(e) => update.mutate({ payment_status: e.target.value || null })}
+              >
+                <option value="">Belirtilmedi</option>
+                {Object.entries(PAYMENT_STATUS).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="sm:col-span-2">
+              <Label htmlFor="p-scope">İş kapsamı</Label>
+              <Textarea
+                id="p-scope"
+                defaultValue={project.scope ?? ""}
+                onBlur={(e) => update.mutate({ scope: e.target.value || null })}
+                rows={3}
+              />
+            </div>
+            <div className="sm:col-span-2">
+              <Label htmlFor="p-materials">Kullanılan malzemeler</Label>
+              <Textarea
+                id="p-materials"
+                defaultValue={project.material_notes ?? ""}
+                onBlur={(e) => update.mutate({ material_notes: e.target.value || null })}
+                rows={2}
               />
             </div>
             <div className="sm:col-span-2">
