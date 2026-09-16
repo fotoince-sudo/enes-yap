@@ -166,6 +166,32 @@ export function ChatBubble() {
     if (typeof window !== "undefined") window.localStorage.removeItem(STORAGE_KEY);
   };
 
+  // Emir sohbetinden WhatsApp'a geçiş: konuşma özeti mesaja hazır olarak taşınır.
+  const waText = messages.length
+    ? [
+        "Merhaba, sitenizde Emir ile görüşüyordum, WhatsApp'tan devam etmek istiyorum.",
+        "",
+        "Emir ile konuştuklarım:",
+        ...messages.slice(-8).map((m) => `${m.role === "user" ? "Ben" : "Emir"}: ${m.content}`),
+        files.length ? `(${files.length} fotoğraf sitede paylaşıldı.)` : "",
+      ]
+        .filter((l) => l !== undefined)
+        .join("\n")
+    : "Merhaba, Enes Yapı ile tadilat / yenileme işi için görüşmek istiyorum.";
+  const waHref = `https://wa.me/905333992540?text=${encodeURIComponent(waText.slice(0, 1400))}`;
+
+  const noteHandoff = () => {
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        content:
+          "Sohbetimizi WhatsApp'a aktardım; oradaki mesaj kutusunda konuştuklarımızın özeti hazır. İstediğiniz zaman buradan da devam edebilirsiniz.",
+        at: new Date().toISOString(),
+      },
+    ]);
+  };
+
   return (
     <>
       {open ? (
