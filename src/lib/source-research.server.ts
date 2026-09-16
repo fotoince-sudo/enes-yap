@@ -255,3 +255,61 @@ async function runSourceResearchInner(): Promise<SourceResearchResult> {
 
   return result;
 }
+
+/**
+ * Motoru bir tur çalıştırır ve sonucu kalıcı çalışma günlüğüne (engine_runs) yazar.
+ * Kayıt: hangi kaynaklar başarıyla denetlendi, hangileri erişilemedi, kaç yeni aday bulundu.
+ * Motor kuralları değişmez — bu yalnızca kayıt katmanıdır.
+ */
+export async function runSourceResearchCore(
+  trigger: "manuel" | "otomatik" = "manuel",
+): Promise<SourceResearchResult> {
+  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+  const { data: before } = await supabaseAdmin
+    .from("engine_state")
+    .select("last_run_at")
+    .eq("key", "source_research")
+    .maybeSingle();
+  const since = (before?.last_run_at as string | null) ?? null;
+
+  let result: SourceResearchResult;
+  try {
+    result = await runSourceResearchInner();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Bilinmeyen hata";
+    await supabaseAdmin.from("engine_runs").insert({
+      engine_key: "source_research",
+      trigger,
+      status: "hata",
+      message,
+      details: [] as unknown as never,
+    });
+    throw error;
+  }
+
+  // Son çalışmadan bu yana eklenen yeni aday sayısı
+  let newProspects = 0;
+  const countQuery = supabaseAdmin
+    .from("lead_prospects")
+    .select("id", { count: "exact", head: true });
+  const { count } = since
+    ? await countQuery.gte("created_at", since)
+    : await countQuery;
+  newProspects = count ?? 0;
+
+  await supabaseAdmin.from("engine_runs").insert({
+    engine_key: "source_research",
+    trigger,
+    status: result.status,
+    message: result.message,
+    checked: result.checked,
+    allowed: result.allowed,
+    blocked: result.blocked,
+    unreachable: result.unreachable,
+    new_prospects: newProspects,
+    details: result.details as unknown as never,
+  });
+
+  return result;
+}
