@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { RequestForm } from "@/components/site/RequestForm";
 import { Button } from "@/components/ui/button";
-import { PROJECT_STATUS } from "@/lib/domain";
+import { PROJECT_STATUS, trDate } from "@/lib/domain";
 import heroImage from "@/assets/hero.jpg";
 import beforeImage from "@/assets/proje-tadilat.jpg";
 import afterImage from "@/assets/proje-daire.jpg";
