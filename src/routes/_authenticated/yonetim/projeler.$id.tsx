@@ -51,6 +51,15 @@ function ProjectDetail() {
     },
   });
 
+  const { data: staff = [] } = useQuery({
+    queryKey: ["staff-options"],
+    queryFn: async () => {
+      const { data, error } = await supabase.from("profiles").select("id, full_name").order("full_name");
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
   const { data: partners = [] } = useQuery({
     queryKey: ["partners-options"],
     queryFn: async () => {
