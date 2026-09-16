@@ -6,6 +6,8 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { ROLE_LABELS, trDate } from "@/lib/domain";
@@ -17,16 +19,26 @@ export const Route = createFileRoute("/_authenticated/yonetim/personel")({
 type Profile = {
   id: string;
   full_name: string | null;
+  email: string | null;
   phone: string | null;
   created_at: string;
   last_login_at: string | null;
 };
 type RoleRow = { id: string; user_id: string; role: string };
+type Invite = {
+  id: string;
+  email: string;
+  full_name: string | null;
+  role: string;
+  accepted_at: string | null;
+  created_at: string;
+};
 
 function Staff() {
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [origin, setOrigin] = useState("");
+  const [form, setForm] = useState({ email: "", full_name: "", role: "personel" });
   useEffect(() => setOrigin(window.location.origin), []);
   const inviteLink = `${origin}/auth?kayit=1`;
 
@@ -35,11 +47,54 @@ function Staff() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, full_name, phone, created_at, last_login_at")
+        .select("id, full_name, email, phone, created_at, last_login_at")
         .order("created_at", { ascending: true });
       if (error) throw error;
       return (data ?? []) as Profile[];
     },
+  });
+
+  const { data: invites = [] } = useQuery({
+    queryKey: ["staff-invites"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("staff_invites")
+        .select("id, email, full_name, role, accepted_at, created_at")
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as Invite[];
+    },
+  });
+
+  const addInvite = useMutation({
+    mutationFn: async () => {
+      const email = form.email.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Geçerli bir e-posta adresi yazın.");
+      const { error } = await supabase.from("staff_invites").insert({
+        email,
+        full_name: form.full_name.trim() || null,
+        role: form.role as never,
+      });
+      if (error) throw new Error(error.code === "23505" ? "Bu e-posta zaten listede." : error.message);
+    },
+    onSuccess: () => {
+      toast.success("E-posta listeye eklendi. Kişi kayıt olduğunda yetkisi otomatik verilir.");
+      setForm({ email: "", full_name: "", role: "personel" });
+      queryClient.invalidateQueries({ queryKey: ["staff-invites"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const removeInvite = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("staff_invites").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Kayıt listeden çıkarıldı.");
+      queryClient.invalidateQueries({ queryKey: ["staff-invites"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const { data: roles = [] } = useQuery({
@@ -138,11 +193,101 @@ function Staff() {
         </CardContent>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Ekip e-postaları (davet listesi)</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <p className="text-sm text-muted-foreground">
+            Ekibinizin e-posta adreslerini ve vermek istediğiniz rolü şimdiden yazın. Kişi bu e-posta ile kayıt
+            olduğunda rolü otomatik verilir ve aşağıdaki personel listesinde görünür.
+          </p>
+          <div className="grid gap-3 sm:grid-cols-4">
+            <div className="sm:col-span-2">
+              <Label htmlFor="inv-email">E-posta</Label>
+              <Input
+                id="inv-email"
+                type="email"
+                placeholder="ad@ornek.com"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="inv-name">Ad soyad (opsiyonel)</Label>
+              <Input
+                id="inv-name"
+                value={form.full_name}
+                onChange={(e) => setForm({ ...form, full_name: e.target.value })}
+              />
+            </div>
+            <div>
+              <Label htmlFor="inv-role">Rol</Label>
+              <select
+                id="inv-role"
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                value={form.role}
+                onChange={(e) => setForm({ ...form, role: e.target.value })}
+              >
+                {Object.entries(ROLE_LABELS).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="sm:col-span-4">
+              <Button className="w-full sm:w-auto" onClick={() => addInvite.mutate()} disabled={addInvite.isPending}>
+                E-postayı listeye ekle
+              </Button>
+            </div>
+          </div>
+
+          {invites.length > 0 && (
+            <div className="overflow-x-auto rounded-md border">
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>E-posta</TableHead>
+                    <TableHead>Ad soyad</TableHead>
+                    <TableHead>Verilecek rol</TableHead>
+                    <TableHead>Durum</TableHead>
+                    <TableHead className="text-right">İşlem</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {invites.map((inv) => (
+                    <TableRow key={inv.id}>
+                      <TableCell className="max-w-[220px] truncate">{inv.email}</TableCell>
+                      <TableCell>{inv.full_name ?? "—"}</TableCell>
+                      <TableCell>{ROLE_LABELS[inv.role as keyof typeof ROLE_LABELS] ?? inv.role}</TableCell>
+                      <TableCell>
+                        {inv.accepted_at ? (
+                          <Badge variant="secondary">Kayıt oldu · {trDate(inv.accepted_at)}</Badge>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">Kayıt bekleniyor</span>
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button size="sm" variant="ghost" onClick={() => removeInvite.mutate(inv.id)}>
+                          Sil
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       <div className="overflow-x-auto rounded-lg border bg-card">
         <Table>
           <TableHeader>
             <TableRow>
               <TableHead>Ad soyad</TableHead>
+              <TableHead>E-posta</TableHead>
               <TableHead>Telefon</TableHead>
               <TableHead>Kayıt</TableHead>
               <TableHead>Durum</TableHead>
@@ -153,11 +298,11 @@ function Staff() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6}>Yükleniyor…</TableCell>
+                <TableCell colSpan={7}>Yükleniyor…</TableCell>
               </TableRow>
             ) : profiles.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-muted-foreground">
+                <TableCell colSpan={7} className="text-muted-foreground">
                   Kayıtlı kullanıcı yok.
                 </TableCell>
               </TableRow>
@@ -167,6 +312,7 @@ function Staff() {
                 return (
                   <TableRow key={p.id}>
                     <TableCell className="max-w-[220px] truncate">{p.full_name ?? "—"}</TableCell>
+                    <TableCell className="max-w-[220px] truncate">{p.email ?? "—"}</TableCell>
                     <TableCell>{p.phone ?? "—"}</TableCell>
                     <TableCell>{trDate(p.created_at)}</TableCell>
                     <TableCell>
