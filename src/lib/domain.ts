@@ -70,6 +70,53 @@ export const SALE_RENT_STATUS = {
 
 export const OPPORTUNITY_SOURCE = ["manuel", "telefon", "web-formu", "tavsiye", "saha", "ilan-taramasi", "diger"] as const;
 
+/** Potansiyel müşteri (internet taraması) aday durumları. */
+export const PROSPECT_STATUS = {
+  yeni: "Yeni",
+  inceleniyor: "İnceleniyor",
+  iletisime_gecildi: "İletişime Geçildi",
+  cevap_bekleniyor: "Cevap Bekleniyor",
+  kesif_planlandi: "Keşif Planlandı",
+  teklif_verildi: "Teklif Verildi",
+  kazanildi: "Kazanıldı",
+  kaybedildi: "Kaybedildi",
+  uygun_degil: "Uygun Değil",
+} as const;
+
+/** Aday kaynakları — yalnızca erişimi ve kullanımı açıkça izinli kaynaklar. */
+export const PROSPECT_SOURCE = [
+  "manuel",
+  "kendi-web-formu",
+  "telefon",
+  "tavsiye",
+  "saha",
+  "izinli-ilan-kaynagi",
+  "resmi-api",
+  "acik-veri",
+  "diger",
+] as const;
+
+/** Kaynağın otomatik kullanım izni durumu. */
+export const PROSPECT_PERMISSION = {
+  izinli: "İzinli (otomatik kullanılabilir)",
+  manuel_giris: "Manuel giriş (elle eklendi)",
+  izinsiz: "İzinsiz — kullanılamaz",
+} as const;
+
+/** Aday ihtiyaç türleri. */
+export const PROSPECT_NEED_TYPES = [
+  "Tadilat",
+  "Komple yenileme",
+  "Boya badana",
+  "Mutfak yenileme",
+  "Banyo yenileme",
+  "Dekorasyon",
+  "Anahtar teslim",
+  "Ev yenileme",
+  "İş yeri / ofis",
+  "Diğer",
+] as const;
+
 export const CUSTOMER_STATUS = {
   aktif: "Aktif",
   potansiyel: "Potansiyel",

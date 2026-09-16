@@ -30,6 +30,7 @@ const NAV = [
   { to: "/yonetim/tedarikciler", label: "Tedarikçiler" },
   { to: "/yonetim/malzemeler", label: "Malzemeler" },
   { to: "/yonetim/firsatlar", label: "Tadilat Fırsatları" },
+  { to: "/yonetim/potansiyel-musteriler", label: "Potansiyel Müşteriler / İnternet Taraması" },
   { to: "/yonetim/bildirimler", label: "Bildirimler" },
   { to: "/yonetim/raporlar", label: "Raporlar" },
   { to: "/yonetim/ayarlar", label: "Ayarlar" },
