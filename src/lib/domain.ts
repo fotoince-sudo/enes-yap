@@ -246,3 +246,10 @@ export const tl = (value: number | null | undefined) =>
 
 export const trDate = (value: string | null | undefined) =>
   value ? new Date(value).toLocaleDateString("tr-TR", { day: "2-digit", month: "2-digit", year: "numeric" }) : "—";
+
+/** Tarama bölgesi: yalnızca İzmir ili ve ilçeleri. */
+export const IZMIR_DISTRICTS = [
+  "Aliağa","Balçova","Bayındır","Bayraklı","Bergama","Beydağ","Bornova","Buca","Çeşme","Çiğli",
+  "Dikili","Foça","Gaziemir","Güzelbahçe","Karabağlar","Karaburun","Karşıyaka","Kemalpaşa","Kınık",
+  "Kiraz","Konak","Menderes","Menemen","Narlıdere","Ödemiş","Seferihisar","Selçuk","Tire","Torbalı","Urla",
+] as const;

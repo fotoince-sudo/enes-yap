@@ -52,7 +52,12 @@ function Prospects() {
             type: "select",
             options: Object.entries(PROSPECT_STATUS).map(([value, label]) => ({ value, label })),
           },
-          { key: "district", label: "İlçe" },
+          {
+            key: "district",
+            label: "İlçe",
+            type: "select",
+            options: IZMIR_DISTRICTS.map((d) => ({ value: d, label: d })),
+          },
           {
             key: "need_type",
             label: "İhtiyaç türü",
