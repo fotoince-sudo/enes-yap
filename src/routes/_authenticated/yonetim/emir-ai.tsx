@@ -158,6 +158,58 @@ function EmirAiPage() {
         </CardContent>
       </Card>
 
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Anlama sorunları ve durdurma nedenleri</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {flagged.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Kayıtlı anlama sorunu veya durdurma nedeni yok. Emir bir cevabı anlamadığında veya sohbeti kapattığında burada görünür.
+            </p>
+          ) : (
+            flagged.map(({ session, flags }) => (
+              <div key={session.id} className="rounded-lg border p-3 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-medium">{trDate(session.created_at)}</span>
+                  <span className="text-xs text-muted-foreground">{session.message_count} mesaj</span>
+                </div>
+                {session.stop_reason ? (
+                  <p className="mt-1 text-muted-foreground">
+                    <span className="font-medium text-foreground">Durdurma nedeni: </span>
+                    {session.stop_reason}
+                  </p>
+                ) : null}
+                <ul className="mt-2 space-y-2">
+                  {flags.map((f, i) => (
+                    <li key={i} className="rounded-md bg-muted/50 p-2">
+                      <span className="rounded-full bg-background px-2 py-0.5 text-xs">
+                        {FLAG_LABELS[f.tip ?? ""] ?? f.tip ?? "Kayıt"}
+                      </span>
+                      {f.detay ? <p className="mt-1 text-muted-foreground">{f.detay}</p> : null}
+                      {f.soru ? <p className="mt-1 text-xs text-muted-foreground">Netleştirme sorusu: {f.soru}</p> : null}
+                      {f.sonraki_adim ? (
+                        <p className="mt-1 text-xs text-muted-foreground">Devam adımı: {f.sonraki_adim}</p>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+                {session.request_id ? (
+                  <Link
+                    to="/yonetim/talepler/$id"
+                    params={{ id: session.request_id }}
+                    className="mt-2 inline-block text-xs text-primary hover:underline"
+                  >
+                    Talebi aç
+                  </Link>
+                ) : null}
+              </div>
+            ))
+          )}
+        </CardContent>
+      </Card>
+
+
       {incomplete.length > 0 ? (
         <Card>
           <CardHeader>
