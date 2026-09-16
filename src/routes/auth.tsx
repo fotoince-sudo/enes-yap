@@ -46,12 +46,22 @@ function AuthPage() {
   const [notice, setNotice] = useState<string | null>(null);
   const [errorText, setErrorText] = useState<string | null>(null);
 
+  /** Personel yönetim paneline, müşteri kendi hesabına gider. */
+  const goToPanel = async () => {
+    const { data: userData } = await supabase.auth.getUser();
+    const uid = userData.user?.id;
+    if (!uid) return;
+    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+    navigate({ to: (roles ?? []).length > 0 ? "/yonetim" : "/hesabim", replace: true });
+  };
+
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("kayit") === "1") setMode("signup");
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/yonetim", replace: true });
+      if (data.session) void goToPanel();
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
