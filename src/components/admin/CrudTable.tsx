@@ -30,6 +30,8 @@ export type CrudField = {
   inList?: boolean;
   required?: boolean;
   placeholder?: string;
+  /** Yeni kayıt için varsayılan değer */
+  defaultValue?: string | boolean | number;
   /** Listede özel gösterim */
   render?: (row: Record<string, unknown>) => React.ReactNode;
 };
@@ -44,6 +46,7 @@ type Props = {
 };
 
 const emptyValue = (f: CrudField) => {
+  if (f.defaultValue !== undefined) return f.defaultValue;
   if (f.type === "boolean") return false;
   if (f.type === "tags") return "";
   if (f.type === "select" && f.options?.length) return f.options[0]!.value;
