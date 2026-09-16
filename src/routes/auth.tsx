@@ -94,6 +94,8 @@ function AuthPage() {
         msg = "E-posta veya şifre hatalı. Kayıt olduysanız e-posta onayını tamamladığınızdan emin olun.";
       } else if (/Email not confirmed/i.test(raw)) {
         msg = "E-posta adresiniz henüz onaylanmadı. Gelen kutunuzdaki onay bağlantısına tıklayın.";
+      } else if (/weak and easy to guess/i.test(raw)) {
+        msg = "Bu şifre çok zayıf ve daha önce sızmış şifreler arasında. Lütfen daha güçlü bir şifre seçin.";
       } else if (/after \d+ seconds/i.test(raw)) {
         msg = "Çok sık denediniz. Lütfen bir dakika bekleyip tekrar deneyin.";
       }
