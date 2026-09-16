@@ -458,8 +458,25 @@ function QuoteDetail() {
               <Input id="i-mat" type="number" value={item.material_cost} onChange={(e) => setItem({ ...item, material_cost: e.target.value })} />
             </div>
             <div>
+              <Label htmlFor="i-hours">İşçilik saati (isteğe bağlı)</Label>
+              <Input id="i-hours" type="number" value={item.labor_hours} onChange={(e) => setItem({ ...item, labor_hours: e.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor="i-rate">Saat ücreti (isteğe bağlı)</Label>
+              <Input id="i-rate" type="number" value={item.labor_hourly_rate} onChange={(e) => setItem({ ...item, labor_hourly_rate: e.target.value })} />
+            </div>
+            <div>
               <Label htmlFor="i-lab">İşçilik birim fiyatı</Label>
-              <Input id="i-lab" type="number" value={item.labor_cost} onChange={(e) => setItem({ ...item, labor_cost: e.target.value })} />
+              <Input
+                id="i-lab"
+                type="number"
+                value={autoLabor ? String(computedLabor) : item.labor_cost}
+                disabled={autoLabor}
+                onChange={(e) => setItem({ ...item, labor_cost: e.target.value })}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                {autoLabor ? "Saat × saat ücreti ile otomatik hesaplanıyor." : "Saat ve saat ücreti girmezseniz bu tutar elle kullanılır."}
+              </p>
             </div>
             <div className="rounded-md border bg-muted/40 p-3 text-sm sm:col-span-2">
               <div className="flex justify-between">
