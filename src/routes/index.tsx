@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 import { RequestForm } from "@/components/site/RequestForm";
+import { ChatBubble } from "@/components/site/ChatBubble";
 import { Button } from "@/components/ui/button";
 import { PROJECT_STATUS, trDate } from "@/lib/domain";
 import heroImage from "@/assets/hero.jpg";
