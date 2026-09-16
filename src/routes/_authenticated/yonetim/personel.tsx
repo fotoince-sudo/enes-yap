@@ -17,16 +17,26 @@ export const Route = createFileRoute("/_authenticated/yonetim/personel")({
 type Profile = {
   id: string;
   full_name: string | null;
+  email: string | null;
   phone: string | null;
   created_at: string;
   last_login_at: string | null;
 };
 type RoleRow = { id: string; user_id: string; role: string };
+type Invite = {
+  id: string;
+  email: string;
+  full_name: string | null;
+  role: string;
+  accepted_at: string | null;
+  created_at: string;
+};
 
 function Staff() {
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<Record<string, string>>({});
   const [origin, setOrigin] = useState("");
+  const [form, setForm] = useState({ email: "", full_name: "", role: "personel" });
   useEffect(() => setOrigin(window.location.origin), []);
   const inviteLink = `${origin}/auth?kayit=1`;
 
@@ -35,11 +45,54 @@ function Staff() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("profiles")
-        .select("id, full_name, phone, created_at, last_login_at")
+        .select("id, full_name, email, phone, created_at, last_login_at")
         .order("created_at", { ascending: true });
       if (error) throw error;
       return (data ?? []) as Profile[];
     },
+  });
+
+  const { data: invites = [] } = useQuery({
+    queryKey: ["staff-invites"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("staff_invites")
+        .select("id, email, full_name, role, accepted_at, created_at")
+        .order("created_at", { ascending: true });
+      if (error) throw error;
+      return (data ?? []) as Invite[];
+    },
+  });
+
+  const addInvite = useMutation({
+    mutationFn: async () => {
+      const email = form.email.trim().toLowerCase();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) throw new Error("Geçerli bir e-posta adresi yazın.");
+      const { error } = await supabase.from("staff_invites").insert({
+        email,
+        full_name: form.full_name.trim() || null,
+        role: form.role as never,
+      });
+      if (error) throw new Error(error.code === "23505" ? "Bu e-posta zaten listede." : error.message);
+    },
+    onSuccess: () => {
+      toast.success("E-posta listeye eklendi. Kişi kayıt olduğunda yetkisi otomatik verilir.");
+      setForm({ email: "", full_name: "", role: "personel" });
+      queryClient.invalidateQueries({ queryKey: ["staff-invites"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
+
+  const removeInvite = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from("staff_invites").delete().eq("id", id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast.success("Kayıt listeden çıkarıldı.");
+      queryClient.invalidateQueries({ queryKey: ["staff-invites"] });
+    },
+    onError: (e: Error) => toast.error(e.message),
   });
 
   const { data: roles = [] } = useQuery({
