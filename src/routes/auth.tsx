@@ -244,7 +244,7 @@ function AuthPage() {
               setErrorText(null);
             }}
           >
-            {mode === "signin" ? "Hesabınız yok mu? Kayıt olun" : "Zaten hesabınız var mı? Giriş yapın"}
+            {mode === "signin" ? "Hesabınız yok mu? Ücretsiz hesap oluşturun" : "Zaten hesabınız var mı? Giriş yapın"}
           </button>
 
           <div className="text-center text-sm">
