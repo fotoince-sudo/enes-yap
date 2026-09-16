@@ -68,6 +68,58 @@ function QuoteDetail() {
     },
   });
 
+  const requestId = quote?.request_id ?? null;
+
+  const { data: source } = useQuery({
+    queryKey: ["quote-source", requestId],
+    enabled: Boolean(requestId),
+    queryFn: async () => {
+      const { data: req, error } = await supabase
+        .from("renovation_requests")
+        .select(
+          "id, full_name, phone, source, city, district, neighborhood, address, property_type, renovation_type, area_m2, budget_range, description, photo_urls, video_urls",
+        )
+        .eq("id", requestId!)
+        .maybeSingle();
+      if (error) throw error;
+      const { data: survey } = await supabase
+        .from("surveys")
+        .select("id, scheduled_date, work_items, material_notes, labor_notes, result, estimated_cost, is_done, photos")
+        .eq("request_id", requestId!)
+        .order("created_at", { ascending: false })
+        .maybeSingle();
+      const { data: session } = await supabase
+        .from("emir_chat_sessions")
+        .select("summary, wants_survey")
+        .eq("request_id", requestId!)
+        .order("created_at", { ascending: false })
+        .maybeSingle();
+      return { req, survey, session };
+    },
+  });
+
+  const [photoLinks, setPhotoLinks] = useState<{ path: string; url: string }[]>([]);
+
+  useEffect(() => {
+    const paths = [
+      ...(((source?.req?.photo_urls as string[] | null) ?? [])),
+      ...(((source?.survey?.photos as string[] | null) ?? [])),
+    ];
+    const unique = Array.from(new Set(paths));
+    if (unique.length === 0) {
+      setPhotoLinks([]);
+      return;
+    }
+    (async () => {
+      const links: { path: string; url: string }[] = [];
+      for (const p of unique) {
+        const url = await signedUrl(p);
+        if (url) links.push({ path: p, url });
+      }
+      setPhotoLinks(links);
+    })();
+  }, [source?.req?.photo_urls, source?.survey?.photos]);
+
   const itemsTotal = items.reduce((s, i) => s + Number(i.line_total ?? 0), 0);
   const materials = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.material_cost ?? 0), 0);
   const labor = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.labor_cost ?? 0), 0);
