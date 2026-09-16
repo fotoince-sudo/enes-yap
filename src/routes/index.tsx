@@ -73,6 +73,21 @@ function HomePage() {
     },
   });
 
+  const { data: beforeAfter = [] } = useQuery({
+    queryKey: ["public-before-after"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("before_after")
+        .select("id, title, work_type, description, before_url, after_url, happened_on")
+        .eq("is_published", true)
+        .order("sort_order")
+        .limit(6);
+      if (error) throw error;
+      // Yalnızca herkese açık (http) görsel bağlantıları sitede gösterilebilir.
+      return (data ?? []).filter((r) => r.before_url?.startsWith("http") && r.after_url?.startsWith("http"));
+    },
+  });
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
