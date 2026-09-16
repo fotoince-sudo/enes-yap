@@ -20,7 +20,16 @@ export const Route = createFileRoute("/_authenticated/yonetim/teklifler/$id")({
   errorComponent: ({ error }) => <p className="text-sm text-destructive">Teklif açılamadı: {error.message}</p>,
 });
 
-const emptyItem = { title: "", description: "", quantity: "1", unit: "adet", material_cost: "0", labor_cost: "0" };
+const emptyItem = {
+  title: "",
+  description: "",
+  quantity: "1",
+  unit: "adet",
+  material_cost: "0",
+  labor_cost: "0",
+  labor_hours: "",
+  labor_hourly_rate: "",
+};
 
 function QuoteDetail() {
   const { id } = Route.useParams();
