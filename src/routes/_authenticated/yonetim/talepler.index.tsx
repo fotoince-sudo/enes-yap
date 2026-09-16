@@ -75,6 +75,7 @@ function RequestList() {
               <TableHead>Konum</TableHead>
               <TableHead>Tadilat türü</TableHead>
               <TableHead>m²</TableHead>
+              <TableHead>Kaynak</TableHead>
               <TableHead>Durum</TableHead>
               <TableHead className="text-right">Detay</TableHead>
             </TableRow>
