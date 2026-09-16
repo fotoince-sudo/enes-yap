@@ -440,6 +440,90 @@ function QuoteDetail() {
         </Card>
       </div>
 
+      {source?.req ? (
+        <Card>
+          <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
+            <CardTitle className="text-base">Talep, keşif ve fotoğraflar</CardTitle>
+            <div className="flex flex-wrap items-center gap-2">
+              {source.req.source === "web-emir" ? (
+                <span className="rounded-md bg-secondary px-2 py-1 text-xs font-medium">WEB / EMİR</span>
+              ) : null}
+              <Button variant="outline" size="sm" asChild>
+                <Link to="/yonetim/talepler/$id" params={{ id: source.req.id }}>
+                  Talebi aç
+                </Link>
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="grid gap-4 lg:grid-cols-2">
+            <div className="space-y-1 text-sm">
+              <p>
+                <span className="text-muted-foreground">Müşteri: </span>
+                {source.req.full_name} · {source.req.phone}
+              </p>
+              <p>
+                <span className="text-muted-foreground">Konum: </span>
+                {[source.req.neighborhood, source.req.district, source.req.city].filter(Boolean).join(" / ") || "—"}
+              </p>
+              <p>
+                <span className="text-muted-foreground">Mekân / tür: </span>
+                {[source.req.property_type, source.req.renovation_type].filter(Boolean).join(" · ") || "—"}
+              </p>
+              <p>
+                <span className="text-muted-foreground">Alan: </span>
+                {source.req.area_m2 ? `${source.req.area_m2} m²` : "—"}
+                <span className="text-muted-foreground"> · Bütçe: </span>
+                {source.req.budget_range ?? "—"}
+              </p>
+              {source.session?.summary ? (
+                <div className="mt-2 rounded-md border bg-muted/40 p-3">
+                  <p className="text-xs text-muted-foreground">Emir sohbet özeti</p>
+                  <p className="whitespace-pre-wrap">{source.session.summary}</p>
+                </div>
+              ) : null}
+              {source.req.description ? (
+                <div className="mt-2">
+                  <p className="text-xs text-muted-foreground">Müşteri açıklaması</p>
+                  <p className="whitespace-pre-wrap">{source.req.description}</p>
+                </div>
+              ) : null}
+              {source.survey ? (
+                <div className="mt-2 space-y-1 rounded-md border p-3">
+                  <p className="text-xs text-muted-foreground">
+                    Keşif {source.survey.is_done ? "· yapıldı" : "· bekliyor"}
+                  </p>
+                  {source.survey.work_items ? <p>Yapılacak işler: {source.survey.work_items}</p> : null}
+                  {source.survey.material_notes ? <p>Malzeme: {source.survey.material_notes}</p> : null}
+                  {source.survey.labor_notes ? <p>İşçilik: {source.survey.labor_notes}</p> : null}
+                  {source.survey.result ? <p>Sonuç: {source.survey.result}</p> : null}
+                  {source.survey.estimated_cost ? (
+                    <p>Tahmini maliyet: {tl(source.survey.estimated_cost)}</p>
+                  ) : null}
+                </div>
+              ) : (
+                <p className="mt-2 text-xs text-muted-foreground">Bu talep için keşif kaydı yok.</p>
+              )}
+            </div>
+            <div>
+              <p className="mb-2 text-xs text-muted-foreground">Talep ve keşif fotoğrafları</p>
+              {photoLinks.length === 0 ? (
+                <p className="text-sm text-muted-foreground">Fotoğraf yok.</p>
+              ) : (
+                <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {photoLinks.map((f) => (
+                    <a key={f.path} href={f.url} target="_blank" rel="noreferrer">
+                      <img src={f.url} alt="Talep fotoğrafı" className="h-28 w-full rounded-md object-cover" />
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      ) : null}
+
+
+
       <Card>
         <CardHeader>
           <CardTitle className="text-base">İş kalemleri</CardTitle>
