@@ -169,15 +169,17 @@ export const emirChat = createServerFn({ method: "POST" })
     let sessionId = data.sessionId ?? null;
     let existingRequestId: string | null = null;
     let existingFlags: unknown[] = [];
+    let loggedCount = 0;
     if (sessionId) {
       const { data: row } = await supabaseAdmin
         .from("emir_chat_sessions")
-        .select("id, request_id, flags")
+        .select("id, request_id, flags, logged_message_count")
         .eq("id", sessionId)
         .maybeSingle();
       if (row) {
         existingRequestId = row.request_id;
         existingFlags = Array.isArray(row.flags) ? (row.flags as unknown[]) : [];
+        loggedCount = row.logged_message_count ?? 0;
       } else sessionId = null;
     }
     if (!sessionId) {
