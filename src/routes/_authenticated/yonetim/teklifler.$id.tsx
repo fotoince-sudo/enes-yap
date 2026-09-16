@@ -107,7 +107,9 @@ function QuoteDetail() {
         quantity: Number(item.quantity) || 0,
         unit: item.unit,
         material_cost: Number(item.material_cost) || 0,
-        labor_cost: Number(item.labor_cost) || 0,
+        labor_cost: effectiveLabor,
+        labor_hours: autoLabor ? Number(item.labor_hours) || 0 : null,
+        labor_hourly_rate: autoLabor ? Number(item.labor_hourly_rate) || 0 : null,
         sort_order: items.length,
       });
       if (error) throw error;
