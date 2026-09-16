@@ -22,7 +22,7 @@ function RequestList() {
     queryFn: async () => {
       let q = supabase
         .from("renovation_requests")
-        .select("id, full_name, phone, city, district, renovation_type, area_m2, budget_range, status, created_at")
+        .select("id, full_name, phone, city, district, renovation_type, area_m2, budget_range, status, source, created_at")
         .order("created_at", { ascending: false })
         .limit(500);
       if (status) q = q.eq("status", status as never);
