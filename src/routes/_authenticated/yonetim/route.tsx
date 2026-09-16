@@ -46,6 +46,7 @@ function AdminLayout() {
       const { data: userData } = await supabase.auth.getUser();
       const uid = userData.user?.id;
       if (!uid) return { email: null as string | null, roles: [] as string[] };
+      await supabase.from("profiles").update({ last_login_at: new Date().toISOString() }).eq("id", uid);
       const { data, error } = await supabase.from("user_roles").select("role").eq("user_id", uid);
       if (error) throw error;
       return { email: userData.user?.email ?? null, roles: (data ?? []).map((r) => r.role as string) };

@@ -46,6 +46,7 @@ function AuthPage() {
   const [errorText, setErrorText] = useState<string | null>(null);
 
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get("kayit") === "1") setMode("signup");
     supabase.auth.getSession().then(({ data }) => {
       if (data.session) navigate({ to: "/yonetim", replace: true });
     });
