@@ -5,6 +5,7 @@ import { CrudTable } from "@/components/admin/CrudTable";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
+  IZMIR_DISTRICTS,
   PROSPECT_NEED_TYPES,
   PROSPECT_PERMISSION,
   PROSPECT_SOURCE,
@@ -83,7 +84,7 @@ function Prospects() {
             options: Object.entries(PROSPECT_PERMISSION).map(([value, label]) => ({ value, label })),
           },
           { key: "listing_url", label: "İlan / başvuru bağlantısı", inList: false },
-          { key: "city", label: "İl", inList: false, defaultValue: "İzmir" },
+          { key: "city", label: "İl (yalnızca İzmir)", inList: false, defaultValue: "İzmir" },
           { key: "neighborhood", label: "Mahalle", inList: false },
           { key: "estimated_work_type", label: "Tahmini iş türü", inList: false },
           { key: "estimated_value", label: "Tahmini iş değeri", type: "number", inList: false },
