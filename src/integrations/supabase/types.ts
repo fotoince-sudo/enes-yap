@@ -1225,6 +1225,7 @@ export type Database = {
       }
       is_manager: { Args: { _user_id: string }; Returns: boolean }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      recalc_quote_totals: { Args: { _quote_id: string }; Returns: undefined }
     }
     Enums: {
       app_role:
