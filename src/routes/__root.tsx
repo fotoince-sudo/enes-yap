@@ -81,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Enes Yapı: konut ve ticari inşaat, tadilat-renovasyon ve mimari proje hizmetleri. 15+ yıl deneyim, anahtar teslim yapı çözümleri.",
+          "Enes Yapı: daire, ofis ve iş yeri tadilatı, dekorasyon ve komple yenileme hizmetleri. 15+ yıl deneyim, ücretsiz keşif, zamanında teslim.",
       },
       { property: "og:site_name", content: "Enes Yapı" },
       { property: "og:type", content: "website" },
