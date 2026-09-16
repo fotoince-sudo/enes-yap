@@ -14,13 +14,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Personel Girişi — Enes Yapı Yönetim Paneli" },
+      { title: "Giriş / Kayıt — Enes Yapı Müşteri ve Personel Girişi" },
       {
         name: "description",
-        content: "Enes Yapı yönetim paneline giriş yapın; tadilat talepleri, keşifler, teklifler ve projeleri yönetin.",
+        content:
+          "Enes Yapı hesabınıza giriş yapın: müşteriler talep, teklif ve projelerini takip eder; personel yönetim panelini kullanır.",
       },
-      { property: "og:title", content: "Personel Girişi — Enes Yapı" },
-      { property: "og:description", content: "Enes Yapı yönetim paneli girişi." },
+      { property: "og:title", content: "Giriş / Kayıt — Enes Yapı" },
+      { property: "og:description", content: "Enes Yapı müşteri ve personel girişi." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
