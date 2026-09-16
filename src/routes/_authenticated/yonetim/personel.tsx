@@ -26,6 +26,9 @@ type RoleRow = { id: string; user_id: string; role: string };
 function Staff() {
   const queryClient = useQueryClient();
   const [selected, setSelected] = useState<Record<string, string>>({});
+  const [origin, setOrigin] = useState("");
+  useEffect(() => setOrigin(window.location.origin), []);
+  const inviteLink = `${origin}/auth?kayit=1`;
 
   const { data: profiles = [], isLoading } = useQuery({
     queryKey: ["staff-profiles"],
