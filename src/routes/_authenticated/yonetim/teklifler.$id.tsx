@@ -161,9 +161,12 @@ function QuoteDetail() {
             {(quote.customers as { full_name: string } | null)?.full_name ?? "Müşteri seçilmedi"}
           </p>
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <Button variant="outline" asChild>
             <Link to="/yonetim/teklifler">Listeye dön</Link>
+          </Button>
+          <Button variant="outline" onClick={createPdf}>
+            PDF teklif oluştur
           </Button>
           <Button onClick={() => toProject.mutate()}>Projeye dönüştür</Button>
         </div>
