@@ -150,9 +150,10 @@ function QuoteDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const createPdf = () => {
-    if (!quote) return;
-    try {
+  const createPdf = useMutation({
+    mutationFn: async () => {
+      if (!quote) return;
+      if (items.length === 0) throw new Error("Teklifte kalem yok. Önce iş kalemi ekleyin.");
       downloadQuotePdf({
         quoteNo: quote.quote_no,
         title: quote.title,
