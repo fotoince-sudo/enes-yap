@@ -123,7 +123,11 @@ function QuoteDetail() {
       const { error } = await supabase.from("quote_items").delete().eq("id", itemId);
       if (error) throw error;
     },
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["quote-items", id] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["quote-items", id] });
+      queryClient.invalidateQueries({ queryKey: ["quote", id] });
+      queryClient.invalidateQueries({ queryKey: ["quotes"] });
+    },
   });
 
   const toProject = useMutation({
