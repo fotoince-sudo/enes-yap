@@ -13,7 +13,12 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedHesabimRouteRouteImport } from './routes/_authenticated/hesabim/route'
 import { Route as AuthenticatedYonetimRouteRouteImport } from './routes/_authenticated/yonetim/route'
+import { Route as AuthenticatedHesabimIndexRouteImport } from './routes/_authenticated/hesabim/index'
+import { Route as AuthenticatedHesabimProjelerRouteImport } from './routes/_authenticated/hesabim/projeler'
+import { Route as AuthenticatedHesabimTaleplerRouteImport } from './routes/_authenticated/hesabim/talepler'
+import { Route as AuthenticatedHesabimTekliflerRouteImport } from './routes/_authenticated/hesabim/teklifler'
 import { Route as AuthenticatedYonetimIndexRouteImport } from './routes/_authenticated/yonetim/index'
 import { Route as AuthenticatedYonetimAkisRouteImport } from './routes/_authenticated/yonetim/akis'
 import { Route as AuthenticatedYonetimAyarlarRouteImport } from './routes/_authenticated/yonetim/ayarlar'
@@ -56,11 +61,41 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
   path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedHesabimRouteRoute =
+  AuthenticatedHesabimRouteRouteImport.update({
+    id: '/hesabim',
+    path: '/hesabim',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedYonetimRouteRoute =
   AuthenticatedYonetimRouteRouteImport.update({
     id: '/yonetim',
     path: '/yonetim',
     getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedHesabimIndexRoute =
+  AuthenticatedHesabimIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedHesabimRouteRoute,
+  } as any)
+const AuthenticatedHesabimProjelerRoute =
+  AuthenticatedHesabimProjelerRouteImport.update({
+    id: '/projeler',
+    path: '/projeler',
+    getParentRoute: () => AuthenticatedHesabimRouteRoute,
+  } as any)
+const AuthenticatedHesabimTaleplerRoute =
+  AuthenticatedHesabimTaleplerRouteImport.update({
+    id: '/talepler',
+    path: '/talepler',
+    getParentRoute: () => AuthenticatedHesabimRouteRoute,
+  } as any)
+const AuthenticatedHesabimTekliflerRoute =
+  AuthenticatedHesabimTekliflerRouteImport.update({
+    id: '/teklifler',
+    path: '/teklifler',
+    getParentRoute: () => AuthenticatedHesabimRouteRoute,
   } as any)
 const AuthenticatedYonetimIndexRoute =
   AuthenticatedYonetimIndexRouteImport.update({
@@ -199,7 +234,11 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
+  '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
+  '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
   '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
   '/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
   '/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
@@ -215,6 +254,7 @@ export interface FileRoutesByFullPath {
   '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
   '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
+  '/hesabim/': typeof AuthenticatedHesabimIndexRoute
   '/yonetim/': typeof AuthenticatedYonetimIndexRoute
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
@@ -227,6 +267,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
+  '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
+  '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
   '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
   '/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
   '/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
@@ -242,6 +285,7 @@ export interface FileRoutesByTo {
   '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
   '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
+  '/hesabim': typeof AuthenticatedHesabimIndexRoute
   '/yonetim': typeof AuthenticatedYonetimIndexRoute
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
@@ -256,7 +300,11 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/_authenticated/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/_authenticated/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
+  '/_authenticated/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
+  '/_authenticated/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
   '/_authenticated/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
   '/_authenticated/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
   '/_authenticated/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
@@ -272,6 +320,7 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
   '/_authenticated/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/_authenticated/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
+  '/_authenticated/hesabim/': typeof AuthenticatedHesabimIndexRoute
   '/_authenticated/yonetim/': typeof AuthenticatedYonetimIndexRoute
   '/_authenticated/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/_authenticated/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
@@ -286,7 +335,11 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/hesabim'
     | '/yonetim'
+    | '/hesabim/projeler'
+    | '/hesabim/talepler'
+    | '/hesabim/teklifler'
     | '/yonetim/akis'
     | '/yonetim/ayarlar'
     | '/yonetim/bildirimler'
@@ -302,6 +355,7 @@ export interface FileRouteTypes {
     | '/yonetim/raporlar'
     | '/yonetim/tamamlanan-projeler'
     | '/yonetim/tedarikciler'
+    | '/hesabim/'
     | '/yonetim/'
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
@@ -314,6 +368,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/hesabim/projeler'
+    | '/hesabim/talepler'
+    | '/hesabim/teklifler'
     | '/yonetim/akis'
     | '/yonetim/ayarlar'
     | '/yonetim/bildirimler'
@@ -329,6 +386,7 @@ export interface FileRouteTypes {
     | '/yonetim/raporlar'
     | '/yonetim/tamamlanan-projeler'
     | '/yonetim/tedarikciler'
+    | '/hesabim'
     | '/yonetim'
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
@@ -342,7 +400,11 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/auth'
     | '/reset-password'
+    | '/_authenticated/hesabim'
     | '/_authenticated/yonetim'
+    | '/_authenticated/hesabim/projeler'
+    | '/_authenticated/hesabim/talepler'
+    | '/_authenticated/hesabim/teklifler'
     | '/_authenticated/yonetim/akis'
     | '/_authenticated/yonetim/ayarlar'
     | '/_authenticated/yonetim/bildirimler'
@@ -358,6 +420,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/raporlar'
     | '/_authenticated/yonetim/tamamlanan-projeler'
     | '/_authenticated/yonetim/tedarikciler'
+    | '/_authenticated/hesabim/'
     | '/_authenticated/yonetim/'
     | '/_authenticated/yonetim/projeler/$id'
     | '/_authenticated/yonetim/talepler/$id'
@@ -404,12 +467,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/hesabim': {
+      id: '/_authenticated/hesabim'
+      path: '/hesabim'
+      fullPath: '/hesabim'
+      preLoaderRoute: typeof AuthenticatedHesabimRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/yonetim': {
       id: '/_authenticated/yonetim'
       path: '/yonetim'
       fullPath: '/yonetim'
       preLoaderRoute: typeof AuthenticatedYonetimRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/hesabim/': {
+      id: '/_authenticated/hesabim/'
+      path: '/'
+      fullPath: '/hesabim/'
+      preLoaderRoute: typeof AuthenticatedHesabimIndexRouteImport
+      parentRoute: typeof AuthenticatedHesabimRouteRoute
+    }
+    '/_authenticated/hesabim/projeler': {
+      id: '/_authenticated/hesabim/projeler'
+      path: '/projeler'
+      fullPath: '/hesabim/projeler'
+      preLoaderRoute: typeof AuthenticatedHesabimProjelerRouteImport
+      parentRoute: typeof AuthenticatedHesabimRouteRoute
+    }
+    '/_authenticated/hesabim/talepler': {
+      id: '/_authenticated/hesabim/talepler'
+      path: '/talepler'
+      fullPath: '/hesabim/talepler'
+      preLoaderRoute: typeof AuthenticatedHesabimTaleplerRouteImport
+      parentRoute: typeof AuthenticatedHesabimRouteRoute
+    }
+    '/_authenticated/hesabim/teklifler': {
+      id: '/_authenticated/hesabim/teklifler'
+      path: '/teklifler'
+      fullPath: '/hesabim/teklifler'
+      preLoaderRoute: typeof AuthenticatedHesabimTekliflerRouteImport
+      parentRoute: typeof AuthenticatedHesabimRouteRoute
     }
     '/_authenticated/yonetim/': {
       id: '/_authenticated/yonetim/'
@@ -568,6 +666,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AuthenticatedHesabimRouteRouteChildren {
+  AuthenticatedHesabimProjelerRoute: typeof AuthenticatedHesabimProjelerRoute
+  AuthenticatedHesabimTaleplerRoute: typeof AuthenticatedHesabimTaleplerRoute
+  AuthenticatedHesabimTekliflerRoute: typeof AuthenticatedHesabimTekliflerRoute
+  AuthenticatedHesabimIndexRoute: typeof AuthenticatedHesabimIndexRoute
+}
+
+const AuthenticatedHesabimRouteRouteChildren: AuthenticatedHesabimRouteRouteChildren =
+  {
+    AuthenticatedHesabimProjelerRoute: AuthenticatedHesabimProjelerRoute,
+    AuthenticatedHesabimTaleplerRoute: AuthenticatedHesabimTaleplerRoute,
+    AuthenticatedHesabimTekliflerRoute: AuthenticatedHesabimTekliflerRoute,
+    AuthenticatedHesabimIndexRoute: AuthenticatedHesabimIndexRoute,
+  }
+
+const AuthenticatedHesabimRouteRouteWithChildren =
+  AuthenticatedHesabimRouteRoute._addFileChildren(
+    AuthenticatedHesabimRouteRouteChildren,
+  )
+
 interface AuthenticatedYonetimRouteRouteChildren {
   AuthenticatedYonetimAkisRoute: typeof AuthenticatedYonetimAkisRoute
   AuthenticatedYonetimAyarlarRoute: typeof AuthenticatedYonetimAyarlarRoute
@@ -632,10 +750,12 @@ const AuthenticatedYonetimRouteRouteWithChildren =
   )
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedHesabimRouteRoute: typeof AuthenticatedHesabimRouteRouteWithChildren
   AuthenticatedYonetimRouteRoute: typeof AuthenticatedYonetimRouteRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedHesabimRouteRoute: AuthenticatedHesabimRouteRouteWithChildren,
   AuthenticatedYonetimRouteRoute: AuthenticatedYonetimRouteRouteWithChildren,
 }
 

@@ -14,13 +14,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
-      { title: "Personel Girişi — Enes Yapı Yönetim Paneli" },
+      { title: "Giriş / Kayıt — Enes Yapı Müşteri ve Personel Girişi" },
       {
         name: "description",
-        content: "Enes Yapı yönetim paneline giriş yapın; tadilat talepleri, keşifler, teklifler ve projeleri yönetin.",
+        content:
+          "Enes Yapı hesabınıza giriş yapın: müşteriler talep, teklif ve projelerini takip eder; personel yönetim panelini kullanır.",
       },
-      { property: "og:title", content: "Personel Girişi — Enes Yapı" },
-      { property: "og:description", content: "Enes Yapı yönetim paneli girişi." },
+      { property: "og:title", content: "Giriş / Kayıt — Enes Yapı" },
+      { property: "og:description", content: "Enes Yapı müşteri ve personel girişi." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -45,12 +46,22 @@ function AuthPage() {
   const [notice, setNotice] = useState<string | null>(null);
   const [errorText, setErrorText] = useState<string | null>(null);
 
+  /** Personel yönetim paneline, müşteri kendi hesabına gider. */
+  const goToPanel = async () => {
+    const { data: userData } = await supabase.auth.getUser();
+    const uid = userData.user?.id;
+    if (!uid) return;
+    const { data: roles } = await supabase.from("user_roles").select("role").eq("user_id", uid);
+    navigate({ to: (roles ?? []).length > 0 ? "/yonetim" : "/hesabim", replace: true });
+  };
+
   useEffect(() => {
     if (new URLSearchParams(window.location.search).get("kayit") === "1") setMode("signup");
     supabase.auth.getSession().then(({ data }) => {
-      if (data.session) navigate({ to: "/yonetim", replace: true });
+      if (data.session) void goToPanel();
     });
-  }, [navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,13 +110,13 @@ function AuthPage() {
           email: parsed.data.email,
           password: parsed.data.password,
           options: {
-            emailRedirectTo: `${window.location.origin}/yonetim`,
+            emailRedirectTo: `${window.location.origin}/hesabim`,
             data: { full_name: parsed.data.fullName || null },
           },
         });
         if (error) throw error;
         setNotice(
-          `Kaydınız oluşturuldu. ${parsed.data.email} adresine bir onay e-postası gönderildi. Bağlantıya tıkladıktan sonra bu sayfadan giriş yapabilirsiniz.`,
+          `Hesabınız oluşturuldu. ${parsed.data.email} adresine bir onay e-postası gönderildi. E-postadaki bağlantıya tıklayıp onayı tamamladıktan sonra bu sayfadan giriş yapabilirsiniz. Talep, teklif ve projeleriniz aynı e-posta ile eşleşerek hesabınızda görünür.`,
         );
         toast.success("Kayıt oluşturuldu. E-postanızı onaylayın.");
         setMode("signin");
@@ -116,7 +127,7 @@ function AuthPage() {
           password: parsed.data.password,
         });
         if (error) throw error;
-        navigate({ to: "/yonetim", replace: true });
+        await goToPanel();
       }
     } catch (err) {
       const raw = err instanceof Error ? err.message : "";
@@ -146,16 +157,19 @@ function AuthPage() {
       return;
     }
     if (result.redirected) return;
-    navigate({ to: "/yonetim", replace: true });
+    await goToPanel();
   };
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Enes Yapı — Personel Girişi</CardTitle>
+          <CardTitle>Enes Yapı — Giriş / Kayıt</CardTitle>
           <CardDescription>
-            Yönetim paneline erişim için giriş yapın. Panel yetkisi yöneticiniz tarafından tanımlanır.
+            <strong className="text-foreground">Müşteriler:</strong> tadilat talebinizde kullandığınız e-posta ile
+            hesap oluşturun; talep, teklif ve projelerinizi kendi hesabınızdan takip edin.{" "}
+            <strong className="text-foreground">Personel:</strong> aynı sayfadan giriş yaptığınızda yönetim paneline
+            yönlendirilirsiniz.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -243,7 +257,7 @@ function AuthPage() {
               setErrorText(null);
             }}
           >
-            {mode === "signin" ? "Hesabınız yok mu? Kayıt olun" : "Zaten hesabınız var mı? Giriş yapın"}
+            {mode === "signin" ? "Hesabınız yok mu? Ücretsiz hesap oluşturun" : "Zaten hesabınız var mı? Giriş yapın"}
           </button>
 
           <div className="text-center text-sm">
