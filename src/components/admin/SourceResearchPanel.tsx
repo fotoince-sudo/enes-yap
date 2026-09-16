@@ -245,6 +245,7 @@ export function SourceResearchPanel() {
                       <td className="p-2">{r.allowed}</td>
                       <td className="p-2">{r.unreachable}</td>
                       <td className="p-2">{r.new_prospects}</td>
+                      <td className="p-2">{r.collected ?? 0}</td>
                       <td className="p-2 text-xs text-muted-foreground">{r.message ?? r.status}</td>
                     </tr>
                   ))
