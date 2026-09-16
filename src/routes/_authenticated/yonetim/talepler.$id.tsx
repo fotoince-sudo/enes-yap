@@ -91,7 +91,7 @@ function RequestDetail() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("emir_chat_sessions")
-        .select("id, summary, wants_survey, message_count, created_at")
+        .select("id, summary, wants_survey, message_count, created_at, messages, stop_reason")
         .eq("request_id", id)
         .order("created_at", { ascending: false })
         .maybeSingle();
