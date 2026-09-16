@@ -436,11 +436,30 @@ export const emirChat = createServerFn({ method: "POST" })
         ...data.messages.map((m) => ({ role: m.role, content: m.content, at: m.at ?? null })),
         { role: "assistant" as const, content: reply, at: replyAt },
       ];
+
+      // Sohbetin her mesajı, bağlı talebin geçmişine mesaj olarak yazılır.
+      const linkedRequestId = requestId ?? existingRequestId;
+      let newLoggedCount = loggedCount;
+      if (linkedRequestId) {
+        const pending = transcript.slice(loggedCount);
+        if (pending.length) {
+          const rows = pending.map((m) => ({
+            request_id: linkedRequestId,
+            activity_type: m.role === "user" ? "emir_mesaj_musteri" : "emir_mesaj_emir",
+            note: `${m.role === "user" ? "Ziyaretçi" : "Emir"}: ${m.content}`.slice(0, 4000),
+          }));
+          const { error: logError } = await supabaseAdmin.from("request_activities").insert(rows);
+          if (logError) console.error("emir transcript log failed", logError);
+          else newLoggedCount = transcript.length;
+        }
+      }
+
       await supabaseAdmin
         .from("emir_chat_sessions")
         .update({
           messages: transcript as never,
           message_count: transcript.length,
+          logged_message_count: newLoggedCount,
           ...(summary ? { summary } : {}),
           ...(newFlags.length
             ? {
