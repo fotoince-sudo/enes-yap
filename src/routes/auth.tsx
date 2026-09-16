@@ -25,6 +25,9 @@ export const Route = createFileRoute("/auth")({
       { name: "twitter:card", content: "summary" },
     ],
   }),
+  validateSearch: (search: Record<string, unknown>) => ({
+    kayit: search['kayit'] === "1" || search['kayit'] === 1 ? "1" : undefined,
+  }),
   component: AuthPage,
 });
 
