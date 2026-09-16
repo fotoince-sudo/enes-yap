@@ -60,8 +60,10 @@ function QuoteDetail() {
   });
 
   const itemsTotal = items.reduce((s, i) => s + Number(i.line_total ?? 0), 0);
-  const materials = items.reduce((s, i) => s + Number(i.material_cost ?? 0), 0);
-  const labor = items.reduce((s, i) => s + Number(i.labor_cost ?? 0), 0);
+  const materials = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.material_cost ?? 0), 0);
+  const labor = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.labor_cost ?? 0), 0);
+  const newUnitPrice = (Number(item.material_cost) || 0) + (Number(item.labor_cost) || 0);
+  const newLineTotal = (Number(item.quantity) || 0) * newUnitPrice;
   const extra = Number(quote?.extra_total ?? 0);
   const discount = Number(quote?.discount ?? 0);
   const vatRate = Number(quote?.vat_rate ?? 20);
