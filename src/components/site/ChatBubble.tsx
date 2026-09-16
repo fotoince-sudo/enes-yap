@@ -203,7 +203,8 @@ export function ChatBubble() {
             </div>
             <div className="flex shrink-0 items-center gap-1">
               <a
-                href="https://wa.me/905333992540"
+                href={waHref}
+                onClick={noteHandoff}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp'tan yazın"
