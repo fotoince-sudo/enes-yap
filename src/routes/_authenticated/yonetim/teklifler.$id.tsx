@@ -394,8 +394,8 @@ function QuoteDetail() {
                   <TableHead>Miktar</TableHead>
                   <TableHead>Birim</TableHead>
                   <TableHead>Birim fiyat</TableHead>
-                  <TableHead>Malzeme</TableHead>
-                  <TableHead>İşçilik</TableHead>
+                  <TableHead>Malzeme (birim)</TableHead>
+                  <TableHead>İşçilik (birim)</TableHead>
                   <TableHead>Toplam</TableHead>
                   <TableHead />
                 </TableRow>
