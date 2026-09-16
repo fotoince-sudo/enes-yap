@@ -157,6 +157,63 @@ export type Database = {
         }
         Relationships: []
       }
+      emir_chat_sessions: {
+        Row: {
+          collected: Json
+          created_at: string
+          id: string
+          message_count: number
+          messages: Json
+          request_id: string | null
+          status: string
+          summary: string | null
+          survey_id: string | null
+          updated_at: string
+          wants_survey: boolean
+        }
+        Insert: {
+          collected?: Json
+          created_at?: string
+          id?: string
+          message_count?: number
+          messages?: Json
+          request_id?: string | null
+          status?: string
+          summary?: string | null
+          survey_id?: string | null
+          updated_at?: string
+          wants_survey?: boolean
+        }
+        Update: {
+          collected?: Json
+          created_at?: string
+          id?: string
+          message_count?: number
+          messages?: Json
+          request_id?: string | null
+          status?: string
+          summary?: string | null
+          survey_id?: string | null
+          updated_at?: string
+          wants_survey?: boolean
+        }
+        Relationships: [
+          {
+            foreignKeyName: "emir_chat_sessions_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "renovation_requests"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "emir_chat_sessions_survey_id_fkey"
+            columns: ["survey_id"]
+            isOneToOne: false
+            referencedRelation: "surveys"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       lead_prospects: {
         Row: {
           assigned_to: string | null
