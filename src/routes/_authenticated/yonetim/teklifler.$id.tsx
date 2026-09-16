@@ -426,7 +426,14 @@ function QuoteDetail() {
                       <TableCell>{i.unit}</TableCell>
                       <TableCell>{tl(i.unit_price)}</TableCell>
                       <TableCell>{tl(i.material_cost)}</TableCell>
-                      <TableCell>{tl(i.labor_cost)}</TableCell>
+                      <TableCell>
+                        {tl(i.labor_cost)}
+                        {i.labor_hours != null && i.labor_hourly_rate != null ? (
+                          <span className="block text-xs text-muted-foreground">
+                            {i.labor_hours} sa × {tl(i.labor_hourly_rate)}
+                          </span>
+                        ) : null}
+                      </TableCell>
                       <TableCell>{tl(i.line_total)}</TableCell>
                       <TableCell className="text-right">
                         <Button size="sm" variant="ghost" onClick={() => removeItem.mutate(i.id)}>
