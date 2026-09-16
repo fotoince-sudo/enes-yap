@@ -19,6 +19,9 @@ const LEASE_MINUTES = 3;
 const FETCH_TIMEOUT_MS = 8000;
 const UA = "EnesYapiSourceResearch/1.0 (+https://enes-yap.lovable.app)";
 
+const COLLECT_SOURCE_LIMIT = 3;
+const COLLECT_ITEM_LIMIT = 20;
+
 export type SourceResearchResult = {
   ok: boolean;
   status: "tamamlandi" | "kilitli" | "durakladi" | "kaynak-yok";
@@ -27,6 +30,8 @@ export type SourceResearchResult = {
   allowed: number;
   blocked: number;
   unreachable: number;
+  /** Onaylı (izinli) kaynaklardan bu turda eklenen aday sayısı. */
+  collected: number;
   details: Array<{ name: string; url: string; result: string; autoScanAllowed: boolean }>;
 };
 
