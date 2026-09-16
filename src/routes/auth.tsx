@@ -127,7 +127,7 @@ function AuthPage() {
           password: parsed.data.password,
         });
         if (error) throw error;
-        navigate({ to: "/yonetim", replace: true });
+        await goToPanel();
       }
     } catch (err) {
       const raw = err instanceof Error ? err.message : "";
