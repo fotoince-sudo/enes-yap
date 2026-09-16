@@ -99,36 +99,36 @@ export function ChatBubble() {
   return (
     <>
       {open ? (
-        <div className="fixed inset-x-3 bottom-3 z-50 flex max-h-[78vh] flex-col overflow-hidden rounded-xl border bg-card shadow-xl sm:inset-x-auto sm:right-5 sm:bottom-5 sm:w-96">
+        <div className="fixed inset-x-0 bottom-0 z-50 flex h-[85dvh] max-h-[85dvh] flex-col overflow-hidden rounded-t-2xl border bg-card shadow-xl pb-[env(safe-area-inset-bottom)] sm:inset-x-auto sm:right-5 sm:bottom-5 sm:h-[min(640px,80dvh)] sm:max-h-[80dvh] sm:w-96 sm:rounded-xl sm:pb-0">
           <div className="flex items-center justify-between gap-2 border-b bg-primary px-4 py-3 text-primary-foreground">
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold">Emir · Enes Yapı</p>
               <p className="text-xs opacity-80">Dijital karşılama asistanı</p>
             </div>
-            <div className="flex items-center gap-1">
+            <div className="flex shrink-0 items-center gap-1">
               <a
                 href="https://wa.me/905333992540"
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp'tan yazın"
-                className="rounded p-1.5 hover:bg-white/10"
+                className="rounded-full p-2.5 hover:bg-white/10"
               >
-                <MessageCircle className="h-4 w-4" />
+                <MessageCircle className="h-5 w-5" />
               </a>
-              <a href="tel:+905333992540" aria-label="Telefonla arayın" className="rounded p-1.5 hover:bg-white/10">
-                <Phone className="h-4 w-4" />
+              <a href="tel:+905333992540" aria-label="Telefonla arayın" className="rounded-full p-2.5 hover:bg-white/10">
+                <Phone className="h-5 w-5" />
               </a>
-              <button aria-label="Sohbeti kapat" onClick={() => setOpen(false)} className="rounded p-1.5 hover:bg-white/10">
-                <X className="h-4 w-4" />
+              <button aria-label="Sohbeti kapat" onClick={() => setOpen(false)} className="rounded-full p-2.5 hover:bg-white/10">
+                <X className="h-5 w-5" />
               </button>
             </div>
           </div>
 
-          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto p-4">
+          <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto overscroll-contain p-4 [-webkit-overflow-scrolling:touch]">
             {shown.map((m, i) => (
               <div
                 key={i}
-                className={`max-w-[88%] rounded-lg px-3 py-2 text-sm whitespace-pre-line ${
+                className={`max-w-[88%] rounded-lg px-3 py-2 text-[15px] leading-relaxed whitespace-pre-line ${
                   m.role === "user" ? "ml-auto bg-primary text-primary-foreground" : "bg-muted text-foreground"
                 }`}
               >
@@ -144,12 +144,12 @@ export function ChatBubble() {
             {loading ? <div className="text-xs text-muted-foreground">Emir yazıyor…</div> : null}
             {uploading ? <div className="text-xs text-muted-foreground">Fotoğraflar yükleniyor…</div> : null}
             {messages.length === 0 ? (
-              <div className="flex flex-wrap gap-2 pt-1">
+              <div className="flex flex-col gap-2 pt-1 sm:flex-row sm:flex-wrap">
                 {SUGGESTIONS.map((s) => (
                   <button
                     key={s}
                     onClick={() => void send(s)}
-                    className="rounded-full border px-3 py-1 text-xs text-muted-foreground hover:bg-accent"
+                    className="rounded-full border px-3.5 py-2.5 text-left text-[13px] text-muted-foreground hover:bg-accent sm:py-1.5"
                   >
                     {s}
                   </button>
@@ -164,8 +164,29 @@ export function ChatBubble() {
             </div>
           ) : null}
 
+          <div className="flex items-center gap-2 border-t px-3 pt-2 sm:hidden">
+            <button
+              type="button"
+              onClick={() => fileRef.current?.click()}
+              disabled={uploading}
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent disabled:opacity-50"
+            >
+              <Paperclip className="h-4 w-4" />
+              Fotoğraf ekle
+            </button>
+            <a
+              href="https://wa.me/905333992540"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent"
+            >
+              <MessageCircle className="h-4 w-4" />
+              WhatsApp'tan yazın
+            </a>
+          </div>
+
           <form
-            className="flex items-center gap-2 border-t p-3"
+            className="flex items-center gap-2 border-t p-3 sm:border-t-0"
             onSubmit={(e) => {
               e.preventDefault();
               void send(input);
@@ -186,8 +207,9 @@ export function ChatBubble() {
               aria-label="Fotoğraf ekle"
               disabled={uploading}
               onClick={() => fileRef.current?.click()}
+              className="hidden h-11 w-11 shrink-0 sm:inline-flex"
             >
-              <Paperclip className="h-4 w-4" />
+              <Paperclip className="h-5 w-5" />
             </Button>
             <Input
               ref={inputRef}
@@ -195,9 +217,11 @@ export function ChatBubble() {
               onChange={(e) => setInput(e.target.value)}
               placeholder="Mesajınızı yazın…"
               aria-label="Mesajınız"
+              enterKeyHint="send"
+              className="h-11 text-base sm:h-10 sm:text-sm"
             />
-            <Button type="submit" size="icon" disabled={loading || !input.trim()} aria-label="Gönder">
-              <Send className="h-4 w-4" />
+            <Button type="submit" size="icon" disabled={loading || !input.trim()} aria-label="Gönder" className="h-11 w-11 shrink-0 sm:h-10 sm:w-10">
+              <Send className="h-5 w-5" />
             </Button>
           </form>
         </div>
@@ -205,7 +229,7 @@ export function ChatBubble() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Emir ile yazışmaya başla"
-          className="fixed right-4 bottom-4 z-50 flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground shadow-lg hover:opacity-90"
+          className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-lg hover:opacity-90"
         >
           <MessageCircle className="h-5 w-5" />
           Emir'e sorun
