@@ -7,6 +7,7 @@ import { ChatBubble } from "@/components/site/ChatBubble";
 import { Button } from "@/components/ui/button";
 import { PROJECT_STATUS, trDate } from "@/lib/domain";
 import heroImage from "@/assets/hero.jpg";
+import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 import beforeImage from "@/assets/proje-tadilat.jpg";
 import afterImage from "@/assets/proje-daire.jpg";
 
@@ -93,8 +94,11 @@ function HomePage() {
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <span className="text-lg font-semibold tracking-tight">
-            ENES <span className="text-primary">YAPI</span>
+          <span className="flex items-center gap-2.5">
+            <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 object-contain" />
+            <span className="text-lg font-semibold tracking-tight">
+              ENES <span className="text-primary">YAPI</span>
+            </span>
           </span>
           <nav className="hidden items-center gap-6 text-sm md:flex">
             <a href="#hizmetler" className="text-muted-foreground hover:text-foreground">
@@ -340,7 +344,10 @@ function HomePage() {
 
       <footer className="border-t py-8">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 text-sm text-muted-foreground">
-          <span>© 2026 Enes Yapı · Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir · 0533 399 25 40</span>
+          <span className="flex items-center gap-2">
+            <img src={logoAsset.url} alt="" className="h-6 w-6 object-contain" />
+            © 2026 Enes Yapı · Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir · 0533 399 25 40
+          </span>
           <Link to="/auth" className="hover:text-foreground">
             Müşteri / personel girişi
           </Link>
