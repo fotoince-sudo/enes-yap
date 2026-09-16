@@ -1,0 +1,3 @@
+DELETE FROM public.surveys WHERE request_id IN (SELECT id FROM public.renovation_requests WHERE source = 'web-emir' AND full_name IN ('Ali Yılmaz','Test Deneme','Foto Test'));
+DELETE FROM public.emir_chat_sessions WHERE request_id IN (SELECT id FROM public.renovation_requests WHERE source = 'web-emir' AND full_name IN ('Ali Yılmaz','Test Deneme','Foto Test')) OR request_id IS NULL;
+DELETE FROM public.renovation_requests WHERE source = 'web-emir' AND full_name IN ('Ali Yılmaz','Test Deneme','Foto Test');
