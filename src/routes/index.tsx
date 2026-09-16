@@ -123,6 +123,11 @@ function HomePage() {
                   <a href="#talep">Tadilat talebi oluştur</a>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
+                  <a href="https://wa.me/905333992540" target="_blank" rel="noopener noreferrer">
+                    WhatsApp'tan yazın
+                  </a>
+                </Button>
+                <Button size="lg" variant="ghost" asChild>
                   <a href="#nasil">Süreci inceleyin</a>
                 </Button>
               </div>
