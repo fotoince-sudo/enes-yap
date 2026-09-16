@@ -20,8 +20,8 @@ type Card_ = {
   to: "/yonetim/talepler/$id" | "/yonetim/teklifler/$id" | "/yonetim/projeler/$id";
 };
 
-const NEW_STATUSES = ["yeni", "inceleniyor", "gorusuldu"];
-const SURVEY_STATUSES = ["kesif_planlandi", "kesif_yapildi"];
+const NEW_STATUSES = ["yeni", "inceleniyor", "gorusuldu"] as const;
+const SURVEY_STATUSES = ["kesif_planlandi", "kesif_yapildi"] as const;
 
 function Pipeline() {
   const { data: requests = [], isLoading: l1 } = useQuery({
