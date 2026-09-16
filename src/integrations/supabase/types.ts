@@ -1,0 +1,1167 @@
+export type Json =
+  | string
+  | number
+  | boolean
+  | null
+  | { [key: string]: Json | undefined }
+  | Json[]
+
+export type Database = {
+  // Allows to automatically instantiate createClient with right options
+  // instead of createClient<Database, { PostgrestVersion: 'XX' }>(URL, KEY)
+  __InternalSupabase: {
+    PostgrestVersion: "14.5"
+  }
+  public: {
+    Tables: {
+      customers: {
+        Row: {
+          city: string | null
+          created_at: string
+          district: string | null
+          email: string | null
+          full_name: string
+          id: string
+          neighborhood: string | null
+          notes: string | null
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          created_at?: string
+          district?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          neighborhood?: string | null
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          created_at?: string
+          district?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          neighborhood?: string | null
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      materials: {
+        Row: {
+          category: string | null
+          created_at: string
+          estimated_cost: number | null
+          id: string
+          name: string
+          notes: string | null
+          supplier_id: string | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          estimated_cost?: number | null
+          id?: string
+          name: string
+          notes?: string | null
+          supplier_id?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          estimated_cost?: number | null
+          id?: string
+          name?: string
+          notes?: string | null
+          supplier_id?: string | null
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "materials_supplier_id_fkey"
+            columns: ["supplier_id"]
+            isOneToOne: false
+            referencedRelation: "suppliers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      opportunities: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          estimated_value: number | null
+          id: string
+          notes: string | null
+          opportunity_type: Database["public"]["Enums"]["opportunity_type"]
+          property_id: string | null
+          request_id: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          estimated_value?: number | null
+          id?: string
+          notes?: string | null
+          opportunity_type: Database["public"]["Enums"]["opportunity_type"]
+          property_id?: string | null
+          request_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          estimated_value?: number | null
+          id?: string
+          notes?: string | null
+          opportunity_type?: Database["public"]["Enums"]["opportunity_type"]
+          property_id?: string | null
+          request_id?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "opportunities_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "opportunities_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "renovation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      partners: {
+        Row: {
+          created_at: string
+          district: string | null
+          documents: Json
+          email: string | null
+          id: string
+          is_active: boolean
+          name: string
+          notes: string | null
+          partner_type: Database["public"]["Enums"]["partner_type"]
+          phone: string | null
+          rating: number | null
+          references_text: string | null
+          service_areas: string[]
+          specialty: string | null
+          updated_at: string
+          work_regions: string[]
+        }
+        Insert: {
+          created_at?: string
+          district?: string | null
+          documents?: Json
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          notes?: string | null
+          partner_type?: Database["public"]["Enums"]["partner_type"]
+          phone?: string | null
+          rating?: number | null
+          references_text?: string | null
+          service_areas?: string[]
+          specialty?: string | null
+          updated_at?: string
+          work_regions?: string[]
+        }
+        Update: {
+          created_at?: string
+          district?: string | null
+          documents?: Json
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          notes?: string | null
+          partner_type?: Database["public"]["Enums"]["partner_type"]
+          phone?: string | null
+          rating?: number | null
+          references_text?: string | null
+          service_areas?: string[]
+          specialty?: string | null
+          updated_at?: string
+          work_regions?: string[]
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      project_partners: {
+        Row: {
+          agreed_cost: number | null
+          created_at: string
+          id: string
+          partner_id: string
+          project_id: string
+          role: string | null
+        }
+        Insert: {
+          agreed_cost?: number | null
+          created_at?: string
+          id?: string
+          partner_id: string
+          project_id: string
+          role?: string | null
+        }
+        Update: {
+          agreed_cost?: number | null
+          created_at?: string
+          id?: string
+          partner_id?: string
+          project_id?: string
+          role?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_partners_partner_id_fkey"
+            columns: ["partner_id"]
+            isOneToOne: false
+            referencedRelation: "partners"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_partners_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_photos: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          is_public: boolean
+          phase: Database["public"]["Enums"]["photo_phase"]
+          project_id: string
+          url: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          phase?: Database["public"]["Enums"]["photo_phase"]
+          project_id: string
+          url: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          is_public?: boolean
+          phase?: Database["public"]["Enums"]["photo_phase"]
+          project_id?: string
+          url?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_photos_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      projects: {
+        Row: {
+          actual_end_date: string | null
+          contract_total: number
+          cost_total: number
+          created_at: string
+          customer_id: string | null
+          estimated_end_date: string | null
+          id: string
+          is_public_reference: boolean
+          notes: string | null
+          paid_total: number
+          payment_notes: string | null
+          project_no: number
+          property_id: string | null
+          quote_id: string | null
+          request_id: string | null
+          start_date: string | null
+          status: Database["public"]["Enums"]["project_status"]
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          actual_end_date?: string | null
+          contract_total?: number
+          cost_total?: number
+          created_at?: string
+          customer_id?: string | null
+          estimated_end_date?: string | null
+          id?: string
+          is_public_reference?: boolean
+          notes?: string | null
+          paid_total?: number
+          payment_notes?: string | null
+          project_no?: number
+          property_id?: string | null
+          quote_id?: string | null
+          request_id?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"]
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          actual_end_date?: string | null
+          contract_total?: number
+          cost_total?: number
+          created_at?: string
+          customer_id?: string | null
+          estimated_end_date?: string | null
+          id?: string
+          is_public_reference?: boolean
+          notes?: string | null
+          paid_total?: number
+          payment_notes?: string | null
+          project_no?: number
+          property_id?: string | null
+          quote_id?: string | null
+          request_id?: string | null
+          start_date?: string | null
+          status?: Database["public"]["Enums"]["project_status"]
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "projects_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "projects_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "renovation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      properties: {
+        Row: {
+          address: string | null
+          area_m2: number | null
+          building_age: number | null
+          city: string | null
+          condition: string | null
+          created_at: string
+          customer_id: string | null
+          district: string | null
+          external_ref: string | null
+          id: string
+          neighborhood: string | null
+          notes: string | null
+          photos: Json
+          property_type: string | null
+          room_count: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          area_m2?: number | null
+          building_age?: number | null
+          city?: string | null
+          condition?: string | null
+          created_at?: string
+          customer_id?: string | null
+          district?: string | null
+          external_ref?: string | null
+          id?: string
+          neighborhood?: string | null
+          notes?: string | null
+          photos?: Json
+          property_type?: string | null
+          room_count?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          area_m2?: number | null
+          building_age?: number | null
+          city?: string | null
+          condition?: string | null
+          created_at?: string
+          customer_id?: string | null
+          district?: string | null
+          external_ref?: string | null
+          id?: string
+          neighborhood?: string | null
+          notes?: string | null
+          photos?: Json
+          property_type?: string | null
+          room_count?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "properties_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quote_items: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          labor_cost: number
+          line_total: number | null
+          material_cost: number
+          quantity: number
+          quote_id: string
+          sort_order: number
+          title: string
+          unit: string
+          unit_price: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          labor_cost?: number
+          line_total?: number | null
+          material_cost?: number
+          quantity?: number
+          quote_id: string
+          sort_order?: number
+          title: string
+          unit?: string
+          unit_price?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          labor_cost?: number
+          line_total?: number | null
+          material_cost?: number
+          quantity?: number
+          quote_id?: string
+          sort_order?: number
+          title?: string
+          unit?: string
+          unit_price?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quote_items_quote_id_fkey"
+            columns: ["quote_id"]
+            isOneToOne: false
+            referencedRelation: "quotes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      quotes: {
+        Row: {
+          created_at: string
+          customer_id: string | null
+          discount: number
+          extra_total: number
+          grand_total: number
+          id: string
+          labor_total: number
+          materials_total: number
+          notes: string | null
+          property_id: string | null
+          quote_no: number
+          request_id: string | null
+          status: Database["public"]["Enums"]["quote_status"]
+          title: string | null
+          updated_at: string
+          valid_until: string | null
+          vat_rate: number
+        }
+        Insert: {
+          created_at?: string
+          customer_id?: string | null
+          discount?: number
+          extra_total?: number
+          grand_total?: number
+          id?: string
+          labor_total?: number
+          materials_total?: number
+          notes?: string | null
+          property_id?: string | null
+          quote_no?: number
+          request_id?: string | null
+          status?: Database["public"]["Enums"]["quote_status"]
+          title?: string | null
+          updated_at?: string
+          valid_until?: string | null
+          vat_rate?: number
+        }
+        Update: {
+          created_at?: string
+          customer_id?: string | null
+          discount?: number
+          extra_total?: number
+          grand_total?: number
+          id?: string
+          labor_total?: number
+          materials_total?: number
+          notes?: string | null
+          property_id?: string | null
+          quote_no?: number
+          request_id?: string | null
+          status?: Database["public"]["Enums"]["quote_status"]
+          title?: string | null
+          updated_at?: string
+          valid_until?: string | null
+          vat_rate?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quotes_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quotes_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "renovation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      renovation_requests: {
+        Row: {
+          area_m2: number | null
+          assigned_to: string | null
+          budget_range: string | null
+          city: string | null
+          created_at: string
+          customer_id: string | null
+          description: string | null
+          desired_start: string | null
+          district: string | null
+          email: string | null
+          full_name: string
+          id: string
+          neighborhood: string | null
+          opportunity_type:
+            | Database["public"]["Enums"]["opportunity_type"]
+            | null
+          phone: string
+          photo_urls: Json
+          property_id: string | null
+          property_type: string | null
+          renovation_type: string | null
+          service_category_id: string | null
+          source: string
+          status: Database["public"]["Enums"]["request_status"]
+          updated_at: string
+          video_urls: Json
+        }
+        Insert: {
+          area_m2?: number | null
+          assigned_to?: string | null
+          budget_range?: string | null
+          city?: string | null
+          created_at?: string
+          customer_id?: string | null
+          description?: string | null
+          desired_start?: string | null
+          district?: string | null
+          email?: string | null
+          full_name: string
+          id?: string
+          neighborhood?: string | null
+          opportunity_type?:
+            | Database["public"]["Enums"]["opportunity_type"]
+            | null
+          phone: string
+          photo_urls?: Json
+          property_id?: string | null
+          property_type?: string | null
+          renovation_type?: string | null
+          service_category_id?: string | null
+          source?: string
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+          video_urls?: Json
+        }
+        Update: {
+          area_m2?: number | null
+          assigned_to?: string | null
+          budget_range?: string | null
+          city?: string | null
+          created_at?: string
+          customer_id?: string | null
+          description?: string | null
+          desired_start?: string | null
+          district?: string | null
+          email?: string | null
+          full_name?: string
+          id?: string
+          neighborhood?: string | null
+          opportunity_type?:
+            | Database["public"]["Enums"]["opportunity_type"]
+            | null
+          phone?: string
+          photo_urls?: Json
+          property_id?: string | null
+          property_type?: string | null
+          renovation_type?: string | null
+          service_category_id?: string | null
+          source?: string
+          status?: Database["public"]["Enums"]["request_status"]
+          updated_at?: string
+          video_urls?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "renovation_requests_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "renovation_requests_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "renovation_requests_service_category_id_fkey"
+            columns: ["service_category_id"]
+            isOneToOne: false
+            referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      request_activities: {
+        Row: {
+          activity_type: string
+          actor_id: string | null
+          created_at: string
+          id: string
+          new_status: Database["public"]["Enums"]["request_status"] | null
+          note: string | null
+          old_status: Database["public"]["Enums"]["request_status"] | null
+          request_id: string
+        }
+        Insert: {
+          activity_type?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          new_status?: Database["public"]["Enums"]["request_status"] | null
+          note?: string | null
+          old_status?: Database["public"]["Enums"]["request_status"] | null
+          request_id: string
+        }
+        Update: {
+          activity_type?: string
+          actor_id?: string | null
+          created_at?: string
+          id?: string
+          new_status?: Database["public"]["Enums"]["request_status"] | null
+          note?: string | null
+          old_status?: Database["public"]["Enums"]["request_status"] | null
+          request_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "request_activities_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "renovation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      service_categories: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          is_active: boolean
+          name: string
+          slug: string
+          sort_order: number
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          slug: string
+          sort_order?: number
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          slug?: string
+          sort_order?: number
+        }
+        Relationships: []
+      }
+      suppliers: {
+        Row: {
+          categories: string[]
+          company_name: string
+          contact_person: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_active: boolean
+          notes: string | null
+          phone: string | null
+          price_info: string | null
+          updated_at: string
+        }
+        Insert: {
+          categories?: string[]
+          company_name: string
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          phone?: string | null
+          price_info?: string | null
+          updated_at?: string
+        }
+        Update: {
+          categories?: string[]
+          company_name?: string
+          contact_person?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          notes?: string | null
+          phone?: string | null
+          price_info?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      surveys: {
+        Row: {
+          address: string | null
+          created_at: string
+          customer_id: string | null
+          estimated_cost: number | null
+          id: string
+          is_done: boolean
+          measurements: Json
+          notes: string | null
+          photos: Json
+          property_id: string | null
+          quote_state: string | null
+          request_id: string | null
+          responsible_id: string | null
+          responsible_name: string | null
+          result: string | null
+          scheduled_date: string | null
+          scheduled_time: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          customer_id?: string | null
+          estimated_cost?: number | null
+          id?: string
+          is_done?: boolean
+          measurements?: Json
+          notes?: string | null
+          photos?: Json
+          property_id?: string | null
+          quote_state?: string | null
+          request_id?: string | null
+          responsible_id?: string | null
+          responsible_name?: string | null
+          result?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          customer_id?: string | null
+          estimated_cost?: number | null
+          id?: string
+          is_done?: boolean
+          measurements?: Json
+          notes?: string | null
+          photos?: Json
+          property_id?: string | null
+          quote_state?: string | null
+          request_id?: string | null
+          responsible_id?: string | null
+          responsible_name?: string | null
+          result?: string | null
+          scheduled_date?: string | null
+          scheduled_time?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "surveys_customer_id_fkey"
+            columns: ["customer_id"]
+            isOneToOne: false
+            referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "surveys_property_id_fkey"
+            columns: ["property_id"]
+            isOneToOne: false
+            referencedRelation: "properties"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "surveys_request_id_fkey"
+            columns: ["request_id"]
+            isOneToOne: false
+            referencedRelation: "renovation_requests"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_staff: { Args: { _user_id: string }; Returns: boolean }
+    }
+    Enums: {
+      app_role: "admin" | "yonetici" | "operasyon" | "saha" | "ekip"
+      opportunity_type:
+        | "satisa_hazirlik"
+        | "kiraya_hazirlik"
+        | "satis_ihtimali"
+        | "kiralama_ihtimali"
+        | "yatirim_yenileme"
+        | "komple_yenileme"
+      partner_type: "usta" | "ekip" | "firma" | "cozum_ortagi"
+      photo_phase: "once" | "uygulama" | "sonra"
+      project_status:
+        | "baslamadi"
+        | "hazirlik"
+        | "malzeme_bekleniyor"
+        | "basladi"
+        | "devam"
+        | "kontrol"
+        | "tamamlandi"
+      quote_status:
+        | "taslak"
+        | "hazirlaniyor"
+        | "gonderildi"
+        | "musteri_inceliyor"
+        | "kabul"
+        | "red"
+      request_status:
+        | "yeni"
+        | "inceleniyor"
+        | "gorusuldu"
+        | "kesif_planlandi"
+        | "kesif_yapildi"
+        | "teklif_hazirlaniyor"
+        | "teklif_gonderildi"
+        | "onaylandi"
+        | "uygulamada"
+        | "tamamlandi"
+        | "iptal"
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
+}
+
+type DatabaseWithoutInternals = Omit<Database, "__InternalSupabase">
+
+type DefaultSchema = DatabaseWithoutInternals[Extract<keyof Database, "public">]
+
+export type Tables<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof (DefaultSchema["Tables"] & DefaultSchema["Views"])
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+        DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? (DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"] &
+      DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
+    }
+    ? R
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])
+    ? (DefaultSchema["Tables"] &
+        DefaultSchema["Views"])[DefaultSchemaTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
+    : never
+
+export type TablesInsert<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
+    }
+    ? I
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
+    : never
+
+export type TablesUpdate<
+  DefaultSchemaTableNameOrOptions extends
+    | keyof DefaultSchema["Tables"]
+    | { schema: keyof DatabaseWithoutInternals },
+  TableName extends (DefaultSchemaTableNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"]
+    : never) = never,
+> = DefaultSchemaTableNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
+    }
+    ? U
+    : never
+  : DefaultSchemaTableNameOrOptions extends keyof DefaultSchema["Tables"]
+    ? DefaultSchema["Tables"][DefaultSchemaTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
+    : never
+
+export type Enums<
+  DefaultSchemaEnumNameOrOptions extends
+    | keyof DefaultSchema["Enums"]
+    | { schema: keyof DatabaseWithoutInternals },
+  EnumName extends (DefaultSchemaEnumNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"]
+    : never) = never,
+> = DefaultSchemaEnumNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[DefaultSchemaEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : DefaultSchemaEnumNameOrOptions extends keyof DefaultSchema["Enums"]
+    ? DefaultSchema["Enums"][DefaultSchemaEnumNameOrOptions]
+    : never
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof DefaultSchema["CompositeTypes"]
+    | { schema: keyof DatabaseWithoutInternals },
+  CompositeTypeName extends (PublicCompositeTypeNameOrOptions extends {
+    schema: keyof DatabaseWithoutInternals
+  }
+    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never) = never,
+> = PublicCompositeTypeNameOrOptions extends {
+  schema: keyof DatabaseWithoutInternals
+}
+  ? DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof DefaultSchema["CompositeTypes"]
+    ? DefaultSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never
+
+export const Constants = {
+  public: {
+    Enums: {
+      app_role: ["admin", "yonetici", "operasyon", "saha", "ekip"],
+      opportunity_type: [
+        "satisa_hazirlik",
+        "kiraya_hazirlik",
+        "satis_ihtimali",
+        "kiralama_ihtimali",
+        "yatirim_yenileme",
+        "komple_yenileme",
+      ],
+      partner_type: ["usta", "ekip", "firma", "cozum_ortagi"],
+      photo_phase: ["once", "uygulama", "sonra"],
+      project_status: [
+        "baslamadi",
+        "hazirlik",
+        "malzeme_bekleniyor",
+        "basladi",
+        "devam",
+        "kontrol",
+        "tamamlandi",
+      ],
+      quote_status: [
+        "taslak",
+        "hazirlaniyor",
+        "gonderildi",
+        "musteri_inceliyor",
+        "kabul",
+        "red",
+      ],
+      request_status: [
+        "yeni",
+        "inceleniyor",
+        "gorusuldu",
+        "kesif_planlandi",
+        "kesif_yapildi",
+        "teklif_hazirlaniyor",
+        "teklif_gonderildi",
+        "onaylandi",
+        "uygulamada",
+        "tamamlandi",
+        "iptal",
+      ],
+    },
+  },
+} as const
