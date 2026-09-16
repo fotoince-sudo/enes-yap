@@ -51,8 +51,11 @@ function AuthPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setNotice(null);
+    setErrorText(null);
     const parsed = schema.safeParse({ email, password, fullName });
     if (!parsed.success) {
+      setErrorText(parsed.error.issues[0]!.message);
       toast.error(parsed.error.issues[0]!.message);
       return;
     }
@@ -68,7 +71,12 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("Kayıt oluşturuldu. E-postanızı onayladıktan sonra giriş yapabilirsiniz.");
+        setNotice(
+          `Kaydınız oluşturuldu. ${parsed.data.email} adresine bir onay e-postası gönderildi. Bağlantıya tıkladıktan sonra bu sayfadan giriş yapabilirsiniz.`,
+        );
+        toast.success("Kayıt oluşturuldu. E-postanızı onaylayın.");
+        setMode("signin");
+        setPassword("");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email: parsed.data.email,
