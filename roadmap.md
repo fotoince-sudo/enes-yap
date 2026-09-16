@@ -6,3 +6,5 @@
 - [ ] Bağlantı aktif olunca: Emir'in gönderim yolu + gelen mesaj alıcısı (`/api/public/whatsapp/webhook`) + panelde gönderim/teslim durumu.
 - [ ] Erim Bey'e karşılama test mesajı (yalnızca bağlantı ve gönderim yetkisi doğrulandıktan sonra).
 - [ ] E-posta bildirimleri: gönderen alan adı (örn. bilgi@enesyapi.com) tanımlanmasını bekliyor.
+- [ ] Source Research Motoru: AKTİF (elle çalıştırma + zamanlayıcı ucu hazır). Otomatik saatli/günlük zamanlama kullanıcı onayı bekliyor.
+- [ ] Dış kaynakların izin durumu "inceleniyor" — kullanıcı hangi kaynakları "izinli" işaretleyeceğini bildirmeli (izinli olmayan kaynak otomatik taranmaz).

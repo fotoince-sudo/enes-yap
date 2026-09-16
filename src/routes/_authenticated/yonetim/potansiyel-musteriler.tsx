@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 
 import { CrudTable } from "@/components/admin/CrudTable";
+import { SourceResearchPanel } from "@/components/admin/SourceResearchPanel";
 import { supabase } from "@/integrations/supabase/client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -30,6 +31,8 @@ function Prospects() {
 
   return (
     <div className="space-y-6">
+      <SourceResearchPanel />
+
       <CrudTable
         table="lead_prospects"
         title="Potansiyel Müşteriler / İnternet Taraması"
