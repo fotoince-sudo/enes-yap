@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { signedUrl } from "@/lib/uploads";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { OPPORTUNITY_TYPE, REQUEST_STATUS, trDate } from "@/lib/domain";
