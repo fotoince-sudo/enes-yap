@@ -46,12 +46,17 @@ function EmirAiPage() {
   const surveyRequests = sessions.filter((s) => s.wants_survey).length;
   const waiting = requests.filter((r) => r.status === "yeni" || r.status === "inceleniyor").length;
 
+  const flagged = sessions
+    .map((s) => ({ session: s, flags: parseFlags(s.flags) }))
+    .filter((x) => x.flags.length > 0 || x.session.stop_reason);
+
   const stats = [
     { label: "Bugünkü sohbet", value: todayChats },
     { label: "Yeni müşteri talebi", value: newRequests },
     { label: "Eksik bilgili talep", value: incomplete.length },
     { label: "Keşif talebi", value: surveyRequests },
     { label: "Dönüş bekleyen", value: waiting },
+    { label: "Anlama sorunu", value: flagged.length },
   ];
 
   return (
