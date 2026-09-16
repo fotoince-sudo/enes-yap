@@ -25,6 +25,7 @@ export function SourceResearchPanel() {
   const queryClient = useQueryClient();
   const runFn = useServerFn(runSourceResearch);
   const statusFn = useServerFn(setSourceResearchStatus);
+  const permissionFn = useServerFn(setSourcePermission);
   const [lastRun, setLastRun] = useState<string | null>(null);
 
   const { data: engine } = useQuery({
@@ -46,7 +47,7 @@ export function SourceResearchPanel() {
       const { data, error } = await supabase
         .from("prospect_sources")
         .select(
-          "id, name, url, category, permission_status, active, reachable, http_status, robots_allowed, robots_note, auto_scan_allowed, last_checked_at, last_result",
+          "id, name, url, category, permission_status, active, reachable, http_status, robots_allowed, robots_note, auto_scan_allowed, last_checked_at, last_result, feed_url, feed_type, approved_at, last_collect_count",
         )
         .order("name");
       if (error) throw error;
@@ -89,8 +90,23 @@ export function SourceResearchPanel() {
     onError: (error: Error) => toast.error(error.message),
   });
 
+  const permission = useMutation({
+    mutationFn: async (input: {
+      id: string;
+      permission_status: "izinli" | "inceleniyor" | "izinsiz";
+      feed_url?: string;
+      feed_type?: "rss" | "json";
+    }) => await permissionFn({ data: input }),
+    onSuccess: () => {
+      toast.success("Kaynak onayı güncellendi.");
+      void queryClient.invalidateQueries({ queryKey: ["prospect-sources"] });
+    },
+    onError: (error: Error) => toast.error(error.message),
+  });
+
   const scannable = sources.filter((s) => s.auto_scan_allowed);
   const notScannable = sources.filter((s) => !s.auto_scan_allowed);
+  const approvedCount = sources.filter((s) => s.permission_status === "izinli").length;
   const active = engine?.status === "aktif";
 
   return (
