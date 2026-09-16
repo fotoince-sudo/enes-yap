@@ -181,10 +181,39 @@ function QuoteDetail() {
         vat,
         grandTotal,
       });
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  };
+
+      const advance = quote.status === "taslak" || quote.status === "hazirlaniyor";
+      const patch: Record<string, unknown> = {
+        materials_total: materials,
+        labor_total: labor,
+        grand_total: grandTotal,
+      };
+      if (advance) patch['status'] = "gonderildi";
+      const { error } = await supabase.from("quotes").update(patch as never).eq("id", id);
+      if (error) throw error;
+
+      await logActivity({
+        entity: "quote",
+        entityId: id,
+        type: "quote_pdf",
+        note: `PDF teklif oluşturuldu. Genel toplam: ${tl(grandTotal)}`,
+        oldStatus: advance ? quote.status : null,
+        newStatus: advance ? "gonderildi" : null,
+      });
+      return advance;
+    },
+    onSuccess: (advance) => {
+      toast.success(
+        advance
+          ? "PDF teklif oluşturuldu, teklif “Gönderildi” durumuna alındı."
+          : "PDF teklif oluşturuldu, tutarlar kaydedildi.",
+      );
+      queryClient.invalidateQueries({ queryKey: ["quote", id] });
+      queryClient.invalidateQueries({ queryKey: ["quotes"] });
+      queryClient.invalidateQueries({ queryKey: ["activities", "quote", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Yükleniyor…</p>;
   if (!quote) return <p className="text-sm text-muted-foreground">Teklif bulunamadı.</p>;
