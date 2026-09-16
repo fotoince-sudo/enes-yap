@@ -406,6 +406,8 @@ function ProjectDetail() {
           </Card>
         </div>
       </div>
+
+      <ActivityPanel entity="project" entityId={id} />
     </div>
   );
 }
