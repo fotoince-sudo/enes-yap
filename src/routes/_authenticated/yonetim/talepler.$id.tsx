@@ -221,18 +221,28 @@ function RequestDetail() {
   const createSurvey = useMutation({
     mutationFn: async () => {
       if (!request) return;
+      const photos = (request.photo_urls as string[] | null) ?? [];
+      const videos = (request.video_urls as string[] | null) ?? [];
       const { error } = await supabase.from("surveys").insert({
         request_id: id,
         customer_id: request.customer_id,
         property_id: request.property_id,
         address: request.address || [request.neighborhood, request.district, request.city].filter(Boolean).join(", "),
         responsible_id: request.assigned_to,
+        work_items: request.renovation_type ?? null,
+        notes: [request.description, emirSession?.summary ? `Emir özeti: ${emirSession.summary}` : null]
+          .filter(Boolean)
+          .join("\n\n") || null,
+        photos,
+        videos,
       });
       if (error) throw error;
       await supabase.from("renovation_requests").update({ status: "kesif_planlandi" }).eq("id", id);
     },
     onSuccess: () => {
-      toast.success("Keşif kaydı oluşturuldu.");
+      toast.success("Keşif kaydı oluşturuldu; talep fotoğrafları keşfe eklendi.");
+      queryClient.invalidateQueries({ queryKey: ["request-surveys", id] });
+      queryClient.invalidateQueries({ queryKey: ["request", id] });
       navigate({ to: "/yonetim/kesifler" });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -241,6 +251,23 @@ function RequestDetail() {
   const createQuote = useMutation({
     mutationFn: async () => {
       if (!request) return;
+      const survey = surveys[0];
+      const context = [
+        `Talep kaynağı: ${request.source === "web-emir" ? "WEB / EMİR (site asistanı)" : (request.source ?? "—")}`,
+        `Konum: ${[request.neighborhood, request.district, request.city].filter(Boolean).join(" / ") || "—"}`,
+        request.area_m2 ? `Yaklaşık alan: ${request.area_m2} m²` : null,
+        request.property_type ? `Mekân tipi: ${request.property_type}` : null,
+        emirSession?.summary ? `Emir sohbet özeti: ${emirSession.summary}` : null,
+        request.description ? `Müşteri açıklaması: ${request.description}` : null,
+        survey?.work_items ? `Keşif — yapılacak işler: ${survey.work_items}` : null,
+        survey?.result ? `Keşif sonucu: ${survey.result}` : null,
+        ((request.photo_urls as string[] | null) ?? []).length
+          ? `Talep ekinde ${((request.photo_urls as string[] | null) ?? []).length} fotoğraf var (talep detayında görüntülenir).`
+          : null,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
       const { data, error } = await supabase
         .from("quotes")
         .insert({
@@ -248,6 +275,7 @@ function RequestDetail() {
           customer_id: request.customer_id,
           property_id: request.property_id,
           title: `${request.renovation_type ?? "Tadilat"} — ${request.full_name}`,
+          notes: context,
         })
         .select("id")
         .single();
@@ -256,6 +284,7 @@ function RequestDetail() {
       return data.id;
     },
     onSuccess: (quoteId) => {
+      queryClient.invalidateQueries({ queryKey: ["request-quotes", id] });
       if (quoteId) navigate({ to: "/yonetim/teklifler/$id", params: { id: quoteId } });
     },
     onError: (e: Error) => toast.error(e.message),
