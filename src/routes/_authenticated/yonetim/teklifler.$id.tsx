@@ -373,9 +373,10 @@ function QuoteDetail() {
               <span>Genel toplam</span>
               <span>{tl(grandTotal)}</span>
             </div>
-            <Button className="mt-3 w-full" variant="outline" onClick={saveTotals}>
-              Toplamları kaydet
-            </Button>
+            <p className="mt-3 text-xs text-muted-foreground">
+              Malzeme ve işçilik fiyatları kayıtla birlikte saklanır; kalem eklediğinizde veya iskonto, ek gider, KDV
+              oranını değiştirdiğinizde toplamlar otomatik hesaplanır.
+            </p>
           </CardContent>
         </Card>
       </div>
