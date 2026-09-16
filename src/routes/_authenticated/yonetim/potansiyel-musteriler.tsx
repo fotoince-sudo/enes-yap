@@ -9,6 +9,7 @@ import {
   PROSPECT_PERMISSION,
   PROSPECT_SOURCE,
   PROSPECT_STATUS,
+  prospectSourceLabel,
   trDate,
 } from "@/lib/domain";
 
