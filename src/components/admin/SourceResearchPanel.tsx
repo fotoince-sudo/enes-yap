@@ -49,6 +49,20 @@ export function SourceResearchPanel() {
     },
   });
 
+  const { data: runs = [] } = useQuery({
+    queryKey: ["engine-runs", "source_research"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("engine_runs")
+        .select("id, trigger, status, message, checked, allowed, blocked, unreachable, new_prospects, created_at")
+        .eq("engine_key", "source_research")
+        .order("created_at", { ascending: false })
+        .limit(15);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
   const run = useMutation({
     mutationFn: async () => await runFn(),
     onSuccess: (result) => {
