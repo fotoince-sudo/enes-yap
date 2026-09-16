@@ -236,6 +236,51 @@ export type Database = {
           },
         ]
       }
+      engine_runs: {
+        Row: {
+          allowed: number
+          blocked: number
+          checked: number
+          created_at: string
+          details: Json
+          engine_key: string
+          id: string
+          message: string | null
+          new_prospects: number
+          status: string
+          trigger: string
+          unreachable: number
+        }
+        Insert: {
+          allowed?: number
+          blocked?: number
+          checked?: number
+          created_at?: string
+          details?: Json
+          engine_key: string
+          id?: string
+          message?: string | null
+          new_prospects?: number
+          status: string
+          trigger?: string
+          unreachable?: number
+        }
+        Update: {
+          allowed?: number
+          blocked?: number
+          checked?: number
+          created_at?: string
+          details?: Json
+          engine_key?: string
+          id?: string
+          message?: string | null
+          new_prospects?: number
+          status?: string
+          trigger?: string
+          unreachable?: number
+        }
+        Relationships: []
+      }
       engine_state: {
         Row: {
           key: string

@@ -49,6 +49,20 @@ export function SourceResearchPanel() {
     },
   });
 
+  const { data: runs = [] } = useQuery({
+    queryKey: ["engine-runs", "source_research"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("engine_runs")
+        .select("id, trigger, status, message, checked, allowed, blocked, unreachable, new_prospects, created_at")
+        .eq("engine_key", "source_research")
+        .order("created_at", { ascending: false })
+        .limit(15);
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
   const run = useMutation({
     mutationFn: async () => await runFn(),
     onSuccess: (result) => {
@@ -56,6 +70,7 @@ export function SourceResearchPanel() {
       toast.success(result.message);
       void queryClient.invalidateQueries({ queryKey: ["prospect-sources"] });
       void queryClient.invalidateQueries({ queryKey: ["engine-state", "source_research"] });
+      void queryClient.invalidateQueries({ queryKey: ["engine-runs", "source_research"] });
     },
     onError: (error: Error) => toast.error(error.message),
   });
@@ -165,6 +180,52 @@ export function SourceResearchPanel() {
               )}
             </tbody>
           </table>
+        </div>
+
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold">Çalışma günlüğü (son 15 tur)</h3>
+          <p className="text-xs text-muted-foreground">
+            Motor her gün otomatik olarak çalışır; her turda denetlenen kaynaklar, erişilemeyenler ve yeni aday
+            sayısı buraya kaydedilir.
+          </p>
+          <div className="overflow-x-auto rounded-lg border">
+            <table className="w-full text-sm">
+              <thead className="bg-muted/50">
+                <tr className="text-left">
+                  <th className="p-2">Tarih</th>
+                  <th className="p-2">Tetikleyen</th>
+                  <th className="p-2">Denetlenen</th>
+                  <th className="p-2">Uygun</th>
+                  <th className="p-2">Erişilemeyen</th>
+                  <th className="p-2">Yeni aday</th>
+                  <th className="p-2">Sonuç</th>
+                </tr>
+              </thead>
+              <tbody>
+                {runs.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} className="p-3 text-muted-foreground">
+                      Henüz kayıtlı çalışma yok.
+                    </td>
+                  </tr>
+                ) : (
+                  runs.map((r) => (
+                    <tr key={r.id} className="border-t align-top">
+                      <td className="p-2 whitespace-nowrap">{trDate(r.created_at)}</td>
+                      <td className="p-2 whitespace-nowrap">
+                        {r.trigger === "otomatik" ? "Otomatik" : "Elle"}
+                      </td>
+                      <td className="p-2">{r.checked}</td>
+                      <td className="p-2">{r.allowed}</td>
+                      <td className="p-2">{r.unreachable}</td>
+                      <td className="p-2">{r.new_prospects}</td>
+                      <td className="p-2 text-xs text-muted-foreground">{r.message ?? r.status}</td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </CardContent>
     </Card>

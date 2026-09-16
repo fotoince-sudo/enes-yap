@@ -8,3 +8,4 @@
 - [ ] E-posta bildirimleri: gönderen alan adı (örn. bilgi@enesyapi.com) tanımlanmasını bekliyor.
 - [ ] Source Research Motoru: AKTİF (elle çalıştırma + zamanlayıcı ucu hazır). Otomatik saatli/günlük zamanlama kullanıcı onayı bekliyor.
 - [ ] Dış kaynakların izin durumu "inceleniyor" — kullanıcı hangi kaynakları "izinli" işaretleyeceğini bildirmeli (izinli olmayan kaynak otomatik taranmaz).
+- [x] Source Research Motoru günlük otomatik çalışma (her gün 09:30 TR) + çalışma günlüğü kaydı.

@@ -15,7 +15,7 @@ export const Route = createFileRoute("/api/public/source-research")({
 
         try {
           const { runSourceResearchCore } = await import("@/lib/source-research.server");
-          const result = await runSourceResearchCore();
+          const result = await runSourceResearchCore("otomatik");
           return Response.json(result, { status: result.ok ? 200 : 202 });
         } catch (error) {
           console.error("[source-research] run failed", error);
