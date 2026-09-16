@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { signedUrl } from "@/lib/uploads";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { OPPORTUNITY_TYPE, REQUEST_STATUS, trDate } from "@/lib/domain";
@@ -30,6 +31,15 @@ function RequestDetail() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [note, setNote] = useState("");
+  const [editing, setEditing] = useState(false);
+  const [form, setForm] = useState({
+    address: "",
+    neighborhood: "",
+    district: "",
+    city: "",
+    area_m2: "",
+    description: "",
+  });
   const [fileLinks, setFileLinks] = useState<{ path: string; url: string; isVideo: boolean }[]>([]);
 
   const { data: request, isLoading } = useQuery({
@@ -252,32 +262,120 @@ function RequestDetail() {
 
       <div className="grid gap-4 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between gap-2">
             <CardTitle className="text-base">Talep bilgileri</CardTitle>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                if (editing) {
+                  setEditing(false);
+                  return;
+                }
+                setForm({
+                  address: request.address ?? "",
+                  neighborhood: request.neighborhood ?? "",
+                  district: request.district ?? "",
+                  city: request.city ?? "",
+                  area_m2: request.area_m2 == null ? "" : String(request.area_m2),
+                  description: request.description ?? "",
+                });
+                setEditing(true);
+              }}
+            >
+              {editing ? "Vazgeç" : "Düzenle"}
+            </Button>
           </CardHeader>
           <CardContent>
             <Row label="Telefon" value={request.phone} />
             <Row label="E-posta" value={request.email} />
-            <Row label="Konum" value={[request.neighborhood, request.district, request.city].filter(Boolean).join(" / ")} />
-            <Row label="Açık adres" value={request.address} />
-            <Row label="Gayrimenkul tipi" value={request.property_type} />
-            <Row label="Tadilat türü" value={request.renovation_type} />
-            <Row label="Yaklaşık m²" value={request.area_m2} />
-            <Row label="Bütçe aralığı" value={request.budget_range} />
-            <Row label="Başlangıç zamanı" value={request.desired_start} />
-            <Row
-              label="Fırsat"
-              value={
-                request.opportunity_type
-                  ? OPPORTUNITY_TYPE[request.opportunity_type as keyof typeof OPPORTUNITY_TYPE]
-                  : "—"
-              }
-            />
-            <Row label="Kaynak" value={request.source} />
-            <div className="pt-3 text-sm">
-              <p className="text-muted-foreground">Açıklama</p>
-              <p className="mt-1 whitespace-pre-wrap">{request.description ?? "—"}</p>
-            </div>
+            {editing ? (
+              <div className="space-y-3 pt-3">
+                <div className="grid gap-3 sm:grid-cols-3">
+                  <div>
+                    <p className="mb-1 text-xs text-muted-foreground">Mahalle</p>
+                    <Input
+                      value={form.neighborhood}
+                      onChange={(e) => setForm({ ...form, neighborhood: e.target.value })}
+                    />
+                  </div>
+                  <div>
+                    <p className="mb-1 text-xs text-muted-foreground">İlçe</p>
+                    <Input value={form.district} onChange={(e) => setForm({ ...form, district: e.target.value })} />
+                  </div>
+                  <div>
+                    <p className="mb-1 text-xs text-muted-foreground">İl</p>
+                    <Input value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
+                  </div>
+                </div>
+                <div>
+                  <p className="mb-1 text-xs text-muted-foreground">Açık adres</p>
+                  <Input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+                </div>
+                <div>
+                  <p className="mb-1 text-xs text-muted-foreground">Yaklaşık m²</p>
+                  <Input
+                    type="number"
+                    inputMode="numeric"
+                    value={form.area_m2}
+                    onChange={(e) => setForm({ ...form, area_m2: e.target.value })}
+                  />
+                </div>
+                <div>
+                  <p className="mb-1 text-xs text-muted-foreground">Açıklama</p>
+                  <Textarea
+                    rows={4}
+                    value={form.description}
+                    onChange={(e) => setForm({ ...form, description: e.target.value })}
+                  />
+                </div>
+                <Button
+                  size="sm"
+                  disabled={update.isPending}
+                  onClick={() =>
+                    update.mutate(
+                      {
+                        address: form.address.trim() || null,
+                        neighborhood: form.neighborhood.trim() || null,
+                        district: form.district.trim() || null,
+                        city: form.city.trim() || null,
+                        area_m2: form.area_m2.trim() === "" ? null : Number(form.area_m2),
+                        description: form.description.trim() || null,
+                      },
+                      { onSuccess: () => setEditing(false) },
+                    )
+                  }
+                >
+                  Kaydet
+                </Button>
+              </div>
+            ) : (
+              <>
+                <Row
+                  label="Konum"
+                  value={[request.neighborhood, request.district, request.city].filter(Boolean).join(" / ")}
+                />
+                <Row label="Açık adres" value={request.address} />
+                <Row label="Gayrimenkul tipi" value={request.property_type} />
+                <Row label="Tadilat türü" value={request.renovation_type} />
+                <Row label="Yaklaşık m²" value={request.area_m2} />
+                <Row label="Bütçe aralığı" value={request.budget_range} />
+                <Row label="Başlangıç zamanı" value={request.desired_start} />
+                <Row
+                  label="Fırsat"
+                  value={
+                    request.opportunity_type
+                      ? OPPORTUNITY_TYPE[request.opportunity_type as keyof typeof OPPORTUNITY_TYPE]
+                      : "—"
+                  }
+                />
+                <Row label="Kaynak" value={request.source} />
+                <div className="pt-3 text-sm">
+                  <p className="text-muted-foreground">Açıklama</p>
+                  <p className="mt-1 whitespace-pre-wrap">{request.description ?? "—"}</p>
+                </div>
+              </>
+            )}
           </CardContent>
         </Card>
 
