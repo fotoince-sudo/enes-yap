@@ -100,13 +100,13 @@ function Pipeline() {
       key: "yeni",
       label: "1. Yeni talep",
       hint: "Yeni, inceleniyor, iletişim kuruldu",
-      cards: requests.filter((r) => NEW_STATUSES.includes(r.status)).map(requestCard),
+      cards: requests.filter((r) => (NEW_STATUSES as readonly string[]).includes(r.status)).map(requestCard),
     },
     {
       key: "kesif",
       label: "2. Keşif",
       hint: "Keşif planlandı / yapıldı",
-      cards: requests.filter((r) => SURVEY_STATUSES.includes(r.status)).map(requestCard),
+      cards: requests.filter((r) => (SURVEY_STATUSES as readonly string[]).includes(r.status)).map(requestCard),
     },
     {
       key: "teklif",
