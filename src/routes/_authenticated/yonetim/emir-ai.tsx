@@ -15,7 +15,7 @@ function EmirAiPage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("emir_chat_sessions")
-        .select("id, summary, wants_survey, status, request_id, message_count, created_at")
+        .select("id, summary, wants_survey, status, request_id, message_count, created_at, flags, stop_reason, last_flag_at")
         .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
