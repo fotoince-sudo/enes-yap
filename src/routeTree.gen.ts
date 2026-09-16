@@ -26,6 +26,7 @@ import { Route as AuthenticatedYonetimBildirimlerRouteImport } from './routes/_a
 import { Route as AuthenticatedYonetimCozumOrtaklariRouteImport } from './routes/_authenticated/yonetim/cozum-ortaklari'
 import { Route as AuthenticatedYonetimEkiplerRouteImport } from './routes/_authenticated/yonetim/ekipler'
 import { Route as AuthenticatedYonetimEmirAiRouteImport } from './routes/_authenticated/yonetim/emir-ai'
+import { Route as AuthenticatedYonetimEmirTalepleriRouteImport } from './routes/_authenticated/yonetim/emir-talepleri'
 import { Route as AuthenticatedYonetimFirsatlarRouteImport } from './routes/_authenticated/yonetim/firsatlar'
 import { Route as AuthenticatedYonetimGayrimenkullerRouteImport } from './routes/_authenticated/yonetim/gayrimenkuller'
 import { Route as AuthenticatedYonetimKesiflerRouteImport } from './routes/_authenticated/yonetim/kesifler'
@@ -139,6 +140,12 @@ const AuthenticatedYonetimEmirAiRoute =
   AuthenticatedYonetimEmirAiRouteImport.update({
     id: '/emir-ai',
     path: '/emir-ai',
+    getParentRoute: () => AuthenticatedYonetimRouteRoute,
+  } as any)
+const AuthenticatedYonetimEmirTalepleriRoute =
+  AuthenticatedYonetimEmirTalepleriRouteImport.update({
+    id: '/emir-talepleri',
+    path: '/emir-talepleri',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
 const AuthenticatedYonetimFirsatlarRoute =
@@ -259,6 +266,7 @@ export interface FileRoutesByFullPath {
   '/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
   '/yonetim/ekipler': typeof AuthenticatedYonetimEkiplerRoute
   '/yonetim/emir-ai': typeof AuthenticatedYonetimEmirAiRoute
+  '/yonetim/emir-talepleri': typeof AuthenticatedYonetimEmirTalepleriRoute
   '/yonetim/firsatlar': typeof AuthenticatedYonetimFirsatlarRoute
   '/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
   '/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
@@ -292,6 +300,7 @@ export interface FileRoutesByTo {
   '/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
   '/yonetim/ekipler': typeof AuthenticatedYonetimEkiplerRoute
   '/yonetim/emir-ai': typeof AuthenticatedYonetimEmirAiRoute
+  '/yonetim/emir-talepleri': typeof AuthenticatedYonetimEmirTalepleriRoute
   '/yonetim/firsatlar': typeof AuthenticatedYonetimFirsatlarRoute
   '/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
   '/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
@@ -329,6 +338,7 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
   '/_authenticated/yonetim/ekipler': typeof AuthenticatedYonetimEkiplerRoute
   '/_authenticated/yonetim/emir-ai': typeof AuthenticatedYonetimEmirAiRoute
+  '/_authenticated/yonetim/emir-talepleri': typeof AuthenticatedYonetimEmirTalepleriRoute
   '/_authenticated/yonetim/firsatlar': typeof AuthenticatedYonetimFirsatlarRoute
   '/_authenticated/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
   '/_authenticated/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
@@ -366,6 +376,7 @@ export interface FileRouteTypes {
     | '/yonetim/cozum-ortaklari'
     | '/yonetim/ekipler'
     | '/yonetim/emir-ai'
+    | '/yonetim/emir-talepleri'
     | '/yonetim/firsatlar'
     | '/yonetim/gayrimenkuller'
     | '/yonetim/kesifler'
@@ -399,6 +410,7 @@ export interface FileRouteTypes {
     | '/yonetim/cozum-ortaklari'
     | '/yonetim/ekipler'
     | '/yonetim/emir-ai'
+    | '/yonetim/emir-talepleri'
     | '/yonetim/firsatlar'
     | '/yonetim/gayrimenkuller'
     | '/yonetim/kesifler'
@@ -435,6 +447,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/cozum-ortaklari'
     | '/_authenticated/yonetim/ekipler'
     | '/_authenticated/yonetim/emir-ai'
+    | '/_authenticated/yonetim/emir-talepleri'
     | '/_authenticated/yonetim/firsatlar'
     | '/_authenticated/yonetim/gayrimenkuller'
     | '/_authenticated/yonetim/kesifler'
@@ -582,6 +595,13 @@ declare module '@tanstack/react-router' {
       path: '/emir-ai'
       fullPath: '/yonetim/emir-ai'
       preLoaderRoute: typeof AuthenticatedYonetimEmirAiRouteImport
+      parentRoute: typeof AuthenticatedYonetimRouteRoute
+    }
+    '/_authenticated/yonetim/emir-talepleri': {
+      id: '/_authenticated/yonetim/emir-talepleri'
+      path: '/emir-talepleri'
+      fullPath: '/yonetim/emir-talepleri'
+      preLoaderRoute: typeof AuthenticatedYonetimEmirTalepleriRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
     '/_authenticated/yonetim/firsatlar': {
@@ -733,6 +753,7 @@ interface AuthenticatedYonetimRouteRouteChildren {
   AuthenticatedYonetimCozumOrtaklariRoute: typeof AuthenticatedYonetimCozumOrtaklariRoute
   AuthenticatedYonetimEkiplerRoute: typeof AuthenticatedYonetimEkiplerRoute
   AuthenticatedYonetimEmirAiRoute: typeof AuthenticatedYonetimEmirAiRoute
+  AuthenticatedYonetimEmirTalepleriRoute: typeof AuthenticatedYonetimEmirTalepleriRoute
   AuthenticatedYonetimFirsatlarRoute: typeof AuthenticatedYonetimFirsatlarRoute
   AuthenticatedYonetimGayrimenkullerRoute: typeof AuthenticatedYonetimGayrimenkullerRoute
   AuthenticatedYonetimKesiflerRoute: typeof AuthenticatedYonetimKesiflerRoute
@@ -762,6 +783,8 @@ const AuthenticatedYonetimRouteRouteChildren: AuthenticatedYonetimRouteRouteChil
       AuthenticatedYonetimCozumOrtaklariRoute,
     AuthenticatedYonetimEkiplerRoute: AuthenticatedYonetimEkiplerRoute,
     AuthenticatedYonetimEmirAiRoute: AuthenticatedYonetimEmirAiRoute,
+    AuthenticatedYonetimEmirTalepleriRoute:
+      AuthenticatedYonetimEmirTalepleriRoute,
     AuthenticatedYonetimFirsatlarRoute: AuthenticatedYonetimFirsatlarRoute,
     AuthenticatedYonetimGayrimenkullerRoute:
       AuthenticatedYonetimGayrimenkullerRoute,
