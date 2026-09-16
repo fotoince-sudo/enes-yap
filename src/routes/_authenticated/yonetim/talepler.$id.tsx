@@ -298,6 +298,21 @@ function RequestDetail() {
                   </option>
                 ))}
               </select>
+              <div>
+                <p className="mb-1 text-xs text-muted-foreground">Sorumlu personel</p>
+                <select
+                  className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                  value={request.assigned_to ?? ""}
+                  onChange={(e) => update.mutate({ assigned_to: e.target.value || null })}
+                >
+                  <option value="">Atanmadı</option>
+                  {staff.map((s) => (
+                    <option key={s.id} value={s.id}>
+                      {s.full_name ?? s.id}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className="grid gap-2">
                 <Button
                   variant="outline"
