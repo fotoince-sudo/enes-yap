@@ -93,7 +93,7 @@ type SourceRow = {
  * Motoru bir tur çalıştırır. Kilit alır, sınırlı sayıda kaynak denetler,
  * sonucu kaydeder ve kilidi bırakır.
  */
-export async function runSourceResearchCore(): Promise<SourceResearchResult> {
+async function runSourceResearchInner(): Promise<SourceResearchResult> {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const now = new Date();
   const nowIso = now.toISOString();
