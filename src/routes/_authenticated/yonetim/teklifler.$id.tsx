@@ -100,7 +100,6 @@ function QuoteDetail() {
         description: item.description.trim() || null,
         quantity: Number(item.quantity) || 0,
         unit: item.unit,
-        unit_price: Number(item.unit_price) || 0,
         material_cost: Number(item.material_cost) || 0,
         labor_cost: Number(item.labor_cost) || 0,
         sort_order: items.length,
