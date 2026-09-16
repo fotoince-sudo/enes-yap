@@ -40,6 +40,8 @@ function AuthPage() {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [notice, setNotice] = useState<string | null>(null);
+  const [errorText, setErrorText] = useState<string | null>(null);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -49,8 +51,11 @@ function AuthPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setNotice(null);
+    setErrorText(null);
     const parsed = schema.safeParse({ email, password, fullName });
     if (!parsed.success) {
+      setErrorText(parsed.error.issues[0]!.message);
       toast.error(parsed.error.issues[0]!.message);
       return;
     }
@@ -66,7 +71,12 @@ function AuthPage() {
           },
         });
         if (error) throw error;
-        toast.success("Kayıt oluşturuldu. E-postanızı onayladıktan sonra giriş yapabilirsiniz.");
+        setNotice(
+          `Kaydınız oluşturuldu. ${parsed.data.email} adresine bir onay e-postası gönderildi. Bağlantıya tıkladıktan sonra bu sayfadan giriş yapabilirsiniz.`,
+        );
+        toast.success("Kayıt oluşturuldu. E-postanızı onaylayın.");
+        setMode("signin");
+        setPassword("");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email: parsed.data.email,
@@ -76,7 +86,21 @@ function AuthPage() {
         navigate({ to: "/yonetim", replace: true });
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Bir hata oluştu.");
+      const raw = err instanceof Error ? err.message : "";
+      let msg = raw || "Bir hata oluştu.";
+      if (/already registered|already been registered/i.test(raw)) {
+        msg = "Bu e-posta ile zaten bir kayıt var. Giriş yapmayı deneyin veya e-posta onayınızı tamamlayın.";
+      } else if (/Invalid login credentials/i.test(raw)) {
+        msg = "E-posta veya şifre hatalı. Kayıt olduysanız e-posta onayını tamamladığınızdan emin olun.";
+      } else if (/Email not confirmed/i.test(raw)) {
+        msg = "E-posta adresiniz henüz onaylanmadı. Gelen kutunuzdaki onay bağlantısına tıklayın.";
+      } else if (/weak and easy to guess/i.test(raw)) {
+        msg = "Bu şifre çok zayıf ve daha önce sızmış şifreler arasında. Lütfen daha güçlü bir şifre seçin.";
+      } else if (/after \d+ seconds/i.test(raw)) {
+        msg = "Çok sık denediniz. Lütfen bir dakika bekleyip tekrar deneyin.";
+      }
+      setErrorText(msg);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
@@ -102,6 +126,16 @@ function AuthPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {notice ? (
+            <div className="rounded-md border border-primary/30 bg-primary/10 p-3 text-sm text-foreground">
+              {notice}
+            </div>
+          ) : null}
+          {errorText ? (
+            <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+              {errorText}
+            </div>
+          ) : null}
           <form onSubmit={submit} className="space-y-3">
             {mode === "signup" ? (
               <div>
