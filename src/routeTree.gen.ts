@@ -23,7 +23,9 @@ import { Route as AuthenticatedYonetimKesiflerRouteImport } from './routes/_auth
 import { Route as AuthenticatedYonetimMalzemelerRouteImport } from './routes/_authenticated/yonetim/malzemeler'
 import { Route as AuthenticatedYonetimMusterilerRouteImport } from './routes/_authenticated/yonetim/musteriler'
 import { Route as AuthenticatedYonetimRaporlarRouteImport } from './routes/_authenticated/yonetim/raporlar'
+import { Route as AuthenticatedYonetimTaleplerRouteImport } from './routes/_authenticated/yonetim/talepler'
 import { Route as AuthenticatedYonetimTedarikcilerRouteImport } from './routes/_authenticated/yonetim/tedarikciler'
+import { Route as AuthenticatedYonetimTaleplerIdRouteImport } from './routes/_authenticated/yonetim/talepler.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -105,11 +107,23 @@ const AuthenticatedYonetimRaporlarRoute =
     path: '/raporlar',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
+const AuthenticatedYonetimTaleplerRoute =
+  AuthenticatedYonetimTaleplerRouteImport.update({
+    id: '/talepler',
+    path: '/talepler',
+    getParentRoute: () => AuthenticatedYonetimRouteRoute,
+  } as any)
 const AuthenticatedYonetimTedarikcilerRoute =
   AuthenticatedYonetimTedarikcilerRouteImport.update({
     id: '/tedarikciler',
     path: '/tedarikciler',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
+  } as any)
+const AuthenticatedYonetimTaleplerIdRoute =
+  AuthenticatedYonetimTaleplerIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedYonetimTaleplerRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -125,8 +139,10 @@ export interface FileRoutesByFullPath {
   '/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
   '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
+  '/yonetim/talepler': typeof AuthenticatedYonetimTaleplerRouteWithChildren
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
   '/yonetim/': typeof AuthenticatedYonetimIndexRoute
+  '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -140,8 +156,10 @@ export interface FileRoutesByTo {
   '/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
   '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
+  '/yonetim/talepler': typeof AuthenticatedYonetimTaleplerRouteWithChildren
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
   '/yonetim': typeof AuthenticatedYonetimIndexRoute
+  '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -158,8 +176,10 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
   '/_authenticated/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/_authenticated/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
+  '/_authenticated/yonetim/talepler': typeof AuthenticatedYonetimTaleplerRouteWithChildren
   '/_authenticated/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
   '/_authenticated/yonetim/': typeof AuthenticatedYonetimIndexRoute
+  '/_authenticated/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -176,8 +196,10 @@ export interface FileRouteTypes {
     | '/yonetim/malzemeler'
     | '/yonetim/musteriler'
     | '/yonetim/raporlar'
+    | '/yonetim/talepler'
     | '/yonetim/tedarikciler'
     | '/yonetim/'
+    | '/yonetim/talepler/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -191,8 +213,10 @@ export interface FileRouteTypes {
     | '/yonetim/malzemeler'
     | '/yonetim/musteriler'
     | '/yonetim/raporlar'
+    | '/yonetim/talepler'
     | '/yonetim/tedarikciler'
     | '/yonetim'
+    | '/yonetim/talepler/$id'
   id:
     | '__root__'
     | '/'
@@ -208,8 +232,10 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/malzemeler'
     | '/_authenticated/yonetim/musteriler'
     | '/_authenticated/yonetim/raporlar'
+    | '/_authenticated/yonetim/talepler'
     | '/_authenticated/yonetim/tedarikciler'
     | '/_authenticated/yonetim/'
+    | '/_authenticated/yonetim/talepler/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -318,6 +344,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedYonetimRaporlarRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
+    '/_authenticated/yonetim/talepler': {
+      id: '/_authenticated/yonetim/talepler'
+      path: '/talepler'
+      fullPath: '/yonetim/talepler'
+      preLoaderRoute: typeof AuthenticatedYonetimTaleplerRouteImport
+      parentRoute: typeof AuthenticatedYonetimRouteRoute
+    }
     '/_authenticated/yonetim/tedarikciler': {
       id: '/_authenticated/yonetim/tedarikciler'
       path: '/tedarikciler'
@@ -325,8 +358,29 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedYonetimTedarikcilerRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
+    '/_authenticated/yonetim/talepler/$id': {
+      id: '/_authenticated/yonetim/talepler/$id'
+      path: '/$id'
+      fullPath: '/yonetim/talepler/$id'
+      preLoaderRoute: typeof AuthenticatedYonetimTaleplerIdRouteImport
+      parentRoute: typeof AuthenticatedYonetimTaleplerRoute
+    }
   }
 }
+
+interface AuthenticatedYonetimTaleplerRouteChildren {
+  AuthenticatedYonetimTaleplerIdRoute: typeof AuthenticatedYonetimTaleplerIdRoute
+}
+
+const AuthenticatedYonetimTaleplerRouteChildren: AuthenticatedYonetimTaleplerRouteChildren =
+  {
+    AuthenticatedYonetimTaleplerIdRoute: AuthenticatedYonetimTaleplerIdRoute,
+  }
+
+const AuthenticatedYonetimTaleplerRouteWithChildren =
+  AuthenticatedYonetimTaleplerRoute._addFileChildren(
+    AuthenticatedYonetimTaleplerRouteChildren,
+  )
 
 interface AuthenticatedYonetimRouteRouteChildren {
   AuthenticatedYonetimAyarlarRoute: typeof AuthenticatedYonetimAyarlarRoute
@@ -338,6 +392,7 @@ interface AuthenticatedYonetimRouteRouteChildren {
   AuthenticatedYonetimMalzemelerRoute: typeof AuthenticatedYonetimMalzemelerRoute
   AuthenticatedYonetimMusterilerRoute: typeof AuthenticatedYonetimMusterilerRoute
   AuthenticatedYonetimRaporlarRoute: typeof AuthenticatedYonetimRaporlarRoute
+  AuthenticatedYonetimTaleplerRoute: typeof AuthenticatedYonetimTaleplerRouteWithChildren
   AuthenticatedYonetimTedarikcilerRoute: typeof AuthenticatedYonetimTedarikcilerRoute
   AuthenticatedYonetimIndexRoute: typeof AuthenticatedYonetimIndexRoute
 }
@@ -355,6 +410,8 @@ const AuthenticatedYonetimRouteRouteChildren: AuthenticatedYonetimRouteRouteChil
     AuthenticatedYonetimMalzemelerRoute: AuthenticatedYonetimMalzemelerRoute,
     AuthenticatedYonetimMusterilerRoute: AuthenticatedYonetimMusterilerRoute,
     AuthenticatedYonetimRaporlarRoute: AuthenticatedYonetimRaporlarRoute,
+    AuthenticatedYonetimTaleplerRoute:
+      AuthenticatedYonetimTaleplerRouteWithChildren,
     AuthenticatedYonetimTedarikcilerRoute:
       AuthenticatedYonetimTedarikcilerRoute,
     AuthenticatedYonetimIndexRoute: AuthenticatedYonetimIndexRoute,
