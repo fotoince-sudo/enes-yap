@@ -161,11 +161,14 @@ export type Database = {
         Row: {
           collected: Json
           created_at: string
+          flags: Json
           id: string
+          last_flag_at: string | null
           message_count: number
           messages: Json
           request_id: string | null
           status: string
+          stop_reason: string | null
           summary: string | null
           survey_id: string | null
           updated_at: string
@@ -174,11 +177,14 @@ export type Database = {
         Insert: {
           collected?: Json
           created_at?: string
+          flags?: Json
           id?: string
+          last_flag_at?: string | null
           message_count?: number
           messages?: Json
           request_id?: string | null
           status?: string
+          stop_reason?: string | null
           summary?: string | null
           survey_id?: string | null
           updated_at?: string
@@ -187,11 +193,14 @@ export type Database = {
         Update: {
           collected?: Json
           created_at?: string
+          flags?: Json
           id?: string
+          last_flag_at?: string | null
           message_count?: number
           messages?: Json
           request_id?: string | null
           status?: string
+          stop_reason?: string | null
           summary?: string | null
           survey_id?: string | null
           updated_at?: string
