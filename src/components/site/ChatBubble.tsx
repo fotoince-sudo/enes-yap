@@ -1,14 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { MessageCircle, Paperclip, Phone, Send, X } from "lucide-react";
+import { Download, MessageCircle, Paperclip, Phone, Send, Trash2, X } from "lucide-react";
 
 import { emirChat, type EmirAttachment } from "@/lib/emir.functions";
 import { uploadRequestFiles } from "@/lib/uploads";
+import { downloadChatPdf } from "@/lib/chat-pdf";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import ReactMarkdown from "react-markdown";
 
-type Msg = { role: "user" | "assistant"; content: string };
+type Msg = { role: "user" | "assistant"; content: string; at: string };
 
 const GREETING = `Merhaba, ben Emir 👋
 
@@ -24,9 +25,33 @@ const SUGGESTIONS = [
   "Keşif talebi oluşturabilir misiniz?",
 ];
 
+const STORAGE_KEY = "emir-chat-v1";
+
+type Stored = { sessionId: string | null; startedAt: string; messages: Msg[]; files: EmirAttachment[] };
+
+function loadStored(): Stored | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Stored;
+    if (!Array.isArray(parsed.messages)) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
+}
+
+const clock = (at: string) => {
+  const d = new Date(at);
+  return Number.isNaN(d.getTime()) ? "" : d.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+};
+
 export function ChatBubble() {
   const [open, setOpen] = useState(false);
+  const [hydrated, setHydrated] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
+  const [startedAt, setStartedAt] = useState<string>(() => new Date().toISOString());
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -36,6 +61,28 @@ export function ChatBubble() {
   const inputRef = useRef<HTMLInputElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const ask = useServerFn(emirChat);
+
+  // Sohbet geçmişini bu tarayıcıdan geri yükle
+  useEffect(() => {
+    const stored = loadStored();
+    if (stored) {
+      setMessages(stored.messages);
+      setSessionId(stored.sessionId ?? null);
+      setFiles(Array.isArray(stored.files) ? stored.files : []);
+      if (stored.startedAt) setStartedAt(stored.startedAt);
+    }
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated || typeof window === "undefined") return;
+    const payload: Stored = { sessionId, startedAt, messages, files };
+    try {
+      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch {
+      /* depolama dolu olabilir */
+    }
+  }, [hydrated, sessionId, startedAt, messages, files]);
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight, behavior: "smooth" });
@@ -48,7 +95,7 @@ export function ChatBubble() {
   const send = async (text: string) => {
     const question = text.trim();
     if (!question || loading) return;
-    const next = [...messages, { role: "user" as const, content: question }];
+    const next: Msg[] = [...messages, { role: "user", content: question, at: new Date().toISOString() }];
     setMessages(next);
     setInput("");
     setLoading(true);
@@ -57,16 +104,23 @@ export function ChatBubble() {
       const res = await ask({
         data: {
           sessionId,
-          messages: next.slice(-24),
+          messages: next.slice(-24).map((m) => ({ role: m.role, content: m.content, at: m.at })),
           ...(sent.length ? { attachments: sent } : {}),
         },
       });
       if (res.sessionId) setSessionId(res.sessionId);
-      setMessages((prev) => [...prev, { role: "assistant", content: res.reply }]);
+      setMessages((prev) => [
+        ...prev,
+        { role: "assistant", content: res.reply, at: res.at ?? new Date().toISOString() },
+      ]);
     } catch {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: "Şu anda cevap veremedim. 0533 399 25 40 numarasından bize ulaşabilirsiniz." },
+        {
+          role: "assistant",
+          content: "Şu anda cevap veremedim. 0533 399 25 40 numarasından bize ulaşabilirsiniz.",
+          at: new Date().toISOString(),
+        },
       ]);
     } finally {
       setLoading(false);
@@ -81,12 +135,20 @@ export function ChatBubble() {
       setFiles((prev) => [...prev, ...uploaded].slice(0, 10));
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: `${uploaded.length} fotoğraf alındı. Talebiniz oluşturulduğunda ekibimize iletilecek.` },
+        {
+          role: "assistant",
+          content: `${uploaded.length} fotoğraf alındı. Talebiniz oluşturulduğunda ekibimize iletilecek.`,
+          at: new Date().toISOString(),
+        },
       ]);
     } catch (e) {
       setMessages((prev) => [
         ...prev,
-        { role: "assistant", content: e instanceof Error ? e.message : "Fotoğraf yüklenemedi." },
+        {
+          role: "assistant",
+          content: e instanceof Error ? e.message : "Fotoğraf yüklenemedi.",
+          at: new Date().toISOString(),
+        },
       ]);
     } finally {
       setUploading(false);
@@ -94,7 +156,15 @@ export function ChatBubble() {
     }
   };
 
-  const shown: Msg[] = [{ role: "assistant", content: GREETING }, ...messages];
+  const shown: Msg[] = [{ role: "assistant", content: GREETING, at: startedAt }, ...messages];
+
+  const clearChat = () => {
+    setMessages([]);
+    setFiles([]);
+    setSessionId(null);
+    setStartedAt(new Date().toISOString());
+    if (typeof window !== "undefined") window.localStorage.removeItem(STORAGE_KEY);
+  };
 
   return (
     <>
@@ -124,6 +194,32 @@ export function ChatBubble() {
             </div>
           </div>
 
+          <div className="flex items-center justify-between gap-2 border-b bg-muted/40 px-3 py-1.5 text-xs text-muted-foreground">
+            <span>{messages.length > 0 ? "Sohbet geçmişiniz bu cihazda saklanıyor." : "Sohbet geçmişi boş."}</span>
+            <div className="flex shrink-0 items-center gap-1">
+              <button
+                type="button"
+                onClick={() => downloadChatPdf(shown, startedAt)}
+                aria-label="Sohbeti PDF indir"
+                className="flex items-center gap-1 rounded-full border px-2.5 py-1 hover:bg-accent"
+              >
+                <Download className="h-3.5 w-3.5" />
+                PDF
+              </button>
+              {messages.length > 0 ? (
+                <button
+                  type="button"
+                  onClick={clearChat}
+                  aria-label="Sohbet geçmişini sil"
+                  className="flex items-center gap-1 rounded-full border px-2.5 py-1 hover:bg-accent"
+                >
+                  <Trash2 className="h-3.5 w-3.5" />
+                  Sil
+                </button>
+              ) : null}
+            </div>
+          </div>
+
           <div ref={listRef} className="flex-1 space-y-3 overflow-y-auto overscroll-contain p-4 [-webkit-overflow-scrolling:touch]">
             {shown.map((m, i) => (
               <div
@@ -139,6 +235,11 @@ export function ChatBubble() {
                 ) : (
                   m.content
                 )}
+                {clock(m.at) ? (
+                  <div className={`mt-1 text-[10px] ${m.role === "user" ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                    {clock(m.at)}
+                  </div>
+                ) : null}
               </div>
             ))}
             {loading ? <div className="text-xs text-muted-foreground">Emir yazıyor…</div> : null}

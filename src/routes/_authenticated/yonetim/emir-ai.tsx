@@ -9,13 +9,27 @@ export const Route = createFileRoute("/_authenticated/yonetim/emir-ai")({
   component: EmirAiPage,
 });
 
+type EmirFlag = { tip?: string; detay?: string | null; soru?: string | null; sonraki_adim?: string | null; at?: string };
+
+const FLAG_LABELS: Record<string, string> = {
+  anlasilamadi: "Anlaşılamadı",
+  celiskili_cevap: "Çelişkili cevap",
+  konu_disi: "Konu dışı",
+  bilgi_verilmedi: "Bilgi verilmedi",
+  akis_durduruldu: "Akış durduruldu",
+};
+
+function parseFlags(value: unknown): EmirFlag[] {
+  return Array.isArray(value) ? (value as EmirFlag[]) : [];
+}
+
 function EmirAiPage() {
   const { data: sessions = [] } = useQuery({
     queryKey: ["emir-sessions"],
     queryFn: async () => {
       const { data, error } = await supabase
         .from("emir_chat_sessions")
-        .select("id, summary, wants_survey, status, request_id, message_count, created_at")
+        .select("id, summary, wants_survey, status, request_id, message_count, created_at, flags, stop_reason, last_flag_at")
         .order("created_at", { ascending: false })
         .limit(50);
       if (error) throw error;
@@ -46,12 +60,17 @@ function EmirAiPage() {
   const surveyRequests = sessions.filter((s) => s.wants_survey).length;
   const waiting = requests.filter((r) => r.status === "yeni" || r.status === "inceleniyor").length;
 
+  const flagged = sessions
+    .map((s) => ({ session: s, flags: parseFlags(s.flags) }))
+    .filter((x) => x.flags.length > 0 || x.session.stop_reason);
+
   const stats = [
     { label: "Bugünkü sohbet", value: todayChats },
     { label: "Yeni müşteri talebi", value: newRequests },
     { label: "Eksik bilgili talep", value: incomplete.length },
     { label: "Keşif talebi", value: surveyRequests },
     { label: "Dönüş bekleyen", value: waiting },
+    { label: "Anlama sorunu", value: flagged.length },
   ];
 
   return (
@@ -138,6 +157,58 @@ function EmirAiPage() {
           )}
         </CardContent>
       </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Anlama sorunları ve durdurma nedenleri</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {flagged.length === 0 ? (
+            <p className="text-sm text-muted-foreground">
+              Kayıtlı anlama sorunu veya durdurma nedeni yok. Emir bir cevabı anlamadığında veya sohbeti kapattığında burada görünür.
+            </p>
+          ) : (
+            flagged.map(({ session, flags }) => (
+              <div key={session.id} className="rounded-lg border p-3 text-sm">
+                <div className="flex flex-wrap items-center justify-between gap-2">
+                  <span className="font-medium">{trDate(session.created_at)}</span>
+                  <span className="text-xs text-muted-foreground">{session.message_count} mesaj</span>
+                </div>
+                {session.stop_reason ? (
+                  <p className="mt-1 text-muted-foreground">
+                    <span className="font-medium text-foreground">Durdurma nedeni: </span>
+                    {session.stop_reason}
+                  </p>
+                ) : null}
+                <ul className="mt-2 space-y-2">
+                  {flags.map((f, i) => (
+                    <li key={i} className="rounded-md bg-muted/50 p-2">
+                      <span className="rounded-full bg-background px-2 py-0.5 text-xs">
+                        {FLAG_LABELS[f.tip ?? ""] ?? f.tip ?? "Kayıt"}
+                      </span>
+                      {f.detay ? <p className="mt-1 text-muted-foreground">{f.detay}</p> : null}
+                      {f.soru ? <p className="mt-1 text-xs text-muted-foreground">Netleştirme sorusu: {f.soru}</p> : null}
+                      {f.sonraki_adim ? (
+                        <p className="mt-1 text-xs text-muted-foreground">Devam adımı: {f.sonraki_adim}</p>
+                      ) : null}
+                    </li>
+                  ))}
+                </ul>
+                {session.request_id ? (
+                  <Link
+                    to="/yonetim/talepler/$id"
+                    params={{ id: session.request_id }}
+                    className="mt-2 inline-block text-xs text-primary hover:underline"
+                  >
+                    Talebi aç
+                  </Link>
+                ) : null}
+              </div>
+            ))
+          )}
+        </CardContent>
+      </Card>
+
 
       {incomplete.length > 0 ? (
         <Card>

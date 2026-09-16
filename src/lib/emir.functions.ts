@@ -14,6 +14,7 @@ const schema = z.object({
       z.object({
         role: z.enum(["user", "assistant"]),
         content: z.string().min(1).max(4000),
+        at: z.string().max(40).optional(),
       }),
     )
     .min(1)
@@ -47,6 +48,11 @@ ANLAMA VE AKIŞ (çok önemli)
 - EMİN OLAMADIĞINDA TAHMİN ETME: cevabı gerçekten anlamadıysan veya çelişkiliyse net bir dille dur ve sor: "Sizi tam anlayamadım; ... mı demek istediniz?" Aynı konuda iki kez anlaşamazsanız akışı kibarca kapat: "Yanlış anlamamak için bilgilerinizi ekibimize aktarayım; 0533 399 25 40'tan da yazabilirsiniz." de ve elindeki bilgiyle ilerle.
 - Konu Enes Yapı'nın hizmet alanının tamamen dışındaysa (alakasız sorular, başka firma işleri) açıkça söyle: "Bu konuda yardımcı olamıyorum; ben Enes Yapı'nın tadilat ve yenileme işleri için buradayım." de ve sohbeti kendi konusuna döndür.
 - Kullanıcı bilgi vermek istemiyorsa veya "şimdi olmaz" derse zorlamayı bırak, WhatsApp ve telefonu hatırlat, sohbeti nazikçe bitir.
+
+NETLEŞTİRME KAYDI (zorunlu)
+- Kullanıcının cevabını anlamadığında, cevap sorduğun şeyle uyuşmadığında, konu hizmet alanının dışında olduğunda, kullanıcı bilgi vermeyi reddettiğinde veya akışı kibarca kapattığında "netlestirme_kaydet" aracını çağır.
+- Aracı çağırırken: tip alanına durumu yaz (anlasilamadi, celiskili_cevap, konu_disi, bilgi_verilmedi, akis_durduruldu), detay alanına kullanıcının ne dediğini ve neyi anlamadığını kısaca yaz, netlestirme_sorusu alanına kullanıcıya soracağın tek net soruyu yaz, sonraki_adim alanına akışın nasıl devam edeceğini yaz.
+- Aracı çağırdıktan sonra kullanıcıya yazdığın cevapta o netleştirme sorusunu doğal bir dille sor ve doğru devam adımına geç. Aynı konuda iki kez anlaşılamadıysa tip olarak akis_durduruldu kullan, açık bir kapanış mesajı ver ve elindeki bilgiyle ilerle.
 
 TOPLANACAK BİLGİLER (doğal akışta, sırayla değil): yapılacak iş ve kapsam, iş kategorisi, mekân tipi (ev/daire/ofis/dükkan/villa/diğer), ilçe, mahalle, yaklaşık m², tahmini bütçe (kullanıcı isterse), ad soyad, telefon, uygun iletişim zamanı, keşif isteyip istemediği.
 
@@ -88,6 +94,28 @@ const tools = [
           },
         },
         required: ["full_name", "phone", "description", "summary"],
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "netlestirme_kaydet",
+      description:
+        "Kullanıcının cevabı anlaşılmadığında, çelişkili olduğunda, konu dışı olduğunda, bilgi verilmediğinde veya akış durdurulduğunda bunu kaydeder ve netleştirme sorusuyla akışa devam edilmesini sağlar.",
+      parameters: {
+        type: "object",
+        properties: {
+          tip: {
+            type: "string",
+            enum: ["anlasilamadi", "celiskili_cevap", "konu_disi", "bilgi_verilmedi", "akis_durduruldu"],
+            description: "Durumun tipi",
+          },
+          detay: { type: "string", description: "Kullanıcının ne dediği ve neyin anlaşılmadığı, kısa açıklama" },
+          netlestirme_sorusu: { type: "string", description: "Kullanıcıya sorulacak tek net netleştirme sorusu" },
+          sonraki_adim: { type: "string", description: "Akışın nasıl devam edeceği" },
+        },
+        required: ["tip", "detay"],
       },
     },
   },
@@ -140,14 +168,17 @@ export const emirChat = createServerFn({ method: "POST" })
     // Sohbet oturumu (yalnızca yönetim panelinden görülebilir)
     let sessionId = data.sessionId ?? null;
     let existingRequestId: string | null = null;
+    let existingFlags: unknown[] = [];
     if (sessionId) {
       const { data: row } = await supabaseAdmin
         .from("emir_chat_sessions")
-        .select("id, request_id")
+        .select("id, request_id, flags")
         .eq("id", sessionId)
         .maybeSingle();
-      if (row) existingRequestId = row.request_id;
-      else sessionId = null;
+      if (row) {
+        existingRequestId = row.request_id;
+        existingFlags = Array.isArray(row.flags) ? (row.flags as unknown[]) : [];
+      } else sessionId = null;
     }
     if (!sessionId) {
       const { data: created, error } = await supabaseAdmin
@@ -188,19 +219,65 @@ export const emirChat = createServerFn({ method: "POST" })
     let summary: string | null = null;
     let wantsSurvey = false;
     let collected: Record<string, unknown> = {};
+    const newFlags: Array<{
+      tip: string;
+      detay: string | null;
+      soru: string | null;
+      sonraki_adim: string | null;
+      at: string;
+    }> = [];
+    let stopReason: string | null = null;
+
+    const parseArgs = (raw: string) => {
+      try {
+        return JSON.parse(raw || "{}") as Record<string, unknown>;
+      } catch {
+        return {} as Record<string, unknown>;
+      }
+    };
 
     try {
       let completion = await callGateway(apiKey, history);
       let message = completion.choices?.[0]?.message;
+      const calls = message?.tool_calls ?? [];
+      const toolMessages: GwMessage[] = [];
 
-      const call = message?.tool_calls?.[0];
-      if (call && call.function.name === "talep_olustur" && !existingRequestId) {
-        let args: Record<string, unknown> = {};
-        try {
-          args = JSON.parse(call.function.arguments || "{}");
-        } catch {
-          args = {};
+      for (const call of calls) {
+        const args = parseArgs(call.function.arguments);
+
+        if (call.function.name === "netlestirme_kaydet") {
+          const tip = String(args["tip"] ?? "anlasilamadi").slice(0, 40);
+          const detay = args["detay"] ? String(args["detay"]).slice(0, 500) : null;
+          const soru = args["netlestirme_sorusu"] ? String(args["netlestirme_sorusu"]).slice(0, 300) : null;
+          const sonraki = args["sonraki_adim"] ? String(args["sonraki_adim"]).slice(0, 300) : null;
+          newFlags.push({ tip, detay, soru, sonraki_adim: sonraki, at: new Date().toISOString() });
+          if (tip === "akis_durduruldu" || tip === "konu_disi" || tip === "bilgi_verilmedi") {
+            stopReason = detay ?? tip;
+          }
+          toolMessages.push({
+            role: "tool",
+            tool_call_id: call.id,
+            content: JSON.stringify({
+              ok: true,
+              devam: soru
+                ? "Kayıt alındı. Şimdi bu netleştirme sorusunu kullanıcıya doğal bir dille sor ve akışa oradan devam et."
+                : "Kayıt alındı. Akışı elindeki bilgiyle sürdür veya kibarca kapat.",
+            }),
+          });
+          continue;
         }
+
+        if (call.function.name !== "talep_olustur") continue;
+
+        if (requestId) {
+          toolMessages.push({
+            role: "tool",
+            tool_call_id: call.id,
+            content: JSON.stringify({ ok: false, error: "Bu sohbette zaten talep oluşturuldu." }),
+          });
+          continue;
+        }
+
         collected = args;
         summary = typeof args["summary"] === "string" ? (args["summary"] as string) : null;
         wantsSurvey = args["wants_survey"] === true;
@@ -245,7 +322,10 @@ export const emirChat = createServerFn({ method: "POST" })
 
           if (error || !inserted) {
             console.error("emir request insert failed", error);
-            toolResult = JSON.stringify({ ok: false, error: "Talep kaydedilemedi, kullanıcıya telefonla ulaşmasını öner." });
+            toolResult = JSON.stringify({
+              ok: false,
+              error: "Talep kaydedilemedi, kullanıcıya telefonla ulaşmasını öner.",
+            });
           } else {
             requestId = inserted.id;
             let surveyId: string | null = null;
@@ -285,10 +365,14 @@ export const emirChat = createServerFn({ method: "POST" })
           }
         }
 
+        toolMessages.push({ role: "tool", tool_call_id: call.id, content: toolResult });
+      }
+
+      if (toolMessages.length) {
         completion = await callGateway(apiKey, [
           ...history,
           { role: "assistant", content: message?.content ?? "", tool_calls: message?.tool_calls },
-          { role: "tool", tool_call_id: call.id, content: toolResult },
+          ...toolMessages,
         ]);
         message = completion.choices?.[0]?.message;
       }
@@ -303,17 +387,29 @@ export const emirChat = createServerFn({ method: "POST" })
           : FALLBACK;
     }
 
+    const replyAt = new Date().toISOString();
+
     if (sessionId) {
-      const transcript = [...data.messages, { role: "assistant" as const, content: reply }];
+      const transcript = [
+        ...data.messages.map((m) => ({ role: m.role, content: m.content, at: m.at ?? null })),
+        { role: "assistant" as const, content: reply, at: replyAt },
+      ];
       await supabaseAdmin
         .from("emir_chat_sessions")
         .update({
           messages: transcript as never,
           message_count: transcript.length,
           ...(summary ? { summary } : {}),
+          ...(newFlags.length
+            ? {
+                flags: [...existingFlags, ...newFlags] as never,
+                last_flag_at: newFlags[newFlags.length - 1]!.at,
+              }
+            : {}),
+          ...(stopReason ? { stop_reason: stopReason.slice(0, 500) } : {}),
         })
         .eq("id", sessionId);
     }
 
-    return { reply, sessionId, requestId };
+    return { reply, sessionId, requestId, at: replyAt };
   });
