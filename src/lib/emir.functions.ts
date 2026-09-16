@@ -168,14 +168,17 @@ export const emirChat = createServerFn({ method: "POST" })
     // Sohbet oturumu (yalnızca yönetim panelinden görülebilir)
     let sessionId = data.sessionId ?? null;
     let existingRequestId: string | null = null;
+    let existingFlags: unknown[] = [];
     if (sessionId) {
       const { data: row } = await supabaseAdmin
         .from("emir_chat_sessions")
-        .select("id, request_id")
+        .select("id, request_id, flags")
         .eq("id", sessionId)
         .maybeSingle();
-      if (row) existingRequestId = row.request_id;
-      else sessionId = null;
+      if (row) {
+        existingRequestId = row.request_id;
+        existingFlags = Array.isArray(row.flags) ? (row.flags as unknown[]) : [];
+      } else sessionId = null;
     }
     if (!sessionId) {
       const { data: created, error } = await supabaseAdmin
