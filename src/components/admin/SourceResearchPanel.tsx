@@ -265,3 +265,106 @@ function Stat({ label, value }: { label: string; value: string }) {
     </div>
   );
 }
+
+type SourceRow = {
+  id: string;
+  permission_status: string;
+  robots_allowed: boolean | null;
+  reachable: boolean | null;
+  approved_at: string | null;
+  feed_url: string | null;
+  feed_type: string | null;
+  last_collect_count: number | null;
+};
+
+/** Kaynağın izin durumunu ve resmî besleme adresini yöneticinin onaylaması. */
+function SourceApproval({
+  source,
+  saving,
+  onSave,
+}: {
+  source: SourceRow;
+  saving: boolean;
+  onSave: (input: {
+    permission_status: "izinli" | "inceleniyor" | "izinsiz";
+    feed_url?: string;
+    feed_type?: "rss" | "json";
+  }) => void;
+}) {
+  const [status, setStatus] = useState<"izinli" | "inceleniyor" | "izinsiz">(
+    (source.permission_status as "izinli" | "inceleniyor" | "izinsiz") ?? "inceleniyor",
+  );
+  const [feedUrl, setFeedUrl] = useState(source.feed_url ?? "");
+  const [feedType, setFeedType] = useState<"rss" | "json">(
+    (source.feed_type as "rss" | "json") ?? "rss",
+  );
+
+  const blocked = source.robots_allowed === false || source.reachable !== true;
+  const dirty =
+    status !== source.permission_status ||
+    feedUrl !== (source.feed_url ?? "") ||
+    feedType !== ((source.feed_type as "rss" | "json") ?? "rss");
+
+  return (
+    <div className="min-w-[220px] space-y-2">
+      <select
+        aria-label="İzin durumu"
+        className="h-10 w-full rounded-md border bg-background px-2 text-sm"
+        value={status}
+        onChange={(e) => setStatus(e.target.value as typeof status)}
+      >
+        <option value="inceleniyor">{PERMISSION_LABEL.inceleniyor}</option>
+        <option value="izinli" disabled={blocked}>
+          {PERMISSION_LABEL.izinli}
+        </option>
+        <option value="izinsiz">{PERMISSION_LABEL.izinsiz}</option>
+      </select>
+
+      <Input
+        aria-label="Resmî besleme adresi (RSS / JSON)"
+        placeholder="Resmî besleme adresi (RSS / JSON)"
+        value={feedUrl}
+        onChange={(e) => setFeedUrl(e.target.value)}
+      />
+
+      {feedUrl ? (
+        <select
+          aria-label="Besleme türü"
+          className="h-10 w-full rounded-md border bg-background px-2 text-sm"
+          value={feedType}
+          onChange={(e) => setFeedType(e.target.value as "rss" | "json")}
+        >
+          <option value="rss">RSS / Atom</option>
+          <option value="json">JSON</option>
+        </select>
+      ) : null}
+
+      <Button
+        size="sm"
+        variant="outline"
+        className="w-full"
+        disabled={saving || !dirty}
+        onClick={() =>
+          onSave({
+            permission_status: status,
+            ...(feedUrl ? { feed_url: feedUrl, feed_type: feedType } : { feed_url: "" }),
+          })
+        }
+      >
+        Onayı kaydet
+      </Button>
+
+      {blocked ? (
+        <p className="text-xs text-muted-foreground">
+          Bu kaynak otomatik erişime kapalı veya erişilemiyor — izinli işaretlenemez.
+        </p>
+      ) : null}
+      {source.approved_at ? (
+        <p className="text-xs text-muted-foreground">
+          Onaylandı: {trDate(source.approved_at)}
+          {source.last_collect_count ? ` — son turda ${source.last_collect_count} aday` : ""}
+        </p>
+      ) : null}
+    </div>
+  );
+}
