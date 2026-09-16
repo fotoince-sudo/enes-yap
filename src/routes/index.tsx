@@ -206,16 +206,42 @@ function HomePage() {
             <p className="mt-2 text-muted-foreground">
               Tamamlanan işlerin önce, uygulama sırası ve sonra kayıtlarını tutuyoruz.
             </p>
-            <div className="mt-6 grid gap-4 sm:grid-cols-2">
-              <figure>
-                <img src={beforeImage} alt="Tadilat öncesi mekân" className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
-                <figcaption className="mt-2 text-sm text-muted-foreground">Önce</figcaption>
-              </figure>
-              <figure>
-                <img src={afterImage} alt="Tadilat sonrası yenilenen mekân" className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
-                <figcaption className="mt-2 text-sm text-muted-foreground">Sonra</figcaption>
-              </figure>
-            </div>
+            {beforeAfter.length > 0 ? (
+              <div className="mt-6 space-y-8">
+                {beforeAfter.map((r) => (
+                  <div key={r.id}>
+                    <h3 className="font-medium">
+                      {r.title ?? r.work_type ?? "Tadilat çalışması"}
+                      {r.happened_on ? (
+                        <span className="text-muted-foreground"> · {trDate(r.happened_on)}</span>
+                      ) : null}
+                    </h3>
+                    <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                      <figure>
+                        <img src={r.before_url!} alt={`${r.title ?? "Tadilat"} öncesi`} className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
+                        <figcaption className="mt-2 text-sm text-muted-foreground">Önce</figcaption>
+                      </figure>
+                      <figure>
+                        <img src={r.after_url!} alt={`${r.title ?? "Tadilat"} sonrası`} className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
+                        <figcaption className="mt-2 text-sm text-muted-foreground">Sonra</figcaption>
+                      </figure>
+                    </div>
+                    {r.description ? <p className="mt-2 text-sm text-muted-foreground">{r.description}</p> : null}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="mt-6 grid gap-4 sm:grid-cols-2">
+                <figure>
+                  <img src={beforeImage} alt="Tadilat öncesi mekân" className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
+                  <figcaption className="mt-2 text-sm text-muted-foreground">Önce</figcaption>
+                </figure>
+                <figure>
+                  <img src={afterImage} alt="Tadilat sonrası yenilenen mekân" className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
+                  <figcaption className="mt-2 text-sm text-muted-foreground">Sonra</figcaption>
+                </figure>
+              </div>
+            )}
           </div>
         </section>
 
