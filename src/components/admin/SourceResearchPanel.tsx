@@ -314,11 +314,11 @@ function SourceApproval({
         value={status}
         onChange={(e) => setStatus(e.target.value as typeof status)}
       >
-        <option value="inceleniyor">{PERMISSION_LABEL.inceleniyor}</option>
+        <option value="inceleniyor">{PERMISSION_LABEL["inceleniyor"]}</option>
         <option value="izinli" disabled={blocked}>
-          {PERMISSION_LABEL.izinli}
+          {PERMISSION_LABEL["izinli"]}
         </option>
-        <option value="izinsiz">{PERMISSION_LABEL.izinsiz}</option>
+        <option value="izinsiz">{PERMISSION_LABEL["izinsiz"]}</option>
       </select>
 
       <Input
