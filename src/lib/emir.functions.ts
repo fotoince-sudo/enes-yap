@@ -97,6 +97,28 @@ const tools = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "netlestirme_kaydet",
+      description:
+        "Kullanıcının cevabı anlaşılmadığında, çelişkili olduğunda, konu dışı olduğunda, bilgi verilmediğinde veya akış durdurulduğunda bunu kaydeder ve netleştirme sorusuyla akışa devam edilmesini sağlar.",
+      parameters: {
+        type: "object",
+        properties: {
+          tip: {
+            type: "string",
+            enum: ["anlasilamadi", "celiskili_cevap", "konu_disi", "bilgi_verilmedi", "akis_durduruldu"],
+            description: "Durumun tipi",
+          },
+          detay: { type: "string", description: "Kullanıcının ne dediği ve neyin anlaşılmadığı, kısa açıklama" },
+          netlestirme_sorusu: { type: "string", description: "Kullanıcıya sorulacak tek net netleştirme sorusu" },
+          sonraki_adim: { type: "string", description: "Akışın nasıl devam edeceği" },
+        },
+        required: ["tip", "detay"],
+      },
+    },
+  },
 ] as const;
 
 type GwMessage = {
