@@ -113,6 +113,13 @@ function RequestDetail() {
     },
   });
 
+  const chatMessages = (
+    Array.isArray(emirSession?.messages) ? (emirSession?.messages as unknown[]) : []
+  )
+    .map((m) => m as { role?: string; content?: string; at?: string | null })
+    .filter((m) => typeof m.content === "string" && m.content.length > 0)
+    .map((m) => ({ role: m.role === "user" ? "user" : "assistant", content: m.content as string, at: m.at ?? null }));
+
   useEffect(() => {
     const photos = (request?.photo_urls as string[] | null) ?? [];
     const videos = (request?.video_urls as string[] | null) ?? [];
