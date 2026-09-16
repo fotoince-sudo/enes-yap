@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const Route = createFileRoute("/_authenticated/yonetim")({
@@ -98,9 +99,12 @@ function AdminLayout() {
     <div className="min-h-screen bg-muted/30 lg:flex">
       <aside className="border-b bg-card lg:h-screen lg:w-64 lg:shrink-0 lg:overflow-y-auto lg:border-r lg:border-b-0">
         <div className="flex items-center justify-between p-4">
-          <div>
-            <p className="font-semibold tracking-tight">Enes Yapı</p>
-            <p className="text-xs text-muted-foreground">Yönetim Paneli</p>
+          <div className="flex items-center gap-2.5">
+            <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 object-contain" />
+            <div>
+              <p className="font-semibold tracking-tight">Enes Yapı</p>
+              <p className="text-xs text-muted-foreground">Yönetim Paneli</p>
+            </div>
           </div>
           <Button
             size="sm"

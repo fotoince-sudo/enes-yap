@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 
 export const Route = createFileRoute("/_authenticated/hesabim")({
   component: CustomerLayout,
@@ -45,9 +46,12 @@ function CustomerLayout() {
     <div className="min-h-screen bg-muted/30">
       <header className="border-b bg-card">
         <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-3 p-4">
-          <div>
-            <p className="font-semibold tracking-tight">Enes Yapı</p>
-            <p className="text-xs text-muted-foreground">Müşteri Hesabım</p>
+          <div className="flex items-center gap-2.5">
+            <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 object-contain" />
+            <div>
+              <p className="font-semibold tracking-tight">Enes Yapı</p>
+              <p className="text-xs text-muted-foreground">Müşteri Hesabım</p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             {me?.isStaff ? (
