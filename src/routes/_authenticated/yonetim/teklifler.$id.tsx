@@ -12,6 +12,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { QUOTE_STATUS, UNITS, tl } from "@/lib/domain";
 import { downloadQuotePdf } from "@/lib/quote-pdf";
+import { logActivity } from "@/lib/activity";
 import { ActivityPanel } from "@/components/admin/ActivityPanel";
 
 export const Route = createFileRoute("/_authenticated/yonetim/teklifler/$id")({
@@ -150,9 +151,10 @@ function QuoteDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const createPdf = () => {
-    if (!quote) return;
-    try {
+  const createPdf = useMutation({
+    mutationFn: async () => {
+      if (!quote) return;
+      if (items.length === 0) throw new Error("Teklifte kalem yok. Önce iş kalemi ekleyin.");
       downloadQuotePdf({
         quoteNo: quote.quote_no,
         title: quote.title,
@@ -180,10 +182,39 @@ function QuoteDetail() {
         vat,
         grandTotal,
       });
-    } catch (e) {
-      toast.error((e as Error).message);
-    }
-  };
+
+      const advance = quote.status === "taslak" || quote.status === "hazirlaniyor";
+      const patch: Record<string, unknown> = {
+        materials_total: materials,
+        labor_total: labor,
+        grand_total: grandTotal,
+      };
+      if (advance) patch['status'] = "gonderildi";
+      const { error } = await supabase.from("quotes").update(patch as never).eq("id", id);
+      if (error) throw error;
+
+      await logActivity({
+        entity: "quote",
+        entityId: id,
+        type: "quote_pdf",
+        note: `PDF teklif oluşturuldu. Genel toplam: ${tl(grandTotal)}`,
+        oldStatus: advance ? quote.status : null,
+        newStatus: advance ? "gonderildi" : null,
+      });
+      return advance;
+    },
+    onSuccess: (advance) => {
+      toast.success(
+        advance
+          ? "PDF teklif oluşturuldu, teklif “Gönderildi” durumuna alındı."
+          : "PDF teklif oluşturuldu, tutarlar kaydedildi.",
+      );
+      queryClient.invalidateQueries({ queryKey: ["quote", id] });
+      queryClient.invalidateQueries({ queryKey: ["quotes"] });
+      queryClient.invalidateQueries({ queryKey: ["activity", "quote", id] });
+    },
+    onError: (e: Error) => toast.error(e.message),
+  });
 
   if (isLoading) return <p className="text-sm text-muted-foreground">Yükleniyor…</p>;
   if (!quote) return <p className="text-sm text-muted-foreground">Teklif bulunamadı.</p>;
@@ -201,7 +232,7 @@ function QuoteDetail() {
           <Button variant="outline" asChild>
             <Link to="/yonetim/teklifler">Listeye dön</Link>
           </Button>
-          <Button variant="outline" onClick={createPdf}>
+          <Button variant="outline" onClick={() => createPdf.mutate()} disabled={createPdf.isPending}>
             PDF teklif oluştur
           </Button>
           <Button onClick={() => toProject.mutate()}>Projeye dönüştür</Button>
