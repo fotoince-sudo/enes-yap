@@ -154,9 +154,12 @@ function AuthPage() {
     <main className="flex min-h-screen items-center justify-center bg-muted/40 px-4 py-12">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Enes Yapı — Personel Girişi</CardTitle>
+          <CardTitle>Enes Yapı — Giriş / Kayıt</CardTitle>
           <CardDescription>
-            Yönetim paneline erişim için giriş yapın. Panel yetkisi yöneticiniz tarafından tanımlanır.
+            <strong className="text-foreground">Müşteriler:</strong> tadilat talebinizde kullandığınız e-posta ile
+            hesap oluşturun; talep, teklif ve projelerinizi kendi hesabınızdan takip edin.{" "}
+            <strong className="text-foreground">Personel:</strong> aynı sayfadan giriş yaptığınızda yönetim paneline
+            yönlendirilirsiniz.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
