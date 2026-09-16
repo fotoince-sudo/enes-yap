@@ -102,6 +102,13 @@ function RequestList() {
                   </TableCell>
                   <TableCell className="max-w-[180px] truncate">{r.renovation_type ?? "—"}</TableCell>
                   <TableCell>{r.area_m2 ?? "—"}</TableCell>
+                  <TableCell className="whitespace-nowrap">
+                    {r.source === "web-emir" ? (
+                      <Badge variant="outline">WEB / EMİR</Badge>
+                    ) : (
+                      <span className="text-muted-foreground">{r.source ?? "—"}</span>
+                    )}
+                  </TableCell>
                   <TableCell>
                     <Badge variant={r.status === "yeni" ? "default" : "secondary"}>
                       {REQUEST_STATUS[r.status as keyof typeof REQUEST_STATUS]}
