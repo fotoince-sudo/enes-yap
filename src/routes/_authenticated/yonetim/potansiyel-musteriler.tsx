@@ -133,6 +133,10 @@ function Prospects() {
             kurulmadı; onayınız olmadan hiçbir dış siteye tarama başlatılmaz.
           </p>
           <p>
+            Tarama bölgesi yalnızca İzmir ilidir: İzmir dışındaki ilan, talep ve fırsatlar taranmaz ve kaydedilemez
+            (il alanı sistem tarafından İzmir ile sınırlıdır).
+          </p>
+          <p>
             Yalnızca erişimine ve otomatik kullanımına açıkça izin verilen kaynaklar kullanılır: resmî API, açık veri,
             izinli ilan/talep kaynakları, kendi web formunuz, tavsiye ve saha kayıtları. Kaynak izin durumu "İzinsiz"
             olan adaylar takibe alınmaz.
