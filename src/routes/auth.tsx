@@ -110,13 +110,13 @@ function AuthPage() {
           email: parsed.data.email,
           password: parsed.data.password,
           options: {
-            emailRedirectTo: `${window.location.origin}/yonetim`,
+            emailRedirectTo: `${window.location.origin}/hesabim`,
             data: { full_name: parsed.data.fullName || null },
           },
         });
         if (error) throw error;
         setNotice(
-          `Kaydınız oluşturuldu. ${parsed.data.email} adresine bir onay e-postası gönderildi. Bağlantıya tıkladıktan sonra bu sayfadan giriş yapabilirsiniz.`,
+          `Hesabınız oluşturuldu. ${parsed.data.email} adresine bir onay e-postası gönderildi. E-postadaki bağlantıya tıklayıp onayı tamamladıktan sonra bu sayfadan giriş yapabilirsiniz. Talep, teklif ve projeleriniz aynı e-posta ile eşleşerek hesabınızda görünür.`,
         );
         toast.success("Kayıt oluşturuldu. E-postanızı onaylayın.");
         setMode("signin");
