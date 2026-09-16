@@ -71,7 +71,11 @@ function QuoteDetail() {
   const itemsTotal = items.reduce((s, i) => s + Number(i.line_total ?? 0), 0);
   const materials = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.material_cost ?? 0), 0);
   const labor = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.labor_cost ?? 0), 0);
-  const newUnitPrice = (Number(item.material_cost) || 0) + (Number(item.labor_cost) || 0);
+  // Saat ve saat ücreti girildiyse işçilik otomatik; aksi halde elle girilen tutar.
+  const autoLabor = item.labor_hours.trim() !== "" && item.labor_hourly_rate.trim() !== "";
+  const computedLabor = (Number(item.labor_hours) || 0) * (Number(item.labor_hourly_rate) || 0);
+  const effectiveLabor = autoLabor ? computedLabor : Number(item.labor_cost) || 0;
+  const newUnitPrice = (Number(item.material_cost) || 0) + effectiveLabor;
   const newLineTotal = (Number(item.quantity) || 0) * newUnitPrice;
   const extra = Number(quote?.extra_total ?? 0);
   const discount = Number(quote?.discount ?? 0);
