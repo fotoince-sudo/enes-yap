@@ -298,11 +298,11 @@ function Staff() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={6}>Yükleniyor…</TableCell>
+                <TableCell colSpan={7}>Yükleniyor…</TableCell>
               </TableRow>
             ) : profiles.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={6} className="text-muted-foreground">
+                <TableCell colSpan={7} className="text-muted-foreground">
                   Kayıtlı kullanıcı yok.
                 </TableCell>
               </TableRow>
@@ -312,6 +312,7 @@ function Staff() {
                 return (
                   <TableRow key={p.id}>
                     <TableCell className="max-w-[220px] truncate">{p.full_name ?? "—"}</TableCell>
+                    <TableCell className="max-w-[220px] truncate">{p.email ?? "—"}</TableCell>
                     <TableCell>{p.phone ?? "—"}</TableCell>
                     <TableCell>{trDate(p.created_at)}</TableCell>
                     <TableCell>
