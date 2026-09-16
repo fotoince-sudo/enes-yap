@@ -20,7 +20,16 @@ export const Route = createFileRoute("/_authenticated/yonetim/teklifler/$id")({
   errorComponent: ({ error }) => <p className="text-sm text-destructive">Teklif açılamadı: {error.message}</p>,
 });
 
-const emptyItem = { title: "", description: "", quantity: "1", unit: "adet", material_cost: "0", labor_cost: "0" };
+const emptyItem = {
+  title: "",
+  description: "",
+  quantity: "1",
+  unit: "adet",
+  material_cost: "0",
+  labor_cost: "0",
+  labor_hours: "",
+  labor_hourly_rate: "",
+};
 
 function QuoteDetail() {
   const { id } = Route.useParams();
@@ -62,7 +71,11 @@ function QuoteDetail() {
   const itemsTotal = items.reduce((s, i) => s + Number(i.line_total ?? 0), 0);
   const materials = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.material_cost ?? 0), 0);
   const labor = items.reduce((s, i) => s + Number(i.quantity ?? 0) * Number(i.labor_cost ?? 0), 0);
-  const newUnitPrice = (Number(item.material_cost) || 0) + (Number(item.labor_cost) || 0);
+  // Saat ve saat ücreti girildiyse işçilik otomatik; aksi halde elle girilen tutar.
+  const autoLabor = item.labor_hours.trim() !== "" && item.labor_hourly_rate.trim() !== "";
+  const computedLabor = (Number(item.labor_hours) || 0) * (Number(item.labor_hourly_rate) || 0);
+  const effectiveLabor = autoLabor ? computedLabor : Number(item.labor_cost) || 0;
+  const newUnitPrice = (Number(item.material_cost) || 0) + effectiveLabor;
   const newLineTotal = (Number(item.quantity) || 0) * newUnitPrice;
   const extra = Number(quote?.extra_total ?? 0);
   const discount = Number(quote?.discount ?? 0);
@@ -94,7 +107,9 @@ function QuoteDetail() {
         quantity: Number(item.quantity) || 0,
         unit: item.unit,
         material_cost: Number(item.material_cost) || 0,
-        labor_cost: Number(item.labor_cost) || 0,
+        labor_cost: effectiveLabor,
+        labor_hours: autoLabor ? Number(item.labor_hours) || 0 : null,
+        labor_hourly_rate: autoLabor ? Number(item.labor_hourly_rate) || 0 : null,
         sort_order: items.length,
       });
       if (error) throw error;
@@ -411,7 +426,14 @@ function QuoteDetail() {
                       <TableCell>{i.unit}</TableCell>
                       <TableCell>{tl(i.unit_price)}</TableCell>
                       <TableCell>{tl(i.material_cost)}</TableCell>
-                      <TableCell>{tl(i.labor_cost)}</TableCell>
+                      <TableCell>
+                        {tl(i.labor_cost)}
+                        {i.labor_hours != null && i.labor_hourly_rate != null ? (
+                          <span className="block text-xs text-muted-foreground">
+                            {i.labor_hours} sa × {tl(i.labor_hourly_rate)}
+                          </span>
+                        ) : null}
+                      </TableCell>
                       <TableCell>{tl(i.line_total)}</TableCell>
                       <TableCell className="text-right">
                         <Button size="sm" variant="ghost" onClick={() => removeItem.mutate(i.id)}>
@@ -458,8 +480,25 @@ function QuoteDetail() {
               <Input id="i-mat" type="number" value={item.material_cost} onChange={(e) => setItem({ ...item, material_cost: e.target.value })} />
             </div>
             <div>
+              <Label htmlFor="i-hours">İşçilik saati (isteğe bağlı)</Label>
+              <Input id="i-hours" type="number" value={item.labor_hours} onChange={(e) => setItem({ ...item, labor_hours: e.target.value })} />
+            </div>
+            <div>
+              <Label htmlFor="i-rate">Saat ücreti (isteğe bağlı)</Label>
+              <Input id="i-rate" type="number" value={item.labor_hourly_rate} onChange={(e) => setItem({ ...item, labor_hourly_rate: e.target.value })} />
+            </div>
+            <div>
               <Label htmlFor="i-lab">İşçilik birim fiyatı</Label>
-              <Input id="i-lab" type="number" value={item.labor_cost} onChange={(e) => setItem({ ...item, labor_cost: e.target.value })} />
+              <Input
+                id="i-lab"
+                type="number"
+                value={autoLabor ? String(computedLabor) : item.labor_cost}
+                disabled={autoLabor}
+                onChange={(e) => setItem({ ...item, labor_cost: e.target.value })}
+              />
+              <p className="mt-1 text-xs text-muted-foreground">
+                {autoLabor ? "Saat × saat ücreti ile otomatik hesaplanıyor." : "Saat ve saat ücreti girmezseniz bu tutar elle kullanılır."}
+              </p>
             </div>
             <div className="rounded-md border bg-muted/40 p-3 text-sm sm:col-span-2">
               <div className="flex justify-between">

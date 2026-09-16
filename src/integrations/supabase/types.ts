@@ -700,6 +700,8 @@ export type Database = {
           description: string | null
           id: string
           labor_cost: number
+          labor_hourly_rate: number | null
+          labor_hours: number | null
           line_total: number | null
           material_cost: number
           quantity: number
@@ -714,6 +716,8 @@ export type Database = {
           description?: string | null
           id?: string
           labor_cost?: number
+          labor_hourly_rate?: number | null
+          labor_hours?: number | null
           line_total?: number | null
           material_cost?: number
           quantity?: number
@@ -728,6 +732,8 @@ export type Database = {
           description?: string | null
           id?: string
           labor_cost?: number
+          labor_hourly_rate?: number | null
+          labor_hours?: number | null
           line_total?: number | null
           material_cost?: number
           quantity?: number
