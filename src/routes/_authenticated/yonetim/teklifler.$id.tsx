@@ -83,15 +83,6 @@ function QuoteDetail() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const saveTotals = () =>
-    update.mutate(
-      {
-        materials_total: materials,
-        labor_total: labor,
-        grand_total: grandTotal,
-      },
-      { onSuccess: () => toast.success("Toplamlar güncellendi.") },
-    );
 
   const addItem = useMutation({
     mutationFn: async () => {
