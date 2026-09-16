@@ -223,6 +223,7 @@ export function SourceResearchPanel() {
                   <th className="p-2">Uygun</th>
                   <th className="p-2">Erişilemeyen</th>
                   <th className="p-2">Yeni aday</th>
+                  <th className="p-2">Toplanan</th>
                   <th className="p-2">Sonuç</th>
                 </tr>
               </thead>
