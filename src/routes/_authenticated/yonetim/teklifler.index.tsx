@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { QUOTE_STATUS, tl, trDate } from "@/lib/domain";
 
-export const Route = createFileRoute("/_authenticated/yonetim/teklifler")({
+export const Route = createFileRoute("/_authenticated/yonetim/teklifler/")({
   component: QuoteList,
 });
 

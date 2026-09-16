@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { REQUEST_STATUS, trDate } from "@/lib/domain";
 
-export const Route = createFileRoute("/_authenticated/yonetim/talepler")({
+export const Route = createFileRoute("/_authenticated/yonetim/talepler/")({
   component: RequestList,
 });
 

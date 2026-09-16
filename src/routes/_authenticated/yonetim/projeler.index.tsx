@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { PROJECT_STATUS, tl, trDate } from "@/lib/domain";
 
-export const Route = createFileRoute("/_authenticated/yonetim/projeler")({
+export const Route = createFileRoute("/_authenticated/yonetim/projeler/")({
   component: ProjectList,
 });
 
