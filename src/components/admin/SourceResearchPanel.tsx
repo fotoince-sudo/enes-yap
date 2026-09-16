@@ -128,7 +128,7 @@ export function SourceResearchPanel() {
           <Stat label="Kayıtlı kaynak" value={String(sources.length)} />
           <Stat label="Taranabilir" value={String(scannable.length)} />
           <Stat label="Taranamaz" value={String(notScannable.length)} />
-          <Stat label="Çalışma sayısı" value={String(engine?.run_count ?? 0)} />
+          <Stat label="Onaylı kaynak" value={String(approvedCount)} />
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -155,7 +155,7 @@ export function SourceResearchPanel() {
             <thead className="bg-muted/50">
               <tr className="text-left">
                 <th className="p-2">Kaynak</th>
-                <th className="p-2">İzin</th>
+                <th className="p-2">İzin / onay</th>
                 <th className="p-2">Erişim</th>
                 <th className="p-2">Otomatik tarama</th>
                 <th className="p-2">Son kontrol</th>
@@ -178,8 +178,12 @@ export function SourceResearchPanel() {
                         <div className="mt-1 text-xs text-muted-foreground">{s.last_result}</div>
                       ) : null}
                     </td>
-                    <td className="p-2 whitespace-nowrap">
-                      {PERMISSION_LABEL[s.permission_status] ?? s.permission_status}
+                    <td className="p-2">
+                      <SourceApproval
+                        source={s}
+                        saving={permission.isPending}
+                        onSave={(input) => permission.mutate({ id: s.id, ...input })}
+                      />
                     </td>
                     <td className="p-2 whitespace-nowrap">
                       {s.reachable === null || s.reachable === undefined
