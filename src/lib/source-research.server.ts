@@ -508,6 +508,7 @@ export async function runSourceResearchCore(
     blocked: result.blocked,
     unreachable: result.unreachable,
     new_prospects: newProspects,
+    collected: result.collected,
     details: result.details as unknown as never,
   });
 
