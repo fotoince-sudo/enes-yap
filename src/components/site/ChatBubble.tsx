@@ -303,13 +303,14 @@ export function ChatBubble() {
               Fotoğraf ekle
             </button>
             <a
-              href="https://wa.me/905333992540"
+              href={waHref}
+              onClick={noteHandoff}
               target="_blank"
               rel="noopener noreferrer"
               className="flex flex-1 items-center justify-center gap-1.5 rounded-full border px-3 py-2 text-[13px] font-medium text-muted-foreground hover:bg-accent"
             >
               <MessageCircle className="h-4 w-4" />
-              WhatsApp'tan yazın
+              {messages.length > 0 ? "WhatsApp'a aktar" : "WhatsApp'tan yazın"}
             </a>
           </div>
 
