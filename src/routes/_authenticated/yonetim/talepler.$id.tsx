@@ -10,7 +10,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { OPPORTUNITY_TYPE, REQUEST_STATUS, trDate } from "@/lib/domain";
+import { OPPORTUNITY_TYPE, QUOTE_STATUS, REQUEST_STATUS, tl, trDate } from "@/lib/domain";
 
 export const Route = createFileRoute("/_authenticated/yonetim/talepler/$id")({
   component: RequestDetail,
@@ -66,6 +66,46 @@ function RequestDetail() {
       const { data, error } = await supabase
         .from("request_activities")
         .select("*")
+        .eq("request_id", id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const { data: surveys = [] } = useQuery({
+    queryKey: ["request-surveys", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("surveys")
+        .select("id, scheduled_date, scheduled_time, address, work_items, result, estimated_cost, is_done, notes, photos")
+        .eq("request_id", id)
+        .order("created_at", { ascending: false });
+      if (error) throw error;
+      return data ?? [];
+    },
+  });
+
+  const { data: emirSession } = useQuery({
+    queryKey: ["request-emir-session", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("emir_chat_sessions")
+        .select("id, summary, wants_survey, message_count, created_at")
+        .eq("request_id", id)
+        .order("created_at", { ascending: false })
+        .maybeSingle();
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  const { data: quotes = [] } = useQuery({
+    queryKey: ["request-quotes", id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("quotes")
+        .select("id, quote_no, status, grand_total")
         .eq("request_id", id)
         .order("created_at", { ascending: false });
       if (error) throw error;
@@ -181,18 +221,28 @@ function RequestDetail() {
   const createSurvey = useMutation({
     mutationFn: async () => {
       if (!request) return;
+      const photos = (request.photo_urls as string[] | null) ?? [];
+      const videos = (request.video_urls as string[] | null) ?? [];
       const { error } = await supabase.from("surveys").insert({
         request_id: id,
         customer_id: request.customer_id,
         property_id: request.property_id,
         address: request.address || [request.neighborhood, request.district, request.city].filter(Boolean).join(", "),
         responsible_id: request.assigned_to,
+        work_items: request.renovation_type ?? null,
+        notes: [request.description, emirSession?.summary ? `Emir özeti: ${emirSession.summary}` : null]
+          .filter(Boolean)
+          .join("\n\n") || null,
+        photos,
+        videos,
       });
       if (error) throw error;
       await supabase.from("renovation_requests").update({ status: "kesif_planlandi" }).eq("id", id);
     },
     onSuccess: () => {
-      toast.success("Keşif kaydı oluşturuldu.");
+      toast.success("Keşif kaydı oluşturuldu; talep fotoğrafları keşfe eklendi.");
+      queryClient.invalidateQueries({ queryKey: ["request-surveys", id] });
+      queryClient.invalidateQueries({ queryKey: ["request", id] });
       navigate({ to: "/yonetim/kesifler" });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -201,6 +251,23 @@ function RequestDetail() {
   const createQuote = useMutation({
     mutationFn: async () => {
       if (!request) return;
+      const survey = surveys[0];
+      const context = [
+        `Talep kaynağı: ${request.source === "web-emir" ? "WEB / EMİR (site asistanı)" : (request.source ?? "—")}`,
+        `Konum: ${[request.neighborhood, request.district, request.city].filter(Boolean).join(" / ") || "—"}`,
+        request.area_m2 ? `Yaklaşık alan: ${request.area_m2} m²` : null,
+        request.property_type ? `Mekân tipi: ${request.property_type}` : null,
+        emirSession?.summary ? `Emir sohbet özeti: ${emirSession.summary}` : null,
+        request.description ? `Müşteri açıklaması: ${request.description}` : null,
+        survey?.work_items ? `Keşif — yapılacak işler: ${survey.work_items}` : null,
+        survey?.result ? `Keşif sonucu: ${survey.result}` : null,
+        ((request.photo_urls as string[] | null) ?? []).length
+          ? `Talep ekinde ${((request.photo_urls as string[] | null) ?? []).length} fotoğraf var (talep detayında görüntülenir).`
+          : null,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
       const { data, error } = await supabase
         .from("quotes")
         .insert({
@@ -208,6 +275,7 @@ function RequestDetail() {
           customer_id: request.customer_id,
           property_id: request.property_id,
           title: `${request.renovation_type ?? "Tadilat"} — ${request.full_name}`,
+          notes: context,
         })
         .select("id")
         .single();
@@ -216,6 +284,7 @@ function RequestDetail() {
       return data.id;
     },
     onSuccess: (quoteId) => {
+      queryClient.invalidateQueries({ queryKey: ["request-quotes", id] });
       if (quoteId) navigate({ to: "/yonetim/teklifler/$id", params: { id: quoteId } });
     },
     onError: (e: Error) => toast.error(e.message),
@@ -419,10 +488,74 @@ function RequestDetail() {
                 >
                   Müşteri + gayrimenkul kaydı oluştur
                 </Button>
-                <Button variant="outline" onClick={() => createSurvey.mutate()}>
-                  Keşif oluştur
+                <Button variant="outline" onClick={() => createSurvey.mutate()} disabled={createSurvey.isPending}>
+                  {surveys.length > 0 ? "Yeni keşif oluştur" : "Keşif oluştur"}
                 </Button>
-                <Button onClick={() => createQuote.mutate()}>Teklif oluştur</Button>
+                <Button onClick={() => createQuote.mutate()} disabled={createQuote.isPending}>
+                  {quotes.length > 0 ? "Yeni teklif oluştur" : "Teklif oluştur"}
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Emir, keşif ve teklif akışı</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
+              {request.source === "web-emir" ? (
+                <div className="space-y-2 rounded-md border bg-muted/40 p-3">
+                  <Badge variant="secondary">WEB / EMİR</Badge>
+                  <p className="whitespace-pre-wrap">
+                    {emirSession?.summary ?? "Sohbet özeti kaydedilmemiş."}
+                  </p>
+                  {emirSession?.wants_survey ? (
+                    <p className="text-xs text-muted-foreground">Müşteri keşif talep etti.</p>
+                  ) : null}
+                </div>
+              ) : null}
+
+              <div className="space-y-2">
+                <p className="text-muted-foreground">Keşifler</p>
+                {surveys.length === 0 ? (
+                  <p className="text-muted-foreground">Keşif kaydı yok.</p>
+                ) : (
+                  surveys.map((s) => (
+                    <div key={s.id} className="rounded-md border px-3 py-2">
+                      <p className="font-medium">
+                        {s.scheduled_date ? trDate(s.scheduled_date) : "Tarih planlanmadı"}
+                        {s.is_done ? " · Yapıldı" : " · Bekliyor"}
+                      </p>
+                      {s.work_items ? (
+                        <p className="text-xs text-muted-foreground">Yapılacak işler: {s.work_items}</p>
+                      ) : null}
+                      <Button variant="link" size="sm" className="px-0" asChild>
+                        <Link to="/yonetim/kesifler">Keşifler ekranında aç</Link>
+                      </Button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-muted-foreground">Teklifler</p>
+                {quotes.length === 0 ? (
+                  <p className="text-muted-foreground">Henüz teklif verilmedi.</p>
+                ) : (
+                  quotes.map((q) => (
+                    <div key={q.id} className="flex items-center justify-between gap-2 rounded-md border px-3 py-2">
+                      <span>
+                        Teklif #{q.quote_no} · {QUOTE_STATUS[q.status as keyof typeof QUOTE_STATUS]}
+                        <span className="block text-xs text-muted-foreground">{tl(q.grand_total)}</span>
+                      </span>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to="/yonetim/teklifler/$id" params={{ id: q.id }}>
+                          Aç
+                        </Link>
+                      </Button>
+                    </div>
+                  ))
+                )}
               </div>
             </CardContent>
           </Card>
