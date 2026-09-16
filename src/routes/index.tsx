@@ -2,7 +2,7 @@ import { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import heroImg from "@/assets/hero.jpg";
-import projeKonut from "@/assets/proje-konut.jpg";
+import projeDaire from "@/assets/proje-daire.jpg";
 import projeOfis from "@/assets/proje-ofis.jpg";
 import projeTadilat from "@/assets/proje-tadilat.jpg";
 import hakkimizdaImg from "@/assets/hakkimizda.jpg";
@@ -17,54 +17,54 @@ const navLinks = [
 const services = [
   {
     no: "01",
-    title: "Konut İnşaatı",
-    desc: "Bireysel villalardan çok daireli site projelerine, temelden anahtar teslime konut üretimi.",
+    title: "Tadilat & Renovasyon",
+    desc: "Daire, ofis ve iş yeri tadilatı; yıkımdan tesisata, elektrikten boyaya komple yenileme.",
   },
   {
     no: "02",
-    title: "Ticari Yapı",
-    desc: "Ofis, mağaza ve endüstriyel binalar için güvenli ve verimli yapı sistemleri.",
+    title: "Dekorasyon & İç Mimar",
+    desc: "Renk, doku ve aydınlatma seçiminden mobilya yerleşimine kadar mekânın iç tasarımı.",
   },
   {
     no: "03",
-    title: "Tadilat & Renovasyon",
-    desc: "Mevcut yapıların güçlendirilmesi, mekan yenileme ve yerinde dönüşüm işleri.",
+    title: "Boya, Alçı & Zemin",
+    desc: "Saten alçı, silikonlu boya, parke ve seramik gibi tüm yüzey ve kaplama işleri.",
   },
   {
     no: "04",
-    title: "Mimari Proje",
-    desc: "Kavram tasarımından uygulama projesine, ruhsata hazır teknik çizim ve danışmanlık.",
+    title: "Mutfak & Banyo Yenileme",
+    desc: "Vitrin, tezgâh, armatür ve seramik değişimi; tesisatı dahil anahtar teslim yenileme.",
   },
 ];
 
 const projects = [
   {
-    img: projeKonut,
-    alt: "Betondan modern konut komplesinin dış görünümü",
-    title: "Vadi Konutları",
-    meta: "Konut · İstanbul · 2023",
-    tag: "124 daire",
+    img: projeDaire,
+    alt: "Yenilenmiş aydınlık ve modern daire iç mekanı",
+    title: "Bahçe Apartmanı Dairesi",
+    meta: "Tadilat · İstanbul · 2024",
+    tag: "120 m²",
   },
   {
     img: projeOfis,
-    alt: "Cam ve çelikten ofis binası cephesi",
+    alt: "Yenilenmiş cam bölmeli modern ofis iç mekanı",
     title: "Meridyen Ofis",
-    meta: "Ticari · Ankara · 2022",
-    tag: "8.500 m²",
+    meta: "Ofis Tadilatı · Ankara · 2023",
+    tag: "650 m²",
   },
   {
     img: projeTadilat,
-    alt: "Yenilenmiş çatı betonu görünen loft iç mekan",
+    alt: "Ahşap kirişli, yenilenmiş loft iç mekan",
     title: "Merkez Loft",
-    meta: "Tadilat · İzmir · 2024",
+    meta: "Dekorasyon · İzmir · 2024",
     tag: "340 m²",
   },
 ];
 
 const stats = [
   { value: "15+", label: "Yıl Deneyim" },
-  { value: "85", label: "Tamamlanan Proje" },
-  { value: "48.500", label: "m² Yapı Alanı" },
+  { value: "85", label: "Yenilenen Mekân" },
+  { value: "35.000", label: "m² Yenilenen Alan" },
   { value: "%98", label: "Zamanında Teslim" },
 ];
 
@@ -114,17 +114,17 @@ function Index() {
           <div className="md:col-span-7">
             <p className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.18em] text-primary">
               <span className="h-px w-8 bg-primary" />
-              2009'dan beri inşa ediyoruz
+              2009'dan beri yeniliyoruz
             </p>
             <h1 className="mt-5 font-display text-5xl font-extrabold leading-[0.95] tracking-tight sm:text-6xl lg:text-7xl">
-              Sağlam temel,
+              Titiz işçilik,
               <br />
-              titiz <span className="text-primary">işçilik.</span>
+              kusursuz <span className="text-primary">bitiş.</span>
             </h1>
             <p className="mt-6 max-w-[46ch] text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              Enes Yapı; konut ve ticari inşaat, tadilat-renovasyon ve mimari
-              proje hizmetlerinde uçtan uca sorumluluk alır. Şeffaf bütçe,
-              net takvim, zamanında teslim.
+              Enes Yapı; daire, ofis ve iş yeri tadilatı ile dekorasyon
+              işlerinde uçtan uca sorumluluk alır. Ücretsiz keşif, şeffaf
+              bütçe, net takvim, zamanında teslim.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <a
@@ -145,7 +145,7 @@ function Index() {
           <div className="relative md:col-span-5">
             <img
               src={heroImg}
-              alt="Altın saat ışığında beton ve ahşap detaylı modern bina cephesi"
+              alt="Yenilenmiş sıcak ve aydınlık oturma odası iç mekanı"
               width={1024}
               height={1280}
               className="aspect-[4/5] w-full object-cover"
@@ -188,9 +188,10 @@ function Index() {
               Ne yapıyoruz?
             </h2>
           </div>
-          <p className="max-w-[36ch] text-sm text-muted-foreground">
-            Her kapsam sahadan ofise tek ekip, tek sorumlulukla yönetilir.
-          </p>
+            <p className="max-w-[36ch] text-sm text-muted-foreground">
+              Keşiften teslime tüm tadilat ve dekorasyon işlerinde tek ekip,
+              tek sorumluluk.
+            </p>
         </div>
         <div className="divide-y divide-border border-y border-border">
           {services.map((s) => (
@@ -254,7 +255,7 @@ function Index() {
           <div className="md:col-span-5">
             <img
               src={hakkimizdaImg}
-              alt="Gün batımında vinç ve çelik iskeletli şantiye"
+              alt="İç mekanda duvar boyayan tadilat ustası"
               width={1024}
               height={1024}
               loading="lazy"
@@ -264,14 +265,13 @@ function Index() {
           <div className="md:col-span-7">
             <p className="text-xs font-bold uppercase tracking-[0.18em] text-primary">Hakkımızda</p>
             <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
-              Betonun ağırlığını bilen ekip
+              Mekânın hakkını veren ekip
             </h2>
             <p className="mt-5 max-w-[56ch] text-pretty leading-relaxed text-muted-foreground">
-              2009'dan bu yana Türkiye genelinde 85'ten fazla projeyi teslim
-              ettik. Her projede aynı ilkeyle çalışırız: işi bir kez, doğru
-              yapmak. Malzeme kalitesinden işçilik detayına kadar her aşamada
-              iddialıyız — çünkü yaptığımız yapı on yıllar sonra da ayakta
-              durmak zorunda.
+              2009'dan bu yana Türkiye genelinde 85'ten fazla daireyi, ofisi ve
+              iş yerini yeniledik. Her işte aynı ilkeyle çalışırız: işi bir
+              kez, doğru yapmak. Kaba inşaatın gürültüsünden son perdenin
+              askısına kadar her detayla biz ilgileniriz.
             </p>
             <p className="mt-4 max-w-[56ch] text-pretty leading-relaxed text-muted-foreground">
               Bütçenizi baştan netleştirir, takvimi şeffaf yönetir ve her
@@ -386,10 +386,10 @@ function Index() {
                     Hizmet
                   </span>
                   <select className="mt-1.5 w-full border border-input bg-background px-3.5 py-3 text-sm outline-none transition-colors focus:border-primary">
-                    <option>Konut İnşaatı</option>
-                    <option>Ticari Yapı</option>
                     <option>Tadilat & Renovasyon</option>
-                    <option>Mimari Proje</option>
+                    <option>Dekorasyon & İç Mimar</option>
+                    <option>Boya, Alçı & Zemin</option>
+                    <option>Mutfak & Banyo Yenileme</option>
                   </select>
                 </label>
                 <label className="block">
@@ -431,21 +431,21 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       {
-        title: "Enes Yapı — İnşaat, Tadilat ve Mimari Proje | İstanbul",
+        title: "Enes Yapı — Tadilat, Renovasyon ve Dekorasyon | İstanbul",
       },
       {
         name: "description",
         content:
-          "Enes Yapı: konut ve ticari inşaat, tadilat-renovasyon ve mimari proje hizmetleri. 15+ yıl deneyim, anahtar teslim yapı çözümleri.",
+          "Enes Yapı: daire, ofis ve iş yeri tadilatı, dekorasyon ve komple yenileme hizmetleri. 15+ yıl deneyim, ücretsiz keşif, zamanında teslim.",
       },
       {
         property: "og:title",
-        content: "Enes Yapı — İnşaat, Tadilat ve Mimari Proje | İstanbul",
+        content: "Enes Yapı — Tadilat, Renovasyon ve Dekorasyon | İstanbul",
       },
       {
         property: "og:description",
         content:
-          "Konut ve ticari inşaat, tadilat ve mimari projede uçtan uca çözüm. 15+ yıl deneyim, zamanında teslim.",
+          "Daire, ofis ve iş yeri tadilatı ile dekorasyonda uçtan uca çözüm. 15+ yıl deneyim, ücretsiz keşif, zamanında teslim.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
