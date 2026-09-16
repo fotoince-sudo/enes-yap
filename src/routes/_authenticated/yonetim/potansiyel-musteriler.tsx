@@ -9,6 +9,7 @@ import {
   PROSPECT_PERMISSION,
   PROSPECT_SOURCE,
   PROSPECT_STATUS,
+  prospectSourceLabel,
   trDate,
 } from "@/lib/domain";
 
@@ -62,7 +63,10 @@ function Prospects() {
             key: "source",
             label: "Kaynak",
             type: "select",
-            options: PROSPECT_SOURCE.map((s) => ({ value: s, label: s })),
+            required: true,
+            defaultValue: "manuel",
+            options: Object.entries(PROSPECT_SOURCE).map(([value, label]) => ({ value, label })),
+            render: (r) => prospectSourceLabel(String(r["source"] ?? "")),
           },
           { key: "listing_date", label: "İlan / talep tarihi", type: "date" },
           {

@@ -84,17 +84,25 @@ export const PROSPECT_STATUS = {
 } as const;
 
 /** Aday kaynakları — yalnızca erişimi ve kullanımı açıkça izinli kaynaklar. */
-export const PROSPECT_SOURCE = [
-  "manuel",
-  "kendi-web-formu",
-  "telefon",
-  "tavsiye",
-  "saha",
-  "izinli-ilan-kaynagi",
-  "resmi-api",
-  "acik-veri",
-  "diger",
-] as const;
+export const PROSPECT_SOURCE = {
+  instagram: "Instagram",
+  facebook: "Facebook",
+  google: "Google (arama / harita)",
+  "ilan-siteleri": "İlan siteleri (izinli)",
+  "kendi-web-formu": "Kendi web formu",
+  telefon: "Telefon",
+  tavsiye: "Tavsiye",
+  saha: "Saha / broşür",
+  "izinli-ilan-kaynagi": "İzinli ilan kaynağı",
+  "resmi-api": "Resmî API",
+  "acik-veri": "Açık veri",
+  manuel: "Manuel giriş",
+  diger: "Diğer",
+} as const;
+
+/** Kaynak değerinin görünen adı. */
+export const prospectSourceLabel = (value: string) =>
+  (PROSPECT_SOURCE as Record<string, string>)[value] ?? value;
 
 /** Kaynağın otomatik kullanım izni durumu. */
 export const PROSPECT_PERMISSION = {
