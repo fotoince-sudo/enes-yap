@@ -86,9 +86,52 @@ function Staff() {
         <CardHeader>
           <CardTitle className="text-base">Yeni personel nasıl eklenir?</CardTitle>
         </CardHeader>
-        <CardContent className="text-sm text-muted-foreground">
-          Kişi önce <span className="font-medium">Personel girişi</span> ekranından kendi e-postasıyla kayıt olur.
-          Ardından aşağıdaki listede görünür ve buradan yetkilendirilir.
+        <CardContent className="space-y-3 text-sm text-muted-foreground">
+          <ol className="list-decimal space-y-1 pl-5">
+            <li>Aşağıdaki kayıt bağlantısını personelinize WhatsApp veya e-posta ile gönderin.</li>
+            <li>Kişi ad soyad, kendi e-postası ve şifresiyle kayıt olur.</li>
+            <li>Gelen onay e-postasındaki bağlantıya tıklar ve panele giriş yapar.</li>
+            <li>Bu listede “Aktif” olarak görünür; siz de rolünü seçip yetki verirsiniz.</li>
+          </ol>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <input
+              readOnly
+              value={inviteLink}
+              onFocus={(e) => e.currentTarget.select()}
+              className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground"
+            />
+            <div className="flex gap-2">
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(inviteLink);
+                    toast.success("Kayıt bağlantısı kopyalandı.");
+                  } catch {
+                    toast.error("Bağlantı kopyalanamadı, elle seçip kopyalayın.");
+                  }
+                }}
+              >
+                Bağlantıyı kopyala
+              </Button>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={async () => {
+                  const text = `Enes Yapı yönetim paneline personel kaydı: ${inviteLink} — ad soyad, e-posta ve şifrenizle kayıt olup e-posta onayını tamamlayın.`;
+                  try {
+                    await navigator.clipboard.writeText(text);
+                    toast.success("Davet mesajı kopyalandı.");
+                  } catch {
+                    toast.error("Mesaj kopyalanamadı.");
+                  }
+                }}
+              >
+                Davet mesajını kopyala
+              </Button>
+            </div>
+          </div>
         </CardContent>
       </Card>
 
@@ -99,6 +142,7 @@ function Staff() {
               <TableHead>Ad soyad</TableHead>
               <TableHead>Telefon</TableHead>
               <TableHead>Kayıt</TableHead>
+              <TableHead>Durum</TableHead>
               <TableHead>Yetkiler</TableHead>
               <TableHead className="text-right">Yetki ver</TableHead>
             </TableRow>
@@ -106,11 +150,11 @@ function Staff() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={5}>Yükleniyor…</TableCell>
+                <TableCell colSpan={6}>Yükleniyor…</TableCell>
               </TableRow>
             ) : profiles.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-muted-foreground">
+                <TableCell colSpan={6} className="text-muted-foreground">
                   Kayıtlı kullanıcı yok.
                 </TableCell>
               </TableRow>
@@ -122,6 +166,13 @@ function Staff() {
                     <TableCell className="max-w-[220px] truncate">{p.full_name ?? "—"}</TableCell>
                     <TableCell>{p.phone ?? "—"}</TableCell>
                     <TableCell>{trDate(p.created_at)}</TableCell>
+                    <TableCell>
+                      {p.last_login_at ? (
+                        <Badge variant="secondary">Aktif</Badge>
+                      ) : (
+                        <span className="text-sm text-muted-foreground">E-posta onayı bekliyor</span>
+                      )}
+                    </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {mine.length === 0 ? (
