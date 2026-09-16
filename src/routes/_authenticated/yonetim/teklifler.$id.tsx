@@ -232,7 +232,7 @@ function QuoteDetail() {
           <Button variant="outline" asChild>
             <Link to="/yonetim/teklifler">Listeye dön</Link>
           </Button>
-          <Button variant="outline" onClick={createPdf}>
+          <Button variant="outline" onClick={() => createPdf.mutate()} disabled={createPdf.isPending}>
             PDF teklif oluştur
           </Button>
           <Button onClick={() => toProject.mutate()}>Projeye dönüştür</Button>
