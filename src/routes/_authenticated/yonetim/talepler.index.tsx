@@ -83,11 +83,11 @@ function RequestList() {
           <TableBody>
             {isLoading ? (
               <TableRow>
-                <TableCell colSpan={8}>Yükleniyor…</TableCell>
+                <TableCell colSpan={9}>Yükleniyor…</TableCell>
               </TableRow>
             ) : filtered.length === 0 ? (
               <TableRow>
-                <TableCell colSpan={8} className="text-muted-foreground">
+                <TableCell colSpan={9} className="text-muted-foreground">
                   Talep bulunamadı.
                 </TableCell>
               </TableRow>
