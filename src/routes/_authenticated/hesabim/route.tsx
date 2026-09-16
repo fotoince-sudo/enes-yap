@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 
 export const Route = createFileRoute("/_authenticated/hesabim")({
   component: CustomerLayout,
