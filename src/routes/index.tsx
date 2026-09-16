@@ -346,6 +346,8 @@ function HomePage() {
           </Link>
         </div>
       </footer>
+
+      <ChatBubble />
     </div>
   );
 }
