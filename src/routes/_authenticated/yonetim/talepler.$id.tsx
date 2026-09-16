@@ -488,13 +488,100 @@ function RequestDetail() {
                 >
                   Müşteri + gayrimenkul kaydı oluştur
                 </Button>
-                <Button variant="outline" onClick={() => createSurvey.mutate()}>
-                  Keşif oluştur
+                <Button variant="outline" onClick={() => createSurvey.mutate()} disabled={createSurvey.isPending}>
+                  {surveys.length > 0 ? "Yeni keşif oluştur" : "Keşif oluştur"}
                 </Button>
-                <Button onClick={() => createQuote.mutate()}>Teklif oluştur</Button>
+                <Button onClick={() => createQuote.mutate()} disabled={createQuote.isPending}>
+                  {quotes.length > 0 ? "Yeni teklif oluştur" : "Teklif oluştur"}
+                </Button>
               </div>
             </CardContent>
           </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Emir, keşif ve teklif akışı</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm">
+              {request.source === "web-emir" ? (
+                <div className="space-y-2 rounded-md border bg-muted/40 p-3">
+                  <Badge variant="secondary">WEB / EMİR</Badge>
+                  <p className="whitespace-pre-wrap">
+                    {emirSession?.summary ?? "Sohbet özeti kaydedilmemiş."}
+                  </p>
+                  {emirSession?.wants_survey ? (
+                    <p className="text-xs text-muted-foreground">Müşteri keşif talep etti.</p>
+                  ) : null}
+                </div>
+              ) : null}
+
+              <div className="space-y-2">
+                <p className="text-muted-foreground">Keşifler</p>
+                {surveys.length === 0 ? (
+                  <p className="text-muted-foreground">Keşif kaydı yok.</p>
+                ) : (
+                  surveys.map((s) => (
+                    <div key={s.id} className="rounded-md border px-3 py-2">
+                      <p className="font-medium">
+                        {s.scheduled_date ? trDate(s.scheduled_date) : "Tarih planlanmadı"}
+                        {s.is_done ? " · Yapıldı" : " · Bekliyor"}
+                      </p>
+                      {s.work_items ? (
+                        <p className="text-xs text-muted-foreground">Yapılacak işler: {s.work_items}</p>
+                      ) : null}
+                      <Button variant="link" size="sm" className="px-0" asChild>
+                        <Link to="/yonetim/kesifler">Keşifler ekranında aç</Link>
+                      </Button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-muted-foreground">Teklifler</p>
+                {quotes.length === 0 ? (
+                  <p className="text-muted-foreground">Henüz teklif verilmedi.</p>
+                ) : (
+                  quotes.map((q) => (
+                    <div key={q.id} className="flex items-center justify-between gap-2 rounded-md border px-3 py-2">
+                      <span>
+                        Teklif #{q.quote_no} · {QUOTE_STATUS[q.status as keyof typeof QUOTE_STATUS]}
+                        <span className="block text-xs text-muted-foreground">{tl(q.grand_total)}</span>
+                      </span>
+                      <Button variant="outline" size="sm" asChild>
+                        <Link to="/yonetim/teklifler/$id" params={{ id: q.id }}>
+                          Aç
+                        </Link>
+                      </Button>
+                    </div>
+                  ))
+                )}
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-base">Fırsat işaretle</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <select
+                className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+                defaultValue=""
+                onChange={(e) => {
+                  if (e.target.value) createOpportunity.mutate(e.target.value);
+                }}
+              >
+                <option value="">Fırsat türü seçin</option>
+                {Object.entries(OPPORTUNITY_TYPE).map(([value, label]) => (
+                  <option key={value} value={value}>
+                    {label}
+                  </option>
+                ))}
+              </select>
+            </CardContent>
+          </Card>
+
 
           <Card>
             <CardHeader>
