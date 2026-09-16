@@ -124,6 +124,16 @@ function AuthPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {notice ? (
+            <div className="rounded-md border border-primary/30 bg-primary/10 p-3 text-sm text-foreground">
+              {notice}
+            </div>
+          ) : null}
+          {errorText ? (
+            <div className="rounded-md border border-destructive/40 bg-destructive/10 p-3 text-sm text-destructive">
+              {errorText}
+            </div>
+          ) : null}
           <form onSubmit={submit} className="space-y-3">
             {mode === "signup" ? (
               <div>
