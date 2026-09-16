@@ -114,7 +114,7 @@ function HomePage() {
               <a href="#talep">Talep oluştur</a>
             </Button>
             <Button size="sm" variant="ghost" asChild>
-              <Link to="/auth">Personel</Link>
+              <Link to="/auth">Giriş</Link>
             </Button>
           </div>
         </div>
