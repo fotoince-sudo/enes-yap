@@ -236,6 +236,42 @@ export type Database = {
           },
         ]
       }
+      engine_state: {
+        Row: {
+          key: string
+          label: string
+          last_result: Json | null
+          last_run_at: string | null
+          lease_until: string | null
+          paused_reason: string | null
+          run_count: number
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          key: string
+          label: string
+          last_result?: Json | null
+          last_run_at?: string | null
+          lease_until?: string | null
+          paused_reason?: string | null
+          run_count?: number
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          key?: string
+          label?: string
+          last_result?: Json | null
+          last_run_at?: string | null
+          lease_until?: string | null
+          paused_reason?: string | null
+          run_count?: number
+          status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lead_prospects: {
         Row: {
           assigned_to: string | null
@@ -890,6 +926,66 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      prospect_sources: {
+        Row: {
+          active: boolean
+          auto_scan_allowed: boolean
+          category: string
+          created_at: string
+          http_status: number | null
+          id: string
+          last_checked_at: string | null
+          last_result: string | null
+          name: string
+          notes: string | null
+          permission_status: string
+          reachable: boolean | null
+          region: string
+          robots_allowed: boolean | null
+          robots_note: string | null
+          updated_at: string
+          url: string
+        }
+        Insert: {
+          active?: boolean
+          auto_scan_allowed?: boolean
+          category?: string
+          created_at?: string
+          http_status?: number | null
+          id?: string
+          last_checked_at?: string | null
+          last_result?: string | null
+          name: string
+          notes?: string | null
+          permission_status?: string
+          reachable?: boolean | null
+          region?: string
+          robots_allowed?: boolean | null
+          robots_note?: string | null
+          updated_at?: string
+          url: string
+        }
+        Update: {
+          active?: boolean
+          auto_scan_allowed?: boolean
+          category?: string
+          created_at?: string
+          http_status?: number | null
+          id?: string
+          last_checked_at?: string | null
+          last_result?: string | null
+          name?: string
+          notes?: string | null
+          permission_status?: string
+          reachable?: boolean | null
+          region?: string
+          robots_allowed?: boolean | null
+          robots_note?: string | null
+          updated_at?: string
+          url?: string
+        }
+        Relationships: []
       }
       quote_items: {
         Row: {
