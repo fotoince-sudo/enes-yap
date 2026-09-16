@@ -123,6 +123,11 @@ function HomePage() {
                   <a href="#talep">Tadilat talebi oluştur</a>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
+                  <a href="https://wa.me/905333992540" target="_blank" rel="noopener noreferrer">
+                    WhatsApp'tan yazın
+                  </a>
+                </Button>
+                <Button size="lg" variant="ghost" asChild>
                   <a href="#nasil">Süreci inceleyin</a>
                 </Button>
               </div>
@@ -257,14 +262,35 @@ function HomePage() {
         <section id="iletisim" className="border-t bg-muted/30">
           <div className="mx-auto max-w-6xl px-4 py-14">
             <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İletişim</h2>
-            <p className="mt-2 text-muted-foreground">
-              Telefon, WhatsApp ve e-posta bilgileriniz henüz tanımlı değil. Gerçek bilgileri paylaşırsanız bu bölüme
-              ekleyelim.
-            </p>
-            <div className="mt-6">
-              <Button asChild>
-                <a href="#talep">Tadilat talebi oluştur</a>
-              </Button>
+            <div className="mt-6 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-lg border bg-card p-4">
+                <h3 className="text-sm font-medium text-muted-foreground">Telefon & WhatsApp</h3>
+                <a href="tel:+905333992540" className="mt-1 block font-medium hover:text-primary">
+                  0533 399 25 40
+                </a>
+                <a
+                  href="https://wa.me/905333992540"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-1 block text-sm text-muted-foreground hover:text-foreground"
+                >
+                  WhatsApp'tan yazın
+                </a>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <h3 className="text-sm font-medium text-muted-foreground">Adres</h3>
+                <p className="mt-1 font-medium">Manavkuyu Mah. Sakarya Cad.</p>
+                <p className="mt-1 text-sm text-muted-foreground">Bayraklı / İzmir</p>
+              </div>
+              <div className="rounded-lg border bg-card p-4">
+                <h3 className="text-sm font-medium text-muted-foreground">Hızlı talep</h3>
+                <p className="mt-1 text-sm text-muted-foreground">
+                  Formu doldurun, ekibimiz en kısa sürede sizi arasın.
+                </p>
+                <Button size="sm" className="mt-3" asChild>
+                  <a href="#talep">Tadilat talebi oluştur</a>
+                </Button>
+              </div>
             </div>
           </div>
         </section>
@@ -272,7 +298,7 @@ function HomePage() {
 
       <footer className="border-t py-8">
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 text-sm text-muted-foreground">
-          <span>© {new Date().getFullYear()} Enes Yapı</span>
+          <span>© {new Date().getFullYear()} Enes Yapı · Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir · 0533 399 25 40</span>
           <Link to="/auth" className="hover:text-foreground">
             Personel girişi
           </Link>
