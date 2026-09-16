@@ -345,12 +345,52 @@ export const emirChat = createServerFn({ method: "POST" })
               surveyId = survey?.id ?? null;
             }
 
+            // Teklif akışına otomatik geçiş: taslak teklif hazırlanır, yönetici fiyatlayıp tamamlar.
+            const quoteNotes = [
+              "Talep kaynağı: WEB / EMİR (site asistanı) — teklif akışına otomatik aktarıldı.",
+              `Müşteri: ${fullName} · ${phoneRaw}`,
+              [args["district"], args["neighborhood"]].filter(Boolean).join(" / ") || null,
+              args["property_type"] ? `Mekân: ${String(args["property_type"]).slice(0, 80)}` : null,
+              typeof args["area_m2"] === "number" ? `Alan: ${args["area_m2"]} m²` : null,
+              args["budget_range"] ? `Bütçe: ${String(args["budget_range"]).slice(0, 80)}` : null,
+              `İş açıklaması: ${description}`,
+              summary ? `Emir sohbet özeti: ${summary}` : null,
+              wantsSurvey ? "Müşteri keşif talep etti." : null,
+            ]
+              .filter(Boolean)
+              .join("\n");
+
+            const { data: quote, error: quoteError } = await supabaseAdmin
+              .from("quotes")
+              .insert({
+                request_id: inserted.id,
+                title: `${args["renovation_type"] ? String(args["renovation_type"]).slice(0, 80) : "Tadilat"} — ${fullName}`,
+                status: "taslak" as const,
+                notes: quoteNotes.slice(0, 4000),
+              })
+              .select("id")
+              .single();
+            if (quoteError) console.error("emir quote insert failed", quoteError);
+
+            await supabaseAdmin.from("request_activities").insert({
+              request_id: inserted.id,
+              activity_type: "emir_akis",
+              note: [
+                "Talep Emir sohbetinden oluşturuldu.",
+                surveyId ? "Keşif kaydı açıldı." : null,
+                quote?.id ? "Taslak teklif oluşturuldu; fiyatlandırma bekliyor." : null,
+              ]
+                .filter(Boolean)
+                .join(" "),
+            });
+
             if (sessionId) {
               await supabaseAdmin
                 .from("emir_chat_sessions")
                 .update({
                   request_id: inserted.id,
                   survey_id: surveyId,
+                  quote_id: quote?.id ?? null,
                   wants_survey: wantsSurvey,
                   summary,
                   collected: collected as never,
