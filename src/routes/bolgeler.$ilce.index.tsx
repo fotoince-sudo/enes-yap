@@ -81,6 +81,11 @@ function DistrictDetail() {
           {district.name} bölgesindeki daire, müstakil ev, ofis ve iş yerlerinde çalışıyoruz. Keşif için bölgeye
           gelip ölçü alıyor, kapsamı ve fiyatı yazılı olarak veriyoruz. Ofisimiz {SITE.district}'dadır.
         </p>
+        <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
+          {district.name} tadilat firması arayanların en çok sorduğu işler {district.name}{" "}
+          {CORE_SERVICES.map((s) => s.name.toLocaleLowerCase("tr-TR")).join(", ")} kalemleridir. İzmir{" "}
+          {district.name} bölgesinde bu işlerin tamamını tek ekiple yürütüyoruz.
+        </p>
 
         <h2 className="mt-10 text-2xl font-semibold tracking-tight">{district.name}'da öne çıkan hizmetler</h2>
         <div className="mt-4 grid gap-3 sm:grid-cols-2">
