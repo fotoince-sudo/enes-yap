@@ -6,7 +6,7 @@ import { breadcrumbJsonLd, DISTRICTS, localBusinessJsonLd, pageHead, SITE } from
 
 const TITLE = "İletişim ve Teklif — Enes Yapı | Bayraklı, İzmir";
 const DESCRIPTION =
-  "Enes Yapı iletişim: 0533 399 25 40, Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir. Pazartesi–Cumartesi 09:00–19:00. Tadilat talebinizi formla iletin, keşif planlayalım.";
+  "Enes Yapı iletişim: 0533 399 25 40, Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir. Pazartesi–Cumartesi 09:00–19:00. Tadilat talebinizi iletin, keşif planlayalım.";
 
 export const Route = createFileRoute("/iletisim")({
   component: ContactPage,
