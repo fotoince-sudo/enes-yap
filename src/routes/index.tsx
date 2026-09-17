@@ -416,9 +416,10 @@ function HomePage() {
                 </a>
               </div>
               <div className="rounded-lg border bg-card p-4">
-                <h3 className="text-sm font-medium text-muted-foreground">Adres</h3>
+                <h3 className="text-sm font-medium text-muted-foreground">Adres & çalışma saatleri</h3>
                 <p className="mt-1 font-medium">Manavkuyu Mah. Sakarya Cad.</p>
                 <p className="mt-1 text-sm text-muted-foreground">Bayraklı / İzmir</p>
+                <p className="mt-1 text-sm text-muted-foreground">Pazartesi – Cumartesi 09:00 – 19:00</p>
               </div>
               <div className="rounded-lg border bg-card p-4">
                 <h3 className="text-sm font-medium text-muted-foreground">Hızlı talep</h3>
