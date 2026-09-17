@@ -178,7 +178,7 @@ export function ChatBubble() {
         .filter((l) => l !== undefined)
         .join("\n")
     : "Merhaba, Enes Yapı ile tadilat / yenileme işi için görüşmek istiyorum.";
-  const waHref = `https://wa.me/905333992540?text=${encodeURIComponent(waText.slice(0, 1400))}`;
+  const waHref = `https://wa.me/905307641717?text=${encodeURIComponent(waText.slice(0, 1400))}`;
 
   const noteHandoff = () => {
     setMessages((prev) => [

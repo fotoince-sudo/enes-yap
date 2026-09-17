@@ -154,7 +154,7 @@ function HomePage() {
                   <a href="#talep">Tadilat talebi oluştur</a>
                 </Button>
                 <Button size="lg" variant="outline" asChild>
-                  <a href="https://wa.me/905333992540" target="_blank" rel="noopener noreferrer">
+                  <a href="https://wa.me/905307641717" target="_blank" rel="noopener noreferrer">
                     WhatsApp'tan yazın
                   </a>
                 </Button>
@@ -411,7 +411,7 @@ function HomePage() {
                   0533 399 25 40
                 </a>
                 <a
-                  href="https://wa.me/905333992540"
+                  href="https://wa.me/905307641717"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-1 block text-sm text-muted-foreground hover:text-foreground"
