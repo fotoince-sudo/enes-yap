@@ -6,6 +6,7 @@ import { RequestForm } from "@/components/site/RequestForm";
 import { ChatBubble } from "@/components/site/ChatBubble";
 import { Button } from "@/components/ui/button";
 import { PROJECT_STATUS, trDate } from "@/lib/domain";
+import { CORE_SERVICES, DISTRICTS, GUIDES, localBusinessJsonLd, pageHead, SERVICES, SITE } from "@/lib/seo";
 import heroImage from "@/assets/hero.jpg";
 import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 import beforeImage from "@/assets/proje-tadilat.jpg";
