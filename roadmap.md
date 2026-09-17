@@ -10,3 +10,11 @@
 - [ ] Dış kaynakların izin durumu "inceleniyor" — kullanıcı hangi kaynakları "izinli" işaretleyeceğini bildirmeli (izinli olmayan kaynak otomatik taranmaz).
 - [x] Source Research Motoru günlük otomatik çalışma (her gün 09:30 TR) + çalışma günlüğü kaydı.
 - [x] Aday İşleme Zinciri (temizleme → tekilleştirme → fırsat puanlama → CRM eşleştirme) tarama turuna bağlandı; "Motor Durumu" ekranı eklendi.
+
+## SEO (İzmir ilk sayfa hedefi)
+- [x] Hizmet (18), ilçe (14), ilçe+hizmet (56), rehber (4), iletişim sayfaları + sitemap.xml (94 adres) + robots.txt (panel taramaya kapalı)
+- [x] LocalBusiness/Organization, WebSite, Service, Article, BreadcrumbList structured data; canonical + tr dil etiketi
+- [x] Yönetim panelinde "SEO Denetimi" ekranı
+- [ ] Google Search Console bağlantısı + sitemap gönderimi (kullanıcı onayı gerekiyor)
+- [ ] Google İşletme Profili (haritalarda görünürlük) — kullanıcı tarafında yapılacak
+- [ ] Gerçek proje fotoğrafları ve önce/sonra kayıtlarının panelden yayına alınması
