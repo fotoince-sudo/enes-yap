@@ -34,6 +34,10 @@ export const Route = createFileRoute("/bolgeler/$ilce/$hizmet")({
       scripts: [
         {
           type: "application/ld+json",
+          children: JSON.stringify(districtBusinessJsonLd(district)),
+        },
+        {
+          type: "application/ld+json",
           children: JSON.stringify(
             serviceJsonLd({
               name: `${district.name} ${service.name}`,
