@@ -91,11 +91,12 @@ function robotsAllows(robots: string, path: string) {
   for (const line of lines) {
     const ua = line.match(/^user-agent:\s*(.+)$/i);
     if (ua) {
-      inStar = ua[1].trim() === "*";
+      inStar = (ua[1] ?? "").trim() === "*";
       continue;
     }
     const dis = line.match(/^disallow:\s*(.*)$/i);
-    if (dis && inStar && dis[1].trim()) disallow.push(dis[1].trim());
+    const disValue = dis ? (dis[1] ?? "").trim() : "";
+    if (dis && inStar && disValue) disallow.push(disValue);
   }
   return { allowed: !disallow.some((d) => path === d || path.startsWith(d)), disallow };
 }
@@ -196,7 +197,7 @@ export const runSeoAudit = createServerFn({ method: "POST" })
       fetch(`${origin}/robots.txt`).then((r) => (r.ok ? r.text() : "")).catch(() => ""),
       fetch(`${origin}/sitemap.xml`).then((r) => (r.ok ? r.text() : "")).catch(() => ""),
     ]);
-    const locs = [...sitemap.matchAll(/<loc>([\s\S]*?)<\/loc>/g)].map((m) => decode(m[1]));
+    const locs = [...sitemap.matchAll(/<loc>([\s\S]*?)<\/loc>/g)].map((m) => decode(m[1] ?? ""));
     const sitemapLocs = new Set(locs.flatMap((l) => [l, l.replace(/\/$/, "")]));
     const rob = robotsAllows(robots, "/yonetim");
 
