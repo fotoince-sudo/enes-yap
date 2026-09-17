@@ -70,6 +70,11 @@ function ServiceDetail() {
       <section className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">{service.h1}</h1>
         <p className="mt-4 max-w-3xl text-muted-foreground">{service.intro}</p>
+        <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
+          İzmir {service.name.toLocaleLowerCase("tr-TR")} işleri için {SITE.district}'daki ofisimizden bölgeye
+          gelip ölçü alıyoruz. {service.name} fiyatları kapsam, mevcut altyapı ve malzeme sınıfına göre değişir;
+          bu yüzden keşif yapmadan fiyat vermiyor, teklifi malzeme ve işçilik olarak ayrı yazıyoruz.
+        </p>
 
         <div className="mt-8 grid gap-8 lg:grid-cols-[2fr,1fr]">
           <div>
