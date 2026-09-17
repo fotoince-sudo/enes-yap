@@ -15,6 +15,9 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedHesabimRouteRouteImport } from './routes/_authenticated/hesabim/route'
 import { Route as AuthenticatedYonetimRouteRouteImport } from './routes/_authenticated/yonetim/route'
+import { Route as BolgelerIndexRouteImport } from './routes/bolgeler.index'
+import { Route as HizmetlerIndexRouteImport } from './routes/hizmetler.index'
+import { Route as HizmetlerSlugRouteImport } from './routes/hizmetler.$slug'
 import { Route as AuthenticatedHesabimIndexRouteImport } from './routes/_authenticated/hesabim/index'
 import { Route as AuthenticatedHesabimProjelerRouteImport } from './routes/_authenticated/hesabim/projeler'
 import { Route as AuthenticatedHesabimTaleplerRouteImport } from './routes/_authenticated/hesabim/talepler'
@@ -40,6 +43,8 @@ import { Route as AuthenticatedYonetimTamamlananProjelerRouteImport } from './ro
 import { Route as AuthenticatedYonetimTedarikcilerRouteImport } from './routes/_authenticated/yonetim/tedarikciler'
 import { Route as AuthenticatedYonetimZiyaretciIzlemeRouteImport } from './routes/_authenticated/yonetim/ziyaretci-izleme'
 import { Route as ApiPublicSourceResearchRouteImport } from './routes/api/public/source-research'
+import { Route as BolgelerIlceIndexRouteImport } from './routes/bolgeler.$ilce.index'
+import { Route as BolgelerIlceHizmetRouteImport } from './routes/bolgeler.$ilce.$hizmet'
 import { Route as AuthenticatedYonetimProjelerIndexRouteImport } from './routes/_authenticated/yonetim/projeler.index'
 import { Route as AuthenticatedYonetimProjelerIdRouteImport } from './routes/_authenticated/yonetim/projeler.$id'
 import { Route as AuthenticatedYonetimTaleplerIndexRouteImport } from './routes/_authenticated/yonetim/talepler.index'
@@ -78,6 +83,21 @@ const AuthenticatedYonetimRouteRoute =
     path: '/yonetim',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const BolgelerIndexRoute = BolgelerIndexRouteImport.update({
+  id: '/bolgeler/',
+  path: '/bolgeler/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HizmetlerIndexRoute = HizmetlerIndexRouteImport.update({
+  id: '/hizmetler/',
+  path: '/hizmetler/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HizmetlerSlugRoute = HizmetlerSlugRouteImport.update({
+  id: '/hizmetler/$slug',
+  path: '/hizmetler/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedHesabimIndexRoute =
   AuthenticatedHesabimIndexRouteImport.update({
     id: '/',
@@ -227,6 +247,16 @@ const ApiPublicSourceResearchRoute = ApiPublicSourceResearchRouteImport.update({
   path: '/api/public/source-research',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BolgelerIlceIndexRoute = BolgelerIlceIndexRouteImport.update({
+  id: '/bolgeler/$ilce/',
+  path: '/bolgeler/$ilce/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BolgelerIlceHizmetRoute = BolgelerIlceHizmetRouteImport.update({
+  id: '/bolgeler/$ilce/$hizmet',
+  path: '/bolgeler/$ilce/$hizmet',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedYonetimProjelerIndexRoute =
   AuthenticatedYonetimProjelerIndexRouteImport.update({
     id: '/projeler/',
@@ -270,6 +300,9 @@ export interface FileRoutesByFullPath {
   '/reset-password': typeof ResetPasswordRoute
   '/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/hizmetler/$slug': typeof HizmetlerSlugRoute
+  '/bolgeler/': typeof BolgelerIndexRoute
+  '/hizmetler/': typeof HizmetlerIndexRoute
   '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
@@ -293,8 +326,10 @@ export interface FileRoutesByFullPath {
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
   '/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
   '/api/public/source-research': typeof ApiPublicSourceResearchRoute
+  '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
   '/hesabim/': typeof AuthenticatedHesabimIndexRoute
   '/yonetim/': typeof AuthenticatedYonetimIndexRoute
+  '/bolgeler/$ilce/': typeof BolgelerIlceIndexRoute
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
@@ -306,6 +341,9 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/hizmetler/$slug': typeof HizmetlerSlugRoute
+  '/bolgeler': typeof BolgelerIndexRoute
+  '/hizmetler': typeof HizmetlerIndexRoute
   '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
@@ -329,8 +367,10 @@ export interface FileRoutesByTo {
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
   '/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
   '/api/public/source-research': typeof ApiPublicSourceResearchRoute
+  '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
   '/hesabim': typeof AuthenticatedHesabimIndexRoute
   '/yonetim': typeof AuthenticatedYonetimIndexRoute
+  '/bolgeler/$ilce': typeof BolgelerIlceIndexRoute
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
@@ -346,6 +386,9 @@ export interface FileRoutesById {
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/_authenticated/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
+  '/hizmetler/$slug': typeof HizmetlerSlugRoute
+  '/bolgeler/': typeof BolgelerIndexRoute
+  '/hizmetler/': typeof HizmetlerIndexRoute
   '/_authenticated/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/_authenticated/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/_authenticated/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
@@ -369,8 +412,10 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
   '/_authenticated/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
   '/api/public/source-research': typeof ApiPublicSourceResearchRoute
+  '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
   '/_authenticated/hesabim/': typeof AuthenticatedHesabimIndexRoute
   '/_authenticated/yonetim/': typeof AuthenticatedYonetimIndexRoute
+  '/bolgeler/$ilce/': typeof BolgelerIlceIndexRoute
   '/_authenticated/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/_authenticated/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/_authenticated/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
@@ -386,6 +431,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/hesabim'
     | '/yonetim'
+    | '/hizmetler/$slug'
+    | '/bolgeler/'
+    | '/hizmetler/'
     | '/hesabim/projeler'
     | '/hesabim/talepler'
     | '/hesabim/teklifler'
@@ -409,8 +457,10 @@ export interface FileRouteTypes {
     | '/yonetim/tedarikciler'
     | '/yonetim/ziyaretci-izleme'
     | '/api/public/source-research'
+    | '/bolgeler/$ilce/$hizmet'
     | '/hesabim/'
     | '/yonetim/'
+    | '/bolgeler/$ilce/'
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
     | '/yonetim/teklifler/$id'
@@ -422,6 +472,9 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/reset-password'
+    | '/hizmetler/$slug'
+    | '/bolgeler'
+    | '/hizmetler'
     | '/hesabim/projeler'
     | '/hesabim/talepler'
     | '/hesabim/teklifler'
@@ -445,8 +498,10 @@ export interface FileRouteTypes {
     | '/yonetim/tedarikciler'
     | '/yonetim/ziyaretci-izleme'
     | '/api/public/source-research'
+    | '/bolgeler/$ilce/$hizmet'
     | '/hesabim'
     | '/yonetim'
+    | '/bolgeler/$ilce'
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
     | '/yonetim/teklifler/$id'
@@ -461,6 +516,9 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/_authenticated/hesabim'
     | '/_authenticated/yonetim'
+    | '/hizmetler/$slug'
+    | '/bolgeler/'
+    | '/hizmetler/'
     | '/_authenticated/hesabim/projeler'
     | '/_authenticated/hesabim/talepler'
     | '/_authenticated/hesabim/teklifler'
@@ -484,8 +542,10 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/tedarikciler'
     | '/_authenticated/yonetim/ziyaretci-izleme'
     | '/api/public/source-research'
+    | '/bolgeler/$ilce/$hizmet'
     | '/_authenticated/hesabim/'
     | '/_authenticated/yonetim/'
+    | '/bolgeler/$ilce/'
     | '/_authenticated/yonetim/projeler/$id'
     | '/_authenticated/yonetim/talepler/$id'
     | '/_authenticated/yonetim/teklifler/$id'
@@ -499,7 +559,12 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  HizmetlerSlugRoute: typeof HizmetlerSlugRoute
+  BolgelerIndexRoute: typeof BolgelerIndexRoute
+  HizmetlerIndexRoute: typeof HizmetlerIndexRoute
   ApiPublicSourceResearchRoute: typeof ApiPublicSourceResearchRoute
+  BolgelerIlceHizmetRoute: typeof BolgelerIlceHizmetRoute
+  BolgelerIlceIndexRoute: typeof BolgelerIlceIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -545,6 +610,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/yonetim'
       preLoaderRoute: typeof AuthenticatedYonetimRouteRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/bolgeler/': {
+      id: '/bolgeler/'
+      path: '/bolgeler'
+      fullPath: '/bolgeler/'
+      preLoaderRoute: typeof BolgelerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hizmetler/': {
+      id: '/hizmetler/'
+      path: '/hizmetler'
+      fullPath: '/hizmetler/'
+      preLoaderRoute: typeof HizmetlerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hizmetler/$slug': {
+      id: '/hizmetler/$slug'
+      path: '/hizmetler/$slug'
+      fullPath: '/hizmetler/$slug'
+      preLoaderRoute: typeof HizmetlerSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/hesabim/': {
       id: '/_authenticated/hesabim/'
@@ -721,6 +807,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicSourceResearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/bolgeler/$ilce/': {
+      id: '/bolgeler/$ilce/'
+      path: '/bolgeler/$ilce'
+      fullPath: '/bolgeler/$ilce/'
+      preLoaderRoute: typeof BolgelerIlceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bolgeler/$ilce/$hizmet': {
+      id: '/bolgeler/$ilce/$hizmet'
+      path: '/bolgeler/$ilce/$hizmet'
+      fullPath: '/bolgeler/$ilce/$hizmet'
+      preLoaderRoute: typeof BolgelerIlceHizmetRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_authenticated/yonetim/projeler/': {
       id: '/_authenticated/yonetim/projeler/'
       path: '/projeler'
@@ -878,7 +978,12 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  HizmetlerSlugRoute: HizmetlerSlugRoute,
+  BolgelerIndexRoute: BolgelerIndexRoute,
+  HizmetlerIndexRoute: HizmetlerIndexRoute,
   ApiPublicSourceResearchRoute: ApiPublicSourceResearchRoute,
+  BolgelerIlceHizmetRoute: BolgelerIlceHizmetRoute,
+  BolgelerIlceIndexRoute: BolgelerIlceIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
