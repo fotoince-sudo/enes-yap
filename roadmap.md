@@ -15,6 +15,6 @@
 - [x] Hizmet (18), ilçe (14), ilçe+hizmet (56), rehber (4), iletişim sayfaları + sitemap.xml (94 adres) + robots.txt (panel taramaya kapalı)
 - [x] LocalBusiness/Organization, WebSite, Service, Article, BreadcrumbList structured data; canonical + tr dil etiketi
 - [x] Yönetim panelinde "SEO Denetimi" ekranı
-- [ ] Google Search Console bağlantısı + sitemap gönderimi (kullanıcı onayı gerekiyor)
+- [x] Google Search Console bağlantısı + sitemap gönderimi — site doğrulandı (fotoince@gmail.com sahibi), 94 URL'lik sitemap gönderildi, 0 hata/0 uyarı (17 Eyl 2026)
 - [ ] Google İşletme Profili (haritalarda görünürlük) — kullanıcı tarafında yapılacak
 - [ ] Gerçek proje fotoğrafları ve önce/sonra kayıtlarının panelden yayına alınması
