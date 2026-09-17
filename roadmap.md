@@ -9,3 +9,4 @@
 - [ ] Source Research Motoru: AKTİF (elle çalıştırma + zamanlayıcı ucu hazır). Otomatik saatli/günlük zamanlama kullanıcı onayı bekliyor.
 - [ ] Dış kaynakların izin durumu "inceleniyor" — kullanıcı hangi kaynakları "izinli" işaretleyeceğini bildirmeli (izinli olmayan kaynak otomatik taranmaz).
 - [x] Source Research Motoru günlük otomatik çalışma (her gün 09:30 TR) + çalışma günlüğü kaydı.
+- [x] Aday İşleme Zinciri (temizleme → tekilleştirme → fırsat puanlama → CRM eşleştirme) tarama turuna bağlandı; "Motor Durumu" ekranı eklendi.

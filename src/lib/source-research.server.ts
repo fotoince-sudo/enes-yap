@@ -512,5 +512,14 @@ export async function runSourceResearchCore(
     details: result.details as unknown as never,
   });
 
+  // Zincirin devamı: temizleme → tekilleştirme → filtreleme → CRM eşleştirme.
+  // Bu aşama başarısız olsa bile tarama sonucu korunur; hata kendi günlüğüne yazılır.
+  try {
+    const { runLeadPipelineCore } = await import("./lead-pipeline.server");
+    await runLeadPipelineCore(trigger);
+  } catch (error) {
+    console.error("[lead-pipeline] chain step failed", error);
+  }
+
   return result;
 }
