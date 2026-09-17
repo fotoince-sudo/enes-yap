@@ -33,7 +33,7 @@ export type QuotePdfData = {
 const COMPANY = {
   name: "Enes Yapı",
   claim: "Tadilat ve Yenileme Çözümleri",
-  phone: "0533 399 25 40",
+  phone: "0530 764 17 17",
   address: "Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir",
 };
 

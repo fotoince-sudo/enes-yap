@@ -407,8 +407,8 @@ function HomePage() {
             <div className="mt-6 grid gap-4 sm:grid-cols-3">
               <div className="rounded-lg border bg-card p-4">
                 <h3 className="text-sm font-medium text-muted-foreground">Telefon & WhatsApp</h3>
-                <a href="tel:+905333992540" className="mt-1 block font-medium hover:text-primary">
-                  0533 399 25 40
+                <a href="tel:+905307641717" className="mt-1 block font-medium hover:text-primary">
+                  0530 764 17 17
                 </a>
                 <a
                   href="https://wa.me/905307641717"
@@ -443,7 +443,7 @@ function HomePage() {
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 text-sm text-muted-foreground">
           <span className="flex items-center gap-2">
             <img src={logoAsset.url} alt="" className="h-6 w-6 object-contain" />
-            <span>{"© 2026 Enes Yapı · Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir · 0533 399 25 40"}</span>
+            <span>{"© 2026 Enes Yapı · Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir · 0530 764 17 17"}</span>
           </span>
           <Link to="/auth" className="hover:text-foreground">
             Müşteri / personel girişi
