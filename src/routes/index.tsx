@@ -135,34 +135,25 @@ function HomePage() {
       <main>
         {/* Hero */}
         <section className="border-b bg-muted/30">
-          <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 md:grid-cols-2 md:items-center md:py-20">
+          <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:py-12 md:grid-cols-2 md:items-center md:gap-8 md:py-20">
             <div>
-              <p className="text-sm font-medium uppercase tracking-widest text-primary">
+              <p className="text-xs font-medium uppercase tracking-widest text-primary sm:text-sm">
                 İzmir · Tadilat · Yenileme · Uygulama
               </p>
-              <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
+              <h1 className="mt-2 text-2xl font-semibold leading-tight tracking-tight sm:mt-3 sm:text-3xl md:text-5xl">
                 İzmir'de tadilat, yenileme ve dekorasyon çözümleri.
               </h1>
-              <p className="mt-4 max-w-xl text-muted-foreground">
+              <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
                 Bayraklı merkezli ekibimizle İzmir'de daire, ev, ofis ve iş yerlerinde tadilat, bakım, onarım ve komple
                 yenileme işlerini planlıyor, ekipleri organize ediyor ve işi teslim edene kadar takip ediyoruz.
               </p>
-              <div className="mt-8 border-l-4 border-primary pl-4 sm:pl-5">
-                <p className="text-xl font-bold uppercase leading-tight tracking-tight sm:text-2xl">
+              <div className="mt-4 border-l-4 border-primary pl-4 sm:mt-6 sm:pl-5">
+                <p className="text-lg font-bold uppercase leading-tight tracking-tight sm:text-2xl">
                   &ldquo;BİZDE HER ŞEY GERÇEK.&rdquo;
                 </p>
-                <ul className="mt-3 space-y-0.5 text-sm text-muted-foreground sm:columns-2 sm:gap-8">
-                  {["Gerçek müşteri.", "Gerçek mekân.", "Gerçek ölçü.", "Gerçek ürün.", "Gerçek keşif.", "Gerçek teklif.", "Gerçek uygulama."].map(
-                    (line) => (
-                      <li key={line} className="break-inside-avoid">
-                        {line}
-                      </li>
-                    ),
-                  )}
-                </ul>
-                <p className="mt-3 text-sm font-semibold sm:text-base">Hayal değil, gerçek iş.</p>
+                <p className="mt-1 text-sm text-muted-foreground">Hayal değil, gerçek iş.</p>
               </div>
-              <div className="mt-6 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
                 <Button size="lg" asChild>
                   <a href="#talep">Tadilat talebi oluştur</a>
                 </Button>
@@ -179,7 +170,7 @@ function HomePage() {
             <img
               src={heroImage}
               alt="Tadilat uygulaması yapılan bir iç mekân"
-              className="h-64 w-full rounded-lg border object-cover md:h-80"
+              className="h-48 w-full rounded-lg border object-cover sm:h-64 md:h-80"
               loading="lazy"
             />
           </div>
