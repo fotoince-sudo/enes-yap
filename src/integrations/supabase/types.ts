@@ -340,12 +340,18 @@ export type Database = {
           last_contact_at: string | null
           listing_date: string | null
           listing_url: string | null
+          matched_request_id: string | null
           need_type: string | null
           neighborhood: string | null
           normalized_url: string | null
           notes: string | null
           opportunity_id: string | null
+          pipeline_error: string | null
+          pipeline_stage: string | null
           property_id: string | null
+          score: number | null
+          score_reason: string | null
+          scored_at: string | null
           source: string
           source_permission: string
           status: string
@@ -371,12 +377,18 @@ export type Database = {
           last_contact_at?: string | null
           listing_date?: string | null
           listing_url?: string | null
+          matched_request_id?: string | null
           need_type?: string | null
           neighborhood?: string | null
           normalized_url?: string | null
           notes?: string | null
           opportunity_id?: string | null
+          pipeline_error?: string | null
+          pipeline_stage?: string | null
           property_id?: string | null
+          score?: number | null
+          score_reason?: string | null
+          scored_at?: string | null
           source?: string
           source_permission?: string
           status?: string
@@ -402,12 +414,18 @@ export type Database = {
           last_contact_at?: string | null
           listing_date?: string | null
           listing_url?: string | null
+          matched_request_id?: string | null
           need_type?: string | null
           neighborhood?: string | null
           normalized_url?: string | null
           notes?: string | null
           opportunity_id?: string | null
+          pipeline_error?: string | null
+          pipeline_stage?: string | null
           property_id?: string | null
+          score?: number | null
+          score_reason?: string | null
+          scored_at?: string | null
           source?: string
           source_permission?: string
           status?: string
@@ -420,6 +438,13 @@ export type Database = {
             columns: ["customer_id"]
             isOneToOne: false
             referencedRelation: "customers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lead_prospects_matched_request_id_fkey"
+            columns: ["matched_request_id"]
+            isOneToOne: false
+            referencedRelation: "renovation_requests"
             referencedColumns: ["id"]
           },
           {
