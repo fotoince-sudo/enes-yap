@@ -83,13 +83,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "Enes Yapı" },
-      { title: "Enes Yapı — Tadilat, Renovasyon ve Dekorasyon | İstanbul" },
+      { title: "Enes Yapı — İzmir Tadilat, Yenileme ve Dekorasyon" },
       {
         name: "description",
         content:
-          "Enes Yapı: daire, ofis ve iş yeri tadilatı, dekorasyon ve komple yenileme hizmetleri. 15+ yıl deneyim, ücretsiz keşif, zamanında teslim.",
+          "Enes Yapı: İzmir'de daire, ofis ve iş yeri tadilatı, dekorasyon ve komple yenileme. Yerinde keşif, kalem kalem teklif, tek muhatap.",
       },
       { property: "og:site_name", content: "Enes Yapı" },
+      { property: "og:locale", content: "tr_TR" },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -124,7 +125,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="tr">
       <head>
         <HeadContent />
       </head>

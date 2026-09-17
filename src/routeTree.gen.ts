@@ -12,12 +12,16 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
+import { Route as IletisimRouteImport } from './routes/iletisim'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedHesabimRouteRouteImport } from './routes/_authenticated/hesabim/route'
 import { Route as AuthenticatedYonetimRouteRouteImport } from './routes/_authenticated/yonetim/route'
 import { Route as BolgelerIndexRouteImport } from './routes/bolgeler.index'
 import { Route as HizmetlerIndexRouteImport } from './routes/hizmetler.index'
 import { Route as HizmetlerSlugRouteImport } from './routes/hizmetler.$slug'
+import { Route as RehberIndexRouteImport } from './routes/rehber.index'
+import { Route as RehberSlugRouteImport } from './routes/rehber.$slug'
 import { Route as AuthenticatedHesabimIndexRouteImport } from './routes/_authenticated/hesabim/index'
 import { Route as AuthenticatedHesabimProjelerRouteImport } from './routes/_authenticated/hesabim/projeler'
 import { Route as AuthenticatedHesabimTaleplerRouteImport } from './routes/_authenticated/hesabim/talepler'
@@ -66,9 +70,19 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IletisimRoute = IletisimRouteImport.update({
+  id: '/iletisim',
+  path: '/iletisim',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedHesabimRouteRoute =
@@ -96,6 +110,16 @@ const HizmetlerIndexRoute = HizmetlerIndexRouteImport.update({
 const HizmetlerSlugRoute = HizmetlerSlugRouteImport.update({
   id: '/hizmetler/$slug',
   path: '/hizmetler/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RehberIndexRoute = RehberIndexRouteImport.update({
+  id: '/rehber/',
+  path: '/rehber/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RehberSlugRoute = RehberSlugRouteImport.update({
+  id: '/rehber/$slug',
+  path: '/rehber/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedHesabimIndexRoute =
@@ -297,12 +321,16 @@ const AuthenticatedYonetimTekliflerIdRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/iletisim': typeof IletisimRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
+  '/rehber/$slug': typeof RehberSlugRoute
   '/bolgeler/': typeof BolgelerIndexRoute
   '/hizmetler/': typeof HizmetlerIndexRoute
+  '/rehber/': typeof RehberIndexRoute
   '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
@@ -340,10 +368,14 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
+  '/iletisim': typeof IletisimRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
+  '/rehber/$slug': typeof RehberSlugRoute
   '/bolgeler': typeof BolgelerIndexRoute
   '/hizmetler': typeof HizmetlerIndexRoute
+  '/rehber': typeof RehberIndexRoute
   '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
@@ -383,12 +415,16 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
+  '/iletisim': typeof IletisimRoute
   '/reset-password': typeof ResetPasswordRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
   '/_authenticated/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
+  '/rehber/$slug': typeof RehberSlugRoute
   '/bolgeler/': typeof BolgelerIndexRoute
   '/hizmetler/': typeof HizmetlerIndexRoute
+  '/rehber/': typeof RehberIndexRoute
   '/_authenticated/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
   '/_authenticated/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
   '/_authenticated/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
@@ -428,12 +464,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
+    | '/iletisim'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/hesabim'
     | '/yonetim'
     | '/hizmetler/$slug'
+    | '/rehber/$slug'
     | '/bolgeler/'
     | '/hizmetler/'
+    | '/rehber/'
     | '/hesabim/projeler'
     | '/hesabim/talepler'
     | '/hesabim/teklifler'
@@ -471,10 +511,14 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth'
+    | '/iletisim'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/hizmetler/$slug'
+    | '/rehber/$slug'
     | '/bolgeler'
     | '/hizmetler'
+    | '/rehber'
     | '/hesabim/projeler'
     | '/hesabim/talepler'
     | '/hesabim/teklifler'
@@ -513,12 +557,16 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
+    | '/iletisim'
     | '/reset-password'
+    | '/sitemap.xml'
     | '/_authenticated/hesabim'
     | '/_authenticated/yonetim'
     | '/hizmetler/$slug'
+    | '/rehber/$slug'
     | '/bolgeler/'
     | '/hizmetler/'
+    | '/rehber/'
     | '/_authenticated/hesabim/projeler'
     | '/_authenticated/hesabim/talepler'
     | '/_authenticated/hesabim/teklifler'
@@ -558,10 +606,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
+  IletisimRoute: typeof IletisimRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   HizmetlerSlugRoute: typeof HizmetlerSlugRoute
+  RehberSlugRoute: typeof RehberSlugRoute
   BolgelerIndexRoute: typeof BolgelerIndexRoute
   HizmetlerIndexRoute: typeof HizmetlerIndexRoute
+  RehberIndexRoute: typeof RehberIndexRoute
   ApiPublicSourceResearchRoute: typeof ApiPublicSourceResearchRoute
   BolgelerIlceHizmetRoute: typeof BolgelerIlceHizmetRoute
   BolgelerIlceIndexRoute: typeof BolgelerIlceIndexRoute
@@ -590,11 +642,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/iletisim': {
+      id: '/iletisim'
+      path: '/iletisim'
+      fullPath: '/iletisim'
+      preLoaderRoute: typeof IletisimRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/reset-password': {
       id: '/reset-password'
       path: '/reset-password'
       fullPath: '/reset-password'
       preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/hesabim': {
@@ -630,6 +696,20 @@ declare module '@tanstack/react-router' {
       path: '/hizmetler/$slug'
       fullPath: '/hizmetler/$slug'
       preLoaderRoute: typeof HizmetlerSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rehber/': {
+      id: '/rehber/'
+      path: '/rehber'
+      fullPath: '/rehber/'
+      preLoaderRoute: typeof RehberIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rehber/$slug': {
+      id: '/rehber/$slug'
+      path: '/rehber/$slug'
+      fullPath: '/rehber/$slug'
+      preLoaderRoute: typeof RehberSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/hesabim/': {
@@ -977,10 +1057,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
+  IletisimRoute: IletisimRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   HizmetlerSlugRoute: HizmetlerSlugRoute,
+  RehberSlugRoute: RehberSlugRoute,
   BolgelerIndexRoute: BolgelerIndexRoute,
   HizmetlerIndexRoute: HizmetlerIndexRoute,
+  RehberIndexRoute: RehberIndexRoute,
   ApiPublicSourceResearchRoute: ApiPublicSourceResearchRoute,
   BolgelerIlceHizmetRoute: BolgelerIlceHizmetRoute,
   BolgelerIlceIndexRoute: BolgelerIlceIndexRoute,
