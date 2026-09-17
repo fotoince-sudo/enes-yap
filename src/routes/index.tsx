@@ -147,6 +147,21 @@ function HomePage() {
                 Bayraklı merkezli ekibimizle İzmir'de daire, ev, ofis ve iş yerlerinde tadilat, bakım, onarım ve komple
                 yenileme işlerini planlıyor, ekipleri organize ediyor ve işi teslim edene kadar takip ediyoruz.
               </p>
+              <div className="mt-8 border-l-4 border-primary pl-4 sm:pl-5">
+                <p className="text-xl font-bold uppercase leading-tight tracking-tight sm:text-2xl">
+                  &ldquo;BİZDE HER ŞEY GERÇEK.&rdquo;
+                </p>
+                <ul className="mt-3 space-y-0.5 text-sm text-muted-foreground sm:columns-2 sm:gap-8">
+                  {["Gerçek müşteri.", "Gerçek mekân.", "Gerçek ölçü.", "Gerçek ürün.", "Gerçek keşif.", "Gerçek teklif.", "Gerçek uygulama."].map(
+                    (line) => (
+                      <li key={line} className="break-inside-avoid">
+                        {line}
+                      </li>
+                    ),
+                  )}
+                </ul>
+                <p className="mt-3 text-sm font-semibold sm:text-base">Hayal değil, gerçek iş.</p>
+              </div>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button size="lg" asChild>
                   <a href="#talep">Tadilat talebi oluştur</a>
