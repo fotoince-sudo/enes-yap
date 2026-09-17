@@ -11,25 +11,31 @@ import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 import beforeImage from "@/assets/proje-tadilat.jpg";
 import afterImage from "@/assets/proje-daire.jpg";
 
+const HOME_TITLE = "İzmir Tadilat, Yenileme ve Dekorasyon — Enes Yapı";
+const HOME_DESCRIPTION =
+  "İzmir'de komple tadilat, banyo ve mutfak yenileme, boya, dış cephe ve ofis tadilatı. Bayraklı merkezli Enes Yapı ile yerinde keşif ve kalem kalem teklif.";
+
 export const Route = createFileRoute("/")({
   component: HomePage,
-  head: () => ({
-    meta: [
-      { title: "Enes Yapı — Tadilat, Yenileme ve Uygulama Çözümleri" },
-      {
-        name: "description",
-        content:
-          "Konut, iş yeri ve gayrimenkuller için tadilat, yenileme, bakım ve onarım çözümleri. Keşif, teklif, ekip organizasyonu ve iş takibi tek elden.",
-      },
-      { property: "og:title", content: "Enes Yapı — Tadilat, Yenileme ve Uygulama Çözümleri" },
-      {
-        property: "og:description",
-        content: "Gayrimenkulünüz için tadilat ve yenileme çözümleri. Talebinizi oluşturun, keşif planlayalım.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => {
+    const base = pageHead({ path: "/", title: HOME_TITLE, description: HOME_DESCRIPTION });
+    return {
+      ...base,
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(localBusinessJsonLd()) },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE.name,
+            url: SITE.url,
+            inLanguage: "tr-TR",
+          }),
+        },
+      ],
+    };
+  },
 });
 
 const STEPS = [
