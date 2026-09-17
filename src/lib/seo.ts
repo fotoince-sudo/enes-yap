@@ -602,3 +602,41 @@ export function keywordsForPath(path: string): string[] {
   if (parts[0] === "iletisim") return ["İzmir tadilat firması", "İzmir yapı firması iletişim"];
   return ["İzmir tadilat"];
 }
+
+/**
+ * İlçe sayfaları için lokal işletme (LocalBusiness) verisi.
+ * Bilgiler gerçek işletme kaydından gelir; hizmet alanı yalnızca doğrulanmış ilçedir.
+ */
+export const districtBusinessJsonLd = (district: DistrictDef) => ({
+  "@context": "https://schema.org",
+  "@type": "HomeAndConstructionBusiness",
+  "@id": `${SITE.url}/bolgeler/${district.slug}#business`,
+  name: `${SITE.name} — ${district.name} tadilat ve yenileme`,
+  url: canonical(`/bolgeler/${district.slug}`),
+  telephone: SITE.phoneE164,
+  parentOrganization: { "@type": "Organization", name: SITE.name, url: SITE.url },
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: SITE.street,
+    addressLocality: SITE.district,
+    addressRegion: SITE.city,
+    addressCountry: SITE.country,
+  },
+  areaServed: { "@type": "AdministrativeArea", name: `${district.name}, ${SITE.city}` },
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: SITE.openingHoursData.days,
+      opens: SITE.openingHoursData.opens,
+      closes: SITE.openingHoursData.closes,
+    },
+  ],
+  makesOffer: CORE_SERVICES.map((s) => ({
+    "@type": "Offer",
+    itemOffered: {
+      "@type": "Service",
+      name: `${district.name} ${s.name.toLocaleLowerCase("tr-TR")}`,
+      areaServed: { "@type": "AdministrativeArea", name: `${district.name}, ${SITE.city}` },
+    },
+  })),
+});

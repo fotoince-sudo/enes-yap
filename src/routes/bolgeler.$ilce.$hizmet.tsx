@@ -4,6 +4,7 @@ import { Breadcrumbs, CtaSection, SiteShell } from "@/components/site/SiteShell"
 import {
   breadcrumbJsonLd,
   CORE_SERVICES,
+  districtBusinessJsonLd,
   districtBySlug,
   pageHead,
   serviceBySlug,
@@ -31,6 +32,10 @@ export const Route = createFileRoute("/bolgeler/$ilce/$hizmet")({
     return {
       ...base,
       scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(districtBusinessJsonLd(district)),
+        },
         {
           type: "application/ld+json",
           children: JSON.stringify(
