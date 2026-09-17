@@ -92,7 +92,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:site_name", content: "Enes Yapı" },
       { property: "og:locale", content: "tr_TR" },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { name: "google-site-verification", content: "1hVMbQI4YHaSTK8aQjs5Lkt7aNFn-9DFmB6ENxNweA0" },
     ],
     links: [
       {
