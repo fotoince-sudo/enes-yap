@@ -12,7 +12,7 @@ export const SITE = {
   url: "https://enes-yap.lovable.app",
   phoneDisplay: "0533 399 25 40",
   phoneE164: "+905333992540",
-  whatsapp: "https://wa.me/905333992540",
+  whatsapp: "https://wa.me/905307641717",
   street: "Manavkuyu Mah. Sakarya Cad.",
   district: "Bayraklı",
   city: "İzmir",
