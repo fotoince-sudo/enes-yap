@@ -8,6 +8,13 @@
       "when": 1789650580466,
       "tag": "0000_lead_pipeline_engine",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1789658674165,
+      "tag": "0001_secure_public_project_showcase",
+      "breakpoints": true
     }
   ]
 }

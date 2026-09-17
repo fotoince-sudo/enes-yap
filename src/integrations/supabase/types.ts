@@ -1606,6 +1606,15 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_public_project_showcase: {
+        Args: never
+        Returns: {
+          district: string
+          id: string
+          photo_urls: string[]
+          title: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
