@@ -29,7 +29,7 @@ const MODEL = "google/gemini-3.8-flash";
 const SYSTEM_PROMPT = `Adın Emir. Enes Yapı'nın web sitesindeki dijital karşılama ve müşteri talep asistanısın.
 
 Enes Yapı: İzmir Bayraklı merkezli tadilat, dekorasyon, yenileme, bakım, onarım ve anahtar teslim uygulama firması. Enes Emlak'tan bağımsızdır, mimarlık ofisi değildir.
-İletişim: 0533 399 25 40 (telefon). WhatsApp: 0530 764 17 17 (https://wa.me/905307641717). Adres: Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir. Bu bilgileri asla değiştirme veya yenisini uydurma.
+İletişim: 0530 764 17 17 (telefon ve WhatsApp: https://wa.me/905307641717). Adres: Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir. Bu bilgileri asla değiştirme veya yenisini uydurma.
 
 AMACIN: ziyaretçiyi karşıla, sorusunu cevapla, hizmet almak istiyorsa ihtiyacını anla, işin detaylarını ve iletişim bilgilerini topla, sonra "talep_olustur" aracıyla talebi kaydet.
 
@@ -45,7 +45,7 @@ ANLAMA VE AKIŞ (çok önemli)
 - Her cevabı önce yorumla: kullanıcının ne dediğini kısaca kendi cümlenle onayla ("Anladım, Bayraklı'da 120 m² bir daire."), sonra doğal olarak bir sonraki adıma geç. Hazır soru listesini sırayla okuma; sonraki soruyu her zaman kullanıcının son cevabına bağla.
 - Kullanıcının cevabı sorduğun şeye uymuyorsa (örneğin m² sorduğunda "bilmiyorum" veya alakasız bir cümle geldiyse) ısrar etme: bilmediğini kabul et, "yaklaşık bir tahmin yeterli" gibi kolaylaştırıcı bir seçenek sun veya o bilgiyi atlayıp devam et.
 - Kullanıcı yön değiştirirse (yeni bir konu, farklı bir iş, önceki bilgiyi düzeltme) yeni bilgiyi esas al ve eski varsayımı bırak; düzeltmeyi kısaca teyit et.
-- EMİN OLAMADIĞINDA TAHMİN ETME: cevabı gerçekten anlamadıysan veya çelişkiliyse net bir dille dur ve sor: "Sizi tam anlayamadım; ... mı demek istediniz?" Aynı konuda iki kez anlaşamazsanız akışı kibarca kapat: "Yanlış anlamamak için bilgilerinizi ekibimize aktarayım; 0533 399 25 40'tan da yazabilirsiniz." de ve elindeki bilgiyle ilerle.
+- EMİN OLAMADIĞINDA TAHMİN ETME: cevabı gerçekten anlamadıysan veya çelişkiliyse net bir dille dur ve sor: "Sizi tam anlayamadım; ... mı demek istediniz?" Aynı konuda iki kez anlaşamazsanız akışı kibarca kapat: "Yanlış anlamamak için bilgilerinizi ekibimize aktarayım; 0530 764 17 17 numarasından da yazabilirsiniz." de ve elindeki bilgiyle ilerle.
 - Konu Enes Yapı'nın hizmet alanının tamamen dışındaysa (alakasız sorular, başka firma işleri) açıkça söyle: "Bu konuda yardımcı olamıyorum; ben Enes Yapı'nın tadilat ve yenileme işleri için buradayım." de ve sohbeti kendi konusuna döndür.
 - Kullanıcı bilgi vermek istemiyorsa veya "şimdi olmaz" derse zorlamayı bırak, WhatsApp ve telefonu hatırlat, sohbeti nazikçe bitir.
 
@@ -128,7 +128,7 @@ type GwMessage = {
   tool_call_id?: string | undefined;
 };
 
-const FALLBACK = "Şu anda cevap veremedim. 0533 399 25 40 numarasından bize ulaşabilirsiniz.";
+const FALLBACK = "Şu anda cevap veremedim. 0530 764 17 17 numarasından bize ulaşabilirsiniz.";
 
 async function callGateway(apiKey: string, messages: GwMessage[]) {
   const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -156,7 +156,7 @@ export const emirChat = createServerFn({ method: "POST" })
     const apiKey = process.env["LOVABLE_API_KEY"];
     if (!apiKey) {
       return {
-        reply: "Yazılı asistan şu anda devre dışı. 0533 399 25 40 numarasından bize ulaşabilirsiniz.",
+        reply: "Yazılı asistan şu anda devre dışı. 0530 764 17 17 numarasından bize ulaşabilirsiniz.",
         sessionId: data.sessionId ?? null,
         requestId: null as string | null,
       };
@@ -425,7 +425,7 @@ export const emirChat = createServerFn({ method: "POST" })
       const msg = err instanceof Error ? err.message : "";
       reply =
         msg === "rate_limit"
-          ? "Şu an yoğunluk var, biraz sonra tekrar deneyin. Acil ise: 0533 399 25 40."
+          ? "Şu an yoğunluk var, biraz sonra tekrar deneyin. Acil ise: 0530 764 17 17."
           : FALLBACK;
     }
 

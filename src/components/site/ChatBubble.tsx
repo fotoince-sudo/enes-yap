@@ -118,7 +118,7 @@ export function ChatBubble() {
         ...prev,
         {
           role: "assistant",
-          content: "Şu anda cevap veremedim. 0533 399 25 40 numarasından bize ulaşabilirsiniz.",
+          content: "Şu anda cevap veremedim. 0530 764 17 17 numarasından bize ulaşabilirsiniz.",
           at: new Date().toISOString(),
         },
       ]);
@@ -212,7 +212,7 @@ export function ChatBubble() {
               >
                 <MessageCircle className="h-5 w-5" />
               </a>
-              <a href="tel:+905333992540" aria-label="Telefonla arayın" className="rounded-full p-2.5 hover:bg-white/10">
+              <a href="tel:+905307641717" aria-label="Telefonla arayın" className="rounded-full p-2.5 hover:bg-white/10">
                 <Phone className="h-5 w-5" />
               </a>
               <button aria-label="Sohbeti kapat" onClick={() => setOpen(false)} className="rounded-full p-2.5 hover:bg-white/10">
