@@ -4,6 +4,7 @@ import { Breadcrumbs, CtaSection, SiteShell } from "@/components/site/SiteShell"
 import {
   breadcrumbJsonLd,
   CORE_SERVICES,
+  districtBusinessJsonLd,
   districtBySlug,
   DISTRICTS,
   pageHead,
