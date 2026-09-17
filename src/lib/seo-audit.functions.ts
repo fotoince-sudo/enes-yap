@@ -3,8 +3,19 @@ import { getRequest } from "@tanstack/react-start/server";
 import { z } from "zod";
 
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
+import { keywordsForPath } from "@/lib/seo";
+
+export type SeoKeywordCheck = {
+  term: string;
+  inTitle: boolean;
+  inDescription: boolean;
+  inH1: boolean;
+  inText: boolean;
+};
 
 export type SeoAuditRow = {
+  keywords: SeoKeywordCheck[];
+  keywordHits: number;
   path: string;
   status: number;
   title: string | null;
