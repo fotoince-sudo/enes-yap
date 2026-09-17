@@ -108,18 +108,18 @@ function HomePage() {
             </span>
           </span>
           <nav className="hidden items-center gap-6 text-sm md:flex">
-            <a href="#hizmetler" className="text-muted-foreground hover:text-foreground">
+            <Link to="/hizmetler" className="text-muted-foreground hover:text-foreground">
               Hizmetler
-            </a>
-            <a href="#nasil" className="text-muted-foreground hover:text-foreground">
-              Nasıl çalışıyoruz?
-            </a>
-            <a href="#projeler" className="text-muted-foreground hover:text-foreground">
-              Projeler
-            </a>
-            <a href="#iletisim" className="text-muted-foreground hover:text-foreground">
+            </Link>
+            <Link to="/bolgeler" className="text-muted-foreground hover:text-foreground">
+              Hizmet bölgeleri
+            </Link>
+            <Link to="/rehber" className="text-muted-foreground hover:text-foreground">
+              Rehber
+            </Link>
+            <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">
               İletişim
-            </a>
+            </Link>
           </nav>
           <div className="flex items-center gap-2">
             <Button size="sm" asChild>
@@ -137,13 +137,15 @@ function HomePage() {
         <section className="border-b bg-muted/30">
           <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 md:grid-cols-2 md:items-center md:py-20">
             <div>
-              <p className="text-sm font-medium uppercase tracking-widest text-primary">Tadilat · Yenileme · Uygulama</p>
+              <p className="text-sm font-medium uppercase tracking-widest text-primary">
+                İzmir · Tadilat · Yenileme · Uygulama
+              </p>
               <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
-                Gayrimenkulünüz için tadilat ve yenileme çözümleri.
+                İzmir'de tadilat, yenileme ve dekorasyon çözümleri.
               </h1>
               <p className="mt-4 max-w-xl text-muted-foreground">
-                Daire, ev, ofis ve iş yerlerinde tadilat, bakım, onarım ve komple yenileme işlerini planlıyor, ekipleri
-                organize ediyor ve işi teslim edene kadar takip ediyoruz.
+                Bayraklı merkezli ekibimizle İzmir'de daire, ev, ofis ve iş yerlerinde tadilat, bakım, onarım ve komple
+                yenileme işlerini planlıyor, ekipleri organize ediyor ve işi teslim edene kadar takip ediyoruz.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button size="lg" asChild>
