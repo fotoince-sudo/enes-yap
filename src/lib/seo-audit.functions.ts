@@ -171,7 +171,24 @@ async function auditPath(origin: string, path: string, robots: string, sitemapLo
   const schemas = jsonLdTypes(html);
   if (schemas.length === 0) issues.push("Structured data yok");
 
+  const lc = (v: string | null) => (v ?? "").toLocaleLowerCase("tr-TR");
+  const bodyText = lc(stripTags(html.split(/<\/head>/i)[1] ?? html));
+  const keywords: SeoKeywordCheck[] = keywordsForPath(path).map((term) => {
+    const t = lc(term);
+    return {
+      term,
+      inTitle: lc(title).includes(t),
+      inDescription: lc(desc.value).includes(t),
+      inH1: lc(h1).includes(t),
+      inText: bodyText.includes(t),
+    };
+  });
+  const keywordHits = keywords.filter((k) => k.inTitle || k.inDescription || k.inH1 || k.inText).length;
+  if (keywords.length > 0 && keywordHits === 0) issues.push("Anahtar kelime geçmiyor");
+
   return {
+    keywords,
+    keywordHits,
     path,
     status,
     title,
