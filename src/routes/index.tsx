@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { RequestForm } from "@/components/site/RequestForm";
 import { ChatBubble } from "@/components/site/ChatBubble";
 import { Button } from "@/components/ui/button";
-import { PROJECT_STATUS, trDate } from "@/lib/domain";
+import { trDate } from "@/lib/domain";
 import { CORE_SERVICES, DISTRICTS, GUIDES, localBusinessJsonLd, pageHead, SERVICES, SITE } from "@/lib/seo";
 import heroImage from "@/assets/hero.jpg";
 import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
@@ -72,11 +72,7 @@ function HomePage() {
     queryKey: ["public-projects"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("projects")
-        .select("id, title, status, start_date, actual_end_date")
-        .eq("is_public_reference", true)
-        .order("created_at", { ascending: false })
-        .limit(6);
+        .rpc("get_public_project_showcase");
       if (error) throw error;
       return data ?? [];
     },
@@ -352,11 +348,19 @@ function HomePage() {
           ) : (
             <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((p) => (
-                <div key={p.id} className="rounded-lg border bg-card p-4">
-                  <h3 className="font-medium">{p.title}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">
-                    {PROJECT_STATUS[p.status as keyof typeof PROJECT_STATUS]}
-                  </p>
+                <div key={p.id} className="overflow-hidden rounded-lg border bg-card">
+                  {p.photo_urls?.[0] ? (
+                    <img
+                      src={p.photo_urls[0]}
+                      alt={`${p.title} proje fotoğrafı`}
+                      className="aspect-[4/3] w-full object-cover"
+                      loading="lazy"
+                    />
+                  ) : null}
+                  <div className="p-4">
+                    <h3 className="font-medium">{p.title}</h3>
+                    {p.district ? <p className="mt-1 text-sm text-muted-foreground">{p.district} / İzmir</p> : null}
+                  </div>
                 </div>
               ))}
             </div>
