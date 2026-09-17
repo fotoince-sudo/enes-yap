@@ -21,6 +21,7 @@ const NAV = [
   { to: "/yonetim/emir-talepleri", label: "Emir Talepleri" },
   { to: "/yonetim/emir-ai", label: "Emir AI (Site Asistanı)" },
   { to: "/yonetim/ziyaretci-izleme", label: "Ziyaretçi İzleme" },
+  { to: "/yonetim/seo", label: "SEO Denetimi" },
   { to: "/yonetim/musteriler", label: "Müşteriler" },
   { to: "/yonetim/gayrimenkuller", label: "Gayrimenkuller" },
   { to: "/yonetim/kesifler", label: "Keşifler" },

@@ -6,30 +6,37 @@ import { RequestForm } from "@/components/site/RequestForm";
 import { ChatBubble } from "@/components/site/ChatBubble";
 import { Button } from "@/components/ui/button";
 import { PROJECT_STATUS, trDate } from "@/lib/domain";
+import { CORE_SERVICES, DISTRICTS, GUIDES, localBusinessJsonLd, pageHead, SERVICES, SITE } from "@/lib/seo";
 import heroImage from "@/assets/hero.jpg";
 import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 import beforeImage from "@/assets/proje-tadilat.jpg";
 import afterImage from "@/assets/proje-daire.jpg";
 
+const HOME_TITLE = "İzmir Tadilat, Yenileme ve Dekorasyon — Enes Yapı";
+const HOME_DESCRIPTION =
+  "İzmir'de komple tadilat, banyo ve mutfak yenileme, boya, dış cephe ve ofis tadilatı. Bayraklı merkezli Enes Yapı ile yerinde keşif ve kalem kalem teklif.";
+
 export const Route = createFileRoute("/")({
   component: HomePage,
-  head: () => ({
-    meta: [
-      { title: "Enes Yapı — Tadilat, Yenileme ve Uygulama Çözümleri" },
-      {
-        name: "description",
-        content:
-          "Konut, iş yeri ve gayrimenkuller için tadilat, yenileme, bakım ve onarım çözümleri. Keşif, teklif, ekip organizasyonu ve iş takibi tek elden.",
-      },
-      { property: "og:title", content: "Enes Yapı — Tadilat, Yenileme ve Uygulama Çözümleri" },
-      {
-        property: "og:description",
-        content: "Gayrimenkulünüz için tadilat ve yenileme çözümleri. Talebinizi oluşturun, keşif planlayalım.",
-      },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => {
+    const base = pageHead({ path: "/", title: HOME_TITLE, description: HOME_DESCRIPTION });
+    return {
+      ...base,
+      scripts: [
+        { type: "application/ld+json", children: JSON.stringify(localBusinessJsonLd()) },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE.name,
+            url: SITE.url,
+            inLanguage: "tr-TR",
+          }),
+        },
+      ],
+    };
+  },
 });
 
 const STEPS = [
@@ -101,18 +108,18 @@ function HomePage() {
             </span>
           </span>
           <nav className="hidden items-center gap-6 text-sm md:flex">
-            <a href="#hizmetler" className="text-muted-foreground hover:text-foreground">
+            <Link to="/hizmetler" className="text-muted-foreground hover:text-foreground">
               Hizmetler
-            </a>
-            <a href="#nasil" className="text-muted-foreground hover:text-foreground">
-              Nasıl çalışıyoruz?
-            </a>
-            <a href="#projeler" className="text-muted-foreground hover:text-foreground">
-              Projeler
-            </a>
-            <a href="#iletisim" className="text-muted-foreground hover:text-foreground">
+            </Link>
+            <Link to="/bolgeler" className="text-muted-foreground hover:text-foreground">
+              Hizmet bölgeleri
+            </Link>
+            <Link to="/rehber" className="text-muted-foreground hover:text-foreground">
+              Rehber
+            </Link>
+            <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">
               İletişim
-            </a>
+            </Link>
           </nav>
           <div className="flex items-center gap-2">
             <Button size="sm" asChild>
@@ -130,13 +137,15 @@ function HomePage() {
         <section className="border-b bg-muted/30">
           <div className="mx-auto grid max-w-6xl gap-8 px-4 py-14 md:grid-cols-2 md:items-center md:py-20">
             <div>
-              <p className="text-sm font-medium uppercase tracking-widest text-primary">Tadilat · Yenileme · Uygulama</p>
+              <p className="text-sm font-medium uppercase tracking-widest text-primary">
+                İzmir · Tadilat · Yenileme · Uygulama
+              </p>
               <h1 className="mt-3 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl md:text-5xl">
-                Gayrimenkulünüz için tadilat ve yenileme çözümleri.
+                İzmir'de tadilat, yenileme ve dekorasyon çözümleri.
               </h1>
               <p className="mt-4 max-w-xl text-muted-foreground">
-                Daire, ev, ofis ve iş yerlerinde tadilat, bakım, onarım ve komple yenileme işlerini planlıyor, ekipleri
-                organize ediyor ve işi teslim edene kadar takip ediyoruz.
+                Bayraklı merkezli ekibimizle İzmir'de daire, ev, ofis ve iş yerlerinde tadilat, bakım, onarım ve komple
+                yenileme işlerini planlıyor, ekipleri organize ediyor ve işi teslim edene kadar takip ediyoruz.
               </p>
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button size="lg" asChild>
@@ -163,16 +172,88 @@ function HomePage() {
 
         {/* Hizmetler */}
         <section id="hizmetler" className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Hizmetler</h2>
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir'de sunduğumuz hizmetler</h2>
           <p className="mt-2 max-w-2xl text-muted-foreground">
-            Tek bir işten komple yenilemeye kadar tüm kapsamlarda çalışıyoruz.
+            Tek bir işten komple yenilemeye kadar tüm kapsamlarda çalışıyoruz. Detay için hizmet sayfalarına
+            bakabilirsiniz.
           </p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((c) => (
-              <div key={c.id} className="rounded-lg border bg-card p-4">
-                <h3 className="font-medium">{c.name}</h3>
-                {c.description ? <p className="mt-1 text-sm text-muted-foreground">{c.description}</p> : null}
-              </div>
+            {SERVICES.map((s) => (
+              <Link
+                key={s.slug}
+                to="/hizmetler/$slug"
+                params={{ slug: s.slug }}
+                className="rounded-lg border bg-card p-4 transition-colors hover:border-primary"
+              >
+                <h3 className="font-medium">{s.name}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{s.description}</p>
+              </Link>
+            ))}
+          </div>
+          {categories.length > 0 ? (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {categories.map((c) => (
+                <span key={c.id} className="rounded-md border bg-card px-3 py-1.5 text-xs text-muted-foreground">
+                  {c.name}
+                </span>
+              ))}
+            </div>
+          ) : null}
+          <div className="mt-4">
+            <Button variant="outline" asChild>
+              <Link to="/hizmetler">Tüm hizmetleri görün</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Hizmet bölgeleri */}
+        <section className="border-y bg-muted/30">
+          <div className="mx-auto max-w-6xl px-4 py-14">
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir hizmet bölgelerimiz</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+              İzmir merkez ilçelerinin tamamında, ayrıca Urla, Çeşme ve Seferihisar'da çalışıyoruz.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {DISTRICTS.map((d) => (
+                <Link
+                  key={d.slug}
+                  to="/bolgeler/$ilce"
+                  params={{ ilce: d.slug }}
+                  className="rounded-md border bg-card px-3 py-1.5 text-sm hover:border-primary"
+                >
+                  {d.name} tadilat
+                </Link>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {CORE_SERVICES.map((s) => (
+                <Link
+                  key={s.slug}
+                  to="/bolgeler/$ilce/$hizmet"
+                  params={{ ilce: "bayrakli", hizmet: s.slug }}
+                  className="rounded-lg border bg-card p-3 text-sm hover:border-primary"
+                >
+                  Bayraklı {s.name.toLocaleLowerCase("tr-TR")}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Rehber */}
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir tadilat rehberi</h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {GUIDES.map((g) => (
+              <Link
+                key={g.slug}
+                to="/rehber/$slug"
+                params={{ slug: g.slug }}
+                className="rounded-lg border bg-card p-4 transition-colors hover:border-primary"
+              >
+                <h3 className="font-medium">{g.h1}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{g.description}</p>
+              </Link>
             ))}
           </div>
         </section>
