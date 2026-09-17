@@ -38,8 +38,8 @@ function GuideIndex() {
       <section className="mx-auto max-w-6xl px-4 py-10">
         <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">İzmir tadilat ve yapı rehberi</h1>
         <p className="mt-4 max-w-3xl text-muted-foreground">
-          Sahada karşılaştığımız sorulardan yola çıkarak hazırladığımız rehberler. Genel geçer bilgi yerine, İzmir'de
-          yürüttüğümüz işlerdeki uygulama kararlarını anlatıyoruz.
+          Sahada karşılaştığımız sorulardan yola çıkarak hazırladığımız rehberler. Genel geçer bilgi yerine, kendi
+          işlerimizde aldığımız uygulama kararlarını anlatıyoruz.
         </p>
 
         <div className="mt-8 grid gap-4 sm:grid-cols-2">
