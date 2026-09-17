@@ -1,235 +1,204 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { CORE_SERVICES, DISTRICTS, GUIDES, SERVICES, SITE } from "@/lib/seo";
+import { runSeoAudit, type SeoAuditResult } from "@/lib/seo-audit.functions";
 
 export const Route = createFileRoute("/_authenticated/yonetim/seo")({
   component: SeoPanel,
 });
 
-type PageRow = {
-  path: string;
-  title: string;
-  description: string;
-  h1: string;
-  group: string;
-  structuredData: string[];
-};
-
-function buildPages(): PageRow[] {
-  const rows: PageRow[] = [
-    {
-      path: "/",
-      title: "İzmir Tadilat, Yenileme ve Dekorasyon — Enes Yapı",
-      description: "İzmir odaklı ana sayfa açıklaması",
-      h1: "İzmir'de tadilat, yenileme ve dekorasyon çözümleri.",
-      group: "Ana",
-      structuredData: ["LocalBusiness", "WebSite"],
-    },
-    {
-      path: "/hizmetler",
-      title: "İzmir Tadilat ve Yapı Hizmetleri — Enes Yapı",
-      description: "Hizmet listesi",
-      h1: "İzmir yapı ve tadilat hizmetleri",
-      group: "Hizmet",
-      structuredData: ["BreadcrumbList"],
-    },
-    {
-      path: "/bolgeler",
-      title: "İzmir Hizmet Bölgelerimiz — Enes Yapı",
-      description: "İlçe listesi",
-      h1: "İzmir hizmet bölgelerimiz",
-      group: "Bölge",
-      structuredData: ["BreadcrumbList"],
-    },
-    {
-      path: "/rehber",
-      title: "İzmir Tadilat ve Yapı Rehberi — Enes Yapı",
-      description: "Rehber listesi",
-      h1: "İzmir tadilat ve yapı rehberi",
-      group: "Rehber",
-      structuredData: ["BreadcrumbList"],
-    },
-    {
-      path: "/iletisim",
-      title: "İletişim ve Teklif — Enes Yapı",
-      description: "İletişim, adres, çalışma saatleri",
-      h1: "İletişim ve teklif talebi",
-      group: "İletişim",
-      structuredData: ["LocalBusiness", "BreadcrumbList"],
-    },
-  ];
-
-  for (const s of SERVICES) {
-    rows.push({
-      path: `/hizmetler/${s.slug}`,
-      title: s.title,
-      description: s.description,
-      h1: s.h1,
-      group: "Hizmet",
-      structuredData: ["Service", "BreadcrumbList"],
-    });
-  }
-  for (const d of DISTRICTS) {
-    rows.push({
-      path: `/bolgeler/${d.slug}`,
-      title: `${d.name} Tadilat ve Yenileme — İzmir | Enes Yapı`,
-      description: d.note,
-      h1: `${d.name} tadilat ve yenileme hizmetleri`,
-      group: "Bölge",
-      structuredData: ["Service", "BreadcrumbList"],
-    });
-    for (const s of CORE_SERVICES) {
-      rows.push({
-        path: `/bolgeler/${d.slug}/${s.slug}`,
-        title: `${d.name} ${s.name} — İzmir | Enes Yapı`,
-        description: `${d.name} ${s.name.toLocaleLowerCase("tr-TR")} açıklaması`,
-        h1: `${d.name} ${s.name.toLocaleLowerCase("tr-TR")}`,
-        group: "Bölge + hizmet",
-        structuredData: ["Service", "BreadcrumbList"],
-      });
-    }
-  }
-  for (const g of GUIDES) {
-    rows.push({
-      path: `/rehber/${g.slug}`,
-      title: g.title,
-      description: g.description,
-      h1: g.h1,
-      group: "Rehber",
-      structuredData: ["Article", "BreadcrumbList"],
-    });
-  }
-  return rows;
+function groupOf(path: string) {
+  if (path === "/") return "Ana";
+  if (path.startsWith("/hizmetler")) return "Hizmet";
+  if (path.split("/").length === 4 && path.startsWith("/bolgeler")) return "Bölge + hizmet";
+  if (path.startsWith("/bolgeler")) return "Bölge";
+  if (path.startsWith("/rehber")) return "Rehber";
+  return "İletişim";
 }
 
-function check(row: PageRow) {
-  const issues: string[] = [];
-  if (row.title.length < 20 || row.title.length > 65) issues.push("Title uzunluğu");
-  if (!/izmir/i.test(row.title) && row.path !== "/iletisim") issues.push("Title'da İzmir yok");
-  if (row.description.length < 40) issues.push("Meta açıklama kısa");
-  if (!row.h1) issues.push("H1 yok");
-  if (row.structuredData.length === 0) issues.push("Structured data yok");
-  return issues;
+const KEY_PATHS = ["/", "/hizmetler", "/bolgeler", "/rehber", "/iletisim"];
+
+function allPaths() {
+  const paths = [...KEY_PATHS];
+  for (const s of SERVICES) paths.push(`/hizmetler/${s.slug}`);
+  for (const d of DISTRICTS) {
+    paths.push(`/bolgeler/${d.slug}`);
+    for (const s of CORE_SERVICES) paths.push(`/bolgeler/${d.slug}/${s.slug}`);
+  }
+  for (const g of GUIDES) paths.push(`/rehber/${g.slug}`);
+  return paths;
+}
+
+function samplePaths() {
+  const first = <T,>(list: T[]) => (list[0] ? [list[0]] : []);
+  return [
+    ...KEY_PATHS,
+    ...first(SERVICES).map((s) => `/hizmetler/${s.slug}`),
+    ...SERVICES.slice(1, 4).map((s) => `/hizmetler/${s.slug}`),
+    ...first(DISTRICTS).map((d) => `/bolgeler/${d.slug}`),
+    ...DISTRICTS.slice(1, 4).map((d) => `/bolgeler/${d.slug}`),
+    ...first(DISTRICTS).flatMap((d) => first(CORE_SERVICES).map((s) => `/bolgeler/${d.slug}/${s.slug}`)),
+    ...first(GUIDES).map((g) => `/rehber/${g.slug}`),
+  ];
 }
 
 function SeoPanel() {
   const [filter, setFilter] = useState("");
-  const pages = buildPages();
+  const [onlyIssues, setOnlyIssues] = useState(false);
+  const [result, setResult] = useState<SeoAuditResult | null>(null);
+  const audit = useServerFn(runSeoAudit);
 
-  const { data: tech, refetch, isFetching } = useQuery({
-    queryKey: ["seo-tech"],
-    queryFn: async () => {
-      const [robots, sitemap] = await Promise.all([
-        fetch("/robots.txt").then((r) => (r.ok ? r.text() : "")),
-        fetch("/sitemap.xml").then((r) => (r.ok ? r.text() : "")),
-      ]);
-      const locCount = (sitemap.match(/<loc>/g) ?? []).length;
-      return {
-        robotsOk: robots.includes("Sitemap:") && robots.includes("Disallow: /yonetim"),
-        robots,
-        sitemapOk: locCount > 0,
-        locCount,
-      };
-    },
+  const run = useMutation({
+    mutationFn: async (paths: string[]) => await audit({ data: { paths } }),
+    onSuccess: (data) => setResult(data),
   });
 
-  const rows = pages.filter(
-    (p) =>
-      !filter ||
-      p.path.includes(filter.toLowerCase()) ||
-      p.title.toLocaleLowerCase("tr-TR").includes(filter.toLocaleLowerCase("tr-TR")),
-  );
-  const withIssues = pages.filter((p) => check(p).length > 0);
+  const rows = (result?.rows ?? []).filter((r) => {
+    if (onlyIssues && r.issues.length === 0) return false;
+    if (!filter) return true;
+    const q = filter.toLocaleLowerCase("tr-TR");
+    return (
+      r.path.toLocaleLowerCase("tr-TR").includes(q) || (r.title ?? "").toLocaleLowerCase("tr-TR").includes(q)
+    );
+  });
+
+  const total = result?.rows.length ?? 0;
+  const clean = result?.rows.filter((r) => r.issues.length === 0).length ?? 0;
+  const indexable = result?.rows.filter((r) => r.indexable).length ?? 0;
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-semibold tracking-tight">SEO denetimi</h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Sitedeki her genel sayfanın başlık, açıklama, H1, canonical, indekslenebilirlik ve structured data durumu.
-          Yönetim paneli ve müşteri sayfaları arama motorlarına kapalıdır.
+          Denetim sayfaları gerçekten indirir; başlık, açıklama, H1, canonical, structured data ve Google'a
+          indekslenebilirlik durumunu doğrular. Yönetim paneli ve müşteri sayfaları taramaya kapalıdır.
         </p>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-4">
-        <Stat label="Genel sayfa" value={String(pages.length)} />
-        <Stat label="Eksiği olan sayfa" value={String(withIssues.length)} />
-        <Stat label="Sitemap adresi" value={tech?.sitemapOk ? String(tech.locCount) : "—"} />
-        <Stat label="Robots.txt" value={tech?.robotsOk ? "Uygun" : "Kontrol edin"} />
+      <div className="flex flex-wrap gap-2">
+        <Button size="sm" onClick={() => run.mutate(samplePaths())} disabled={run.isPending}>
+          {run.isPending ? "Denetim çalışıyor…" : "Hızlı denetim (örnek sayfalar)"}
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => run.mutate(allPaths())}
+          disabled={run.isPending}
+        >
+          Tüm sayfaları denetle ({allPaths().length})
+        </Button>
       </div>
 
-      <div className="rounded-lg border bg-card p-4">
-        <div className="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h2 className="font-medium">Teknik durum</h2>
-            <p className="mt-1 text-sm text-muted-foreground">
-              Alan adı: {SITE.url} · Sitemap: {SITE.url}/sitemap.xml
-            </p>
+      {run.isError ? (
+        <p className="text-sm text-destructive">
+          Denetim tamamlanamadı: {(run.error as Error)?.message ?? "bilinmeyen hata"}
+        </p>
+      ) : null}
+
+      {result ? (
+        <>
+          <div className="grid gap-3 sm:grid-cols-4">
+            <Stat label="Denetlenen sayfa" value={String(total)} />
+            <Stat label="Eksiksiz sayfa" value={`${clean}/${total}`} />
+            <Stat label="İndekslenebilir" value={`${indexable}/${total}`} />
+            <Stat label="Sitemap adresi" value={String(result.sitemapCount)} />
           </div>
-          <Button size="sm" variant="outline" onClick={() => refetch()} disabled={isFetching}>
-            {isFetching ? "Kontrol ediliyor…" : "Yeniden kontrol et"}
-          </Button>
-        </div>
-        <ul className="mt-3 space-y-1 text-sm text-muted-foreground">
-          <li>Sitemap: {tech?.sitemapOk ? `${tech.locCount} adres yayında` : "okunamadı"}</li>
-          <li>Robots.txt: {tech?.robotsOk ? "sitemap bildirimi ve panel engeli var" : "kontrol edilmeli"}</li>
-          <li>Canonical: her sayfa kendi adresini işaret ediyor</li>
-          <li>HTTPS: yayın adresi https ile sunuluyor</li>
-          <li>Panel/hesap sayfaları: robots.txt ile taramaya kapalı</li>
-        </ul>
-      </div>
 
-      <div className="rounded-lg border bg-card">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b p-4">
-          <h2 className="font-medium">Sayfa sağlık listesi</h2>
-          <input
-            value={filter}
-            onChange={(e) => setFilter(e.target.value)}
-            placeholder="Sayfa ara"
-            className="h-9 w-56 rounded-md border bg-background px-3 text-sm"
-          />
-        </div>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="bg-muted/50 text-left text-xs uppercase text-muted-foreground">
-              <tr>
-                <th className="p-3">Sayfa</th>
-                <th className="p-3">Grup</th>
-                <th className="p-3">Title</th>
-                <th className="p-3">H1</th>
-                <th className="p-3">Structured data</th>
-                <th className="p-3">Durum</th>
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((r) => {
-                const issues = check(r);
-                return (
-                  <tr key={r.path} className="border-t align-top">
-                    <td className="p-3 font-medium">{r.path}</td>
-                    <td className="p-3 text-muted-foreground">{r.group}</td>
-                    <td className="p-3 text-muted-foreground">
-                      {r.title} <span className="text-xs">({r.title.length})</span>
-                    </td>
-                    <td className="p-3 text-muted-foreground">{r.h1}</td>
-                    <td className="p-3 text-muted-foreground">{r.structuredData.join(", ")}</td>
-                    <td className="p-3">
-                      {issues.length === 0 ? (
-                        <span className="text-primary">Uygun</span>
-                      ) : (
-                        <span className="text-destructive">{issues.join(" · ")}</span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
+          <div className="rounded-lg border bg-card p-4">
+            <h2 className="font-medium">Teknik durum</h2>
+            <ul className="mt-2 space-y-1 text-sm text-muted-foreground">
+              <li>Denetim zamanı: {new Date(result.ranAt).toLocaleString("tr-TR")}</li>
+              <li>Denetlenen adres: {result.origin}</li>
+              <li>Yayın alan adı: {SITE.url}</li>
+              <li>Sitemap: {result.sitemapCount > 0 ? `${result.sitemapCount} adres yayında` : "okunamadı"}</li>
+              <li>
+                Robots.txt: {result.robotsOk ? "sitemap bildirimi ve panel engeli var" : "kontrol edilmeli"}
+                {result.robotsDisallow.length > 0 ? ` · kapalı: ${result.robotsDisallow.join(", ")}` : ""}
+              </li>
+            </ul>
+          </div>
+
+          <div className="rounded-lg border bg-card">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b p-4">
+              <h2 className="font-medium">Sayfa sağlık listesi</h2>
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <input
+                    type="checkbox"
+                    checked={onlyIssues}
+                    onChange={(e) => setOnlyIssues(e.target.checked)}
+                  />
+                  Yalnızca eksikli
+                </label>
+                <input
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  placeholder="Sayfa ara"
+                  className="h-9 w-full rounded-md border bg-background px-3 text-sm sm:w-56"
+                />
+              </div>
+            </div>
+
+            <div className="divide-y">
+              {rows.map((r) => (
+                <div key={r.path} className="space-y-2 p-4 text-sm">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-medium">{r.path}</span>
+                    <span className="rounded bg-muted px-2 py-0.5 text-xs text-muted-foreground">
+                      {groupOf(r.path)}
+                    </span>
+                    <span className="text-xs text-muted-foreground">HTTP {r.status}</span>
+                    {r.issues.length === 0 ? (
+                      <span className="text-xs font-medium text-primary">Uygun</span>
+                    ) : (
+                      <span className="text-xs font-medium text-destructive">{r.issues.join(" · ")}</span>
+                    )}
+                  </div>
+                  <dl className="grid gap-x-4 gap-y-1 sm:grid-cols-2">
+                    <Field label={`Title (${r.title?.length ?? 0})`} value={r.title} />
+                    <Field label={`Meta açıklama (${r.description?.length ?? 0})`} value={r.description} />
+                    <Field label={`H1 (${r.h1Count} adet)`} value={r.h1} />
+                    <Field label="Canonical" value={r.canonical} extra={r.canonicalSelf ? "kendini gösteriyor" : "kontrol edin"} />
+                    <Field label="Paylaşım başlığı" value={r.ogTitle} />
+                    <Field label="Structured data" value={r.schemas.join(", ") || null} />
+                    <Field
+                      label="Google indeksleme"
+                      value={r.indexable ? "İndekslenebilir" : "İndekslenemez"}
+                      extra={`${r.robotsAllowed ? "robots.txt açık" : "robots.txt kapalı"} · ${
+                        r.robotsMeta ? `meta robots: ${r.robotsMeta}` : "meta robots yok"
+                      } · ${r.inSitemap ? "sitemap'te var" : "sitemap'te yok"}`}
+                    />
+                  </dl>
+                </div>
+              ))}
+              {rows.length === 0 ? (
+                <p className="p-4 text-sm text-muted-foreground">Bu filtreye uyan sayfa yok.</p>
+              ) : null}
+            </div>
+          </div>
+        </>
+      ) : (
+        <p className="text-sm text-muted-foreground">
+          Denetimi başlatmak için yukarıdaki butonlardan birini kullanın.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function Field({ label, value, extra }: { label: string; value: string | null; extra?: string }) {
+  return (
+    <div>
+      <dt className="text-xs uppercase text-muted-foreground">{label}</dt>
+      <dd className="break-words">
+        {value ?? <span className="text-destructive">yok</span>}
+        {extra ? <span className="block text-xs text-muted-foreground">{extra}</span> : null}
+      </dd>
     </div>
   );
 }
