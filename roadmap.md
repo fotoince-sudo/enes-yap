@@ -16,5 +16,6 @@
 - [x] LocalBusiness/Organization, WebSite, Service, Article, BreadcrumbList structured data; canonical + tr dil etiketi
 - [x] Yönetim panelinde "SEO Denetimi" ekranı
 - [x] Google Search Console bağlantısı + sitemap gönderimi — site doğrulandı (fotoince@gmail.com sahibi), 94 URL'lik sitemap gönderildi, 0 hata/0 uyarı (17 Eyl 2026)
+- [x] Halka açık proje vitrini güvenliği — yalnız proje adı, ilçe ve herkese açık fotoğraflar; sözleşme/ödeme/maliyet ve iç alanlar anonim erişime kapalı
 - [ ] Google İşletme Profili (haritalarda görünürlük) — kullanıcı tarafında yapılacak
 - [ ] Gerçek proje fotoğrafları ve önce/sonra kayıtlarının panelden yayına alınması
