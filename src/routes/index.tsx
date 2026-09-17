@@ -184,9 +184,9 @@ function HomePage() {
             bakabilirsiniz.
           </p>
           <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
-            İzmir tadilat, İzmir yapı ve İzmir inşaat işlerinde daire, villa, ofis ve dükkanlarda çalışıyoruz;
-            İzmir dekorasyon ve iç mekân yenileme, müteahhitlik ve komple inşaat ile kentsel dönüşüm
-            danışmanlığı da hizmet kapsamımızdadır. Her iş yerinde keşifle ölçülür, teklif kalem kalem verilir.
+            İzmir tadilat, yapı ve inşaat işlerinde daire, villa, ofis ve dükkanlarda çalışıyoruz; dekorasyon ve
+            iç mekân yenileme, müteahhitlik ve komple inşaat ile kentsel dönüşüm danışmanlığı da hizmet
+            kapsamımızdadır. Her işte ölçü keşifte alınır, teklif kalem kalem verilir.
           </p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {SERVICES.map((s) => (
@@ -416,9 +416,10 @@ function HomePage() {
                 </a>
               </div>
               <div className="rounded-lg border bg-card p-4">
-                <h3 className="text-sm font-medium text-muted-foreground">Adres</h3>
+                <h3 className="text-sm font-medium text-muted-foreground">Adres & çalışma saatleri</h3>
                 <p className="mt-1 font-medium">Manavkuyu Mah. Sakarya Cad.</p>
                 <p className="mt-1 text-sm text-muted-foreground">Bayraklı / İzmir</p>
+                <p className="mt-1 text-sm text-muted-foreground">Pazartesi – Cumartesi 09:00 – 19:00</p>
               </div>
               <div className="rounded-lg border bg-card p-4">
                 <h3 className="text-sm font-medium text-muted-foreground">Hızlı talep</h3>
