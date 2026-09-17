@@ -172,16 +172,88 @@ function HomePage() {
 
         {/* Hizmetler */}
         <section id="hizmetler" className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Hizmetler</h2>
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir'de sunduğumuz hizmetler</h2>
           <p className="mt-2 max-w-2xl text-muted-foreground">
-            Tek bir işten komple yenilemeye kadar tüm kapsamlarda çalışıyoruz.
+            Tek bir işten komple yenilemeye kadar tüm kapsamlarda çalışıyoruz. Detay için hizmet sayfalarına
+            bakabilirsiniz.
           </p>
           <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((c) => (
-              <div key={c.id} className="rounded-lg border bg-card p-4">
-                <h3 className="font-medium">{c.name}</h3>
-                {c.description ? <p className="mt-1 text-sm text-muted-foreground">{c.description}</p> : null}
-              </div>
+            {SERVICES.map((s) => (
+              <Link
+                key={s.slug}
+                to="/hizmetler/$slug"
+                params={{ slug: s.slug }}
+                className="rounded-lg border bg-card p-4 transition-colors hover:border-primary"
+              >
+                <h3 className="font-medium">{s.name}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{s.description}</p>
+              </Link>
+            ))}
+          </div>
+          {categories.length > 0 ? (
+            <div className="mt-6 flex flex-wrap gap-2">
+              {categories.map((c) => (
+                <span key={c.id} className="rounded-md border bg-card px-3 py-1.5 text-xs text-muted-foreground">
+                  {c.name}
+                </span>
+              ))}
+            </div>
+          ) : null}
+          <div className="mt-4">
+            <Button variant="outline" asChild>
+              <Link to="/hizmetler">Tüm hizmetleri görün</Link>
+            </Button>
+          </div>
+        </section>
+
+        {/* Hizmet bölgeleri */}
+        <section className="border-y bg-muted/30">
+          <div className="mx-auto max-w-6xl px-4 py-14">
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir hizmet bölgelerimiz</h2>
+            <p className="mt-2 max-w-2xl text-muted-foreground">
+              İzmir merkez ilçelerinin tamamında, ayrıca Urla, Çeşme ve Seferihisar'da çalışıyoruz.
+            </p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              {DISTRICTS.map((d) => (
+                <Link
+                  key={d.slug}
+                  to="/bolgeler/$ilce"
+                  params={{ ilce: d.slug }}
+                  className="rounded-md border bg-card px-3 py-1.5 text-sm hover:border-primary"
+                >
+                  {d.name} tadilat
+                </Link>
+              ))}
+            </div>
+            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {CORE_SERVICES.map((s) => (
+                <Link
+                  key={s.slug}
+                  to="/bolgeler/$ilce/$hizmet"
+                  params={{ ilce: "bayrakli", hizmet: s.slug }}
+                  className="rounded-lg border bg-card p-3 text-sm hover:border-primary"
+                >
+                  Bayraklı {s.name.toLocaleLowerCase("tr-TR")}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Rehber */}
+        <section className="mx-auto max-w-6xl px-4 py-14">
+          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir tadilat rehberi</h2>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            {GUIDES.map((g) => (
+              <Link
+                key={g.slug}
+                to="/rehber/$slug"
+                params={{ slug: g.slug }}
+                className="rounded-lg border bg-card p-4 transition-colors hover:border-primary"
+              >
+                <h3 className="font-medium">{g.h1}</h3>
+                <p className="mt-1 text-sm text-muted-foreground">{g.description}</p>
+              </Link>
             ))}
           </div>
         </section>
