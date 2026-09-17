@@ -542,3 +542,63 @@ export const serviceJsonLd = (input: { name: string; description: string; path: 
   areaServed: { "@type": "AdministrativeArea", name: input.area ?? "İzmir" },
   provider: { "@type": "HomeAndConstructionBusiness", name: SITE.name, telephone: SITE.phoneE164, url: SITE.url },
 });
+
+/* ------------------------------------------------------------------ */
+/* İzmir odaklı anahtar kelime kümeleri                                */
+/* Yalnızca gerçekten sunulan hizmetler ve doğrulanmış bölgeler.       */
+/* ------------------------------------------------------------------ */
+
+/** Ana sayfanın hedeflediği İzmir kümesi. */
+export const HOME_KEYWORDS = [
+  "İzmir tadilat",
+  "İzmir yapı",
+  "İzmir inşaat",
+  "İzmir dekorasyon",
+  "İzmir müteahhit",
+  "İzmir kentsel dönüşüm",
+  "İzmir yapı hizmetleri",
+  "İzmir inşaat firması",
+] as const;
+
+const lower = (v: string) => v.toLocaleLowerCase("tr-TR");
+
+/** Hizmet sayfası anahtar kelimeleri: İzmir + hizmet (+ ihtiyaç). */
+export function serviceKeywords(service: ServiceDef): string[] {
+  const n = lower(service.name);
+  return [`İzmir ${n}`, `${n} İzmir`, `İzmir ${n} firması`, `İzmir ${n} fiyatları`];
+}
+
+/** İlçe sayfası anahtar kelimeleri: ilçe + hizmet. */
+export function districtKeywords(district: DistrictDef): string[] {
+  return [
+    `${district.name} tadilat`,
+    `${district.name} tadilat firması`,
+    ...CORE_SERVICES.map((s) => `${district.name} ${lower(s.name)}`),
+  ];
+}
+
+/** İlçe + hizmet sayfası anahtar kelimeleri. */
+export function districtServiceKeywords(district: DistrictDef, service: ServiceDef): string[] {
+  const n = lower(service.name);
+  return [`${district.name} ${n}`, `İzmir ${district.name} ${n}`, `${district.name} ${n} fiyatları`];
+}
+
+/** Denetim panelinin kullandığı yol → hedef anahtar kelime eşlemesi. */
+export function keywordsForPath(path: string): string[] {
+  const clean = path.replace(/\/+$/, "") || "/";
+  if (clean === "/") return [...HOME_KEYWORDS];
+  const parts = clean.split("/").filter(Boolean);
+  if (parts[0] === "hizmetler") {
+    const service = parts[1] ? serviceBySlug(parts[1]) : undefined;
+    return service ? serviceKeywords(service) : ["İzmir tadilat", "İzmir yapı hizmetleri"];
+  }
+  if (parts[0] === "bolgeler") {
+    const district = parts[1] ? districtBySlug(parts[1]) : undefined;
+    if (!district) return ["İzmir tadilat", "İzmir hizmet bölgeleri"];
+    const service = parts[2] ? serviceBySlug(parts[2]) : undefined;
+    return service ? districtServiceKeywords(district, service) : districtKeywords(district);
+  }
+  if (parts[0] === "rehber") return ["İzmir tadilat", "İzmir yapı yenileme"];
+  if (parts[0] === "iletisim") return ["İzmir tadilat firması", "İzmir yapı firması iletişim"];
+  return ["İzmir tadilat"];
+}

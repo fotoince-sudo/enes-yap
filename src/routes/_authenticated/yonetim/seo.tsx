@@ -174,6 +174,37 @@ function SeoPanel() {
                       } · ${r.inSitemap ? "sitemap'te var" : "sitemap'te yok"}`}
                     />
                   </dl>
+                  {r.keywords.length > 0 ? (
+                    <div>
+                      <div className="text-xs uppercase text-muted-foreground">
+                        Hedef anahtar kelimeler ({r.keywordHits}/{r.keywords.length} sayfada geçiyor)
+                      </div>
+                      <div className="mt-1 flex flex-wrap gap-1.5">
+                        {r.keywords.map((k) => {
+                          const where = [
+                            k.inTitle ? "başlık" : null,
+                            k.inDescription ? "açıklama" : null,
+                            k.inH1 ? "H1" : null,
+                            k.inText ? "metin" : null,
+                          ].filter(Boolean);
+                          const ok = where.length > 0;
+                          return (
+                            <span
+                              key={k.term}
+                              className={`rounded-md border px-2 py-1 text-xs ${
+                                ok ? "border-primary/40 text-foreground" : "border-destructive/40 text-destructive"
+                              }`}
+                            >
+                              {k.term}
+                              <span className="ml-1 text-muted-foreground">
+                                {ok ? where.join(", ") : "geçmiyor"}
+                              </span>
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               ))}
               {rows.length === 0 ? (
