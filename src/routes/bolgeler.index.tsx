@@ -3,9 +3,9 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { Breadcrumbs, CtaSection, SiteShell } from "@/components/site/SiteShell";
 import { breadcrumbJsonLd, DISTRICTS, pageHead } from "@/lib/seo";
 
-const TITLE = "İzmir Hizmet Bölgelerimiz — Tadilat ve Yenileme | Enes Yapı";
+const TITLE = "İzmir Hizmet Bölgeleri — Tadilat ve Yenileme | Enes Yapı";
 const DESCRIPTION =
-  "Enes Yapı'nın tadilat ve yenileme hizmeti verdiği İzmir ilçeleri: Bayraklı, Bornova, Karşıyaka, Konak, Buca, Balçova, Gaziemir, Çiğli, Karabağlar, Narlıdere, Güzelbahçe, Urla, Çeşme, Seferihisar.";
+  "Enes Yapı'nın tadilat ve yenileme hizmeti verdiği İzmir ilçeleri: Bayraklı, Bornova, Karşıyaka, Konak, Buca, Balçova, Gaziemir, Urla, Çeşme ve çevresi.";
 
 export const Route = createFileRoute("/bolgeler/")({
   component: DistrictsIndex,

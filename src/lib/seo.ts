@@ -333,7 +333,7 @@ export type GuideDef = {
 export const GUIDES: GuideDef[] = [
   {
     slug: "izmirde-tadilat-sureci",
-    title: "İzmir'de Tadilat Süreci: Keşiften Teslime Adım Adım — Enes Yapı",
+    title: "İzmir'de Tadilat Süreci: Keşiften Teslime — Enes Yapı",
     h1: "İzmir'de tadilat süreci: keşiften teslime",
     description:
       "İzmir'de bir tadilat işi hangi adımlardan geçer? Keşif, kapsam, teklif, uygulama sırası ve teslim kontrolü hakkında uygulamaya dayalı rehber.",

@@ -5,7 +5,7 @@ import { breadcrumbJsonLd, DISTRICTS, pageHead, SERVICES } from "@/lib/seo";
 
 const TITLE = "İzmir Tadilat ve Yapı Hizmetleri — Enes Yapı";
 const DESCRIPTION =
-  "İzmir'de komple tadilat, banyo ve mutfak yenileme, boya, dış cephe, çatı, elektrik-tesisat ve ofis tadilatı. Keşifli ve kalem kalem tekliflendirilen yapı hizmetleri.";
+  "İzmir'de komple tadilat, banyo ve mutfak yenileme, boya, dış cephe, çatı ve ofis tadilatı. Keşifli, kalem kalem tekliflendirilen yapı hizmetleri.";
 
 export const Route = createFileRoute("/hizmetler/")({
   component: ServicesIndex,
