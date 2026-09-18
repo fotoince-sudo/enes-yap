@@ -2,7 +2,7 @@
 
 - [x] WhatsApp Business (Meta Platform API) bağlantısı: KULLANICI KARARI (18 Eyl 2026) — bağlantı/entegrasyon KURULMAYACAK. Site yalnızca doğrudan wa.me/905307641717 sohbet bağlantısı kullanıyor (tüm butonlar + Emir handoff bu numaraya gidiyor; eski 905333992540 sitede yok).
 
-- [ ] WhatsApp Business bağlantısı (18 Eyl 2026 gece — karar geri alındı, kullanıcı bağlantı istedi): +90 530 764 17 17 gerçek numara bağlanacak; demo/test numarası (+1 555-398-5341) kaldırılacak. Engel: numara "başka bir WhatsApp hesabına bağlı" hatası — kullanıcı önce WhatsApp Business mobil uygulamasından numarayı ayırması gerekiyor (Ayarlar → Hesap → İşletme Platformu → Hesabı Ayır), sonra Lovable bağlantı kartından bağlanacak. Facebook/Instagram bağlantıları bozulmayacak.
+- [ ] WhatsApp Business bağlantısı (18 Eyl 2026 gece — karar geri alındı, kullanıcı bağlantı istedi): +90 530 764 17 17 gerçek numara bağlanacak; demo/test numarası (+1 555-398-5341) kullanılmayacak. Engeller: Meta girişi, Ergün İnce hesabının yönetebildiği Facebook Sayfası bulamıyor; mevcut Enes Yapı varlığının Page ID / Business ID / WABA ID erişimi doğrulanmalı. Bilinen hedef WABA ID: 161950678560356. Numara ayrıca "başka bir WhatsApp hesabına bağlı" hatası veriyor; kullanıcı WhatsApp Business mobil uygulamasından numarayı ayırdıktan sonra bağlantı kartı tamamlanacak. Yeni Facebook Sayfası oluşturulmayacak; mevcut Facebook/Instagram bağlantıları bozulmayacak.
 
 - [ ] E-posta bildirimleri: gönderen alan adı (örn. bilgi@enesyapi.com) tanımlanmasını bekliyor.
 - [ ] Source Research Motoru: AKTİF (elle çalıştırma + zamanlayıcı ucu hazır). Otomatik saatli/günlük zamanlama kullanıcı onayı bekliyor.
