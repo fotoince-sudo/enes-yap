@@ -2,6 +2,8 @@
 
 - [x] WhatsApp Business (Meta Platform API) bağlantısı: KULLANICI KARARI (18 Eyl 2026) — bağlantı/entegrasyon KURULMAYACAK. Site yalnızca doğrudan wa.me/905307641717 sohbet bağlantısı kullanıyor (tüm butonlar + Emir handoff bu numaraya gidiyor; eski 905333992540 sitede yok).
 
+- [ ] WhatsApp Business bağlantısı (18 Eyl 2026 gece — karar geri alındı, kullanıcı bağlantı istedi): +90 530 764 17 17 gerçek numara bağlanacak; demo/test numarası (+1 555-398-5341) kaldırılacak. Engel: numara "başka bir WhatsApp hesabına bağlı" hatası — kullanıcı önce WhatsApp Business mobil uygulamasından numarayı ayırması gerekiyor (Ayarlar → Hesap → İşletme Platformu → Hesabı Ayır), sonra Lovable bağlantı kartından bağlanacak. Facebook/Instagram bağlantıları bozulmayacak.
+
 - [ ] E-posta bildirimleri: gönderen alan adı (örn. bilgi@enesyapi.com) tanımlanmasını bekliyor.
 - [ ] Source Research Motoru: AKTİF (elle çalıştırma + zamanlayıcı ucu hazır). Otomatik saatli/günlük zamanlama kullanıcı onayı bekliyor.
 - [ ] Dış kaynakların izin durumu "inceleniyor" — kullanıcı hangi kaynakları "izinli" işaretleyeceğini bildirmeli (izinli olmayan kaynak otomatik taranmaz).
