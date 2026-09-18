@@ -39,6 +39,23 @@ const STATUS_LABEL: Record<string, string> = {
   failed: "Başarısız",
 };
 
+/** Giden mesajlar için WhatsApp tarzı durum işaretleri (okundu = mavi). */
+function StatusTicks({ status }: { status: string }) {
+  if (status === "failed") return <span className="text-destructive" title="Başarısız">✕</span>;
+  if (status === "pending") return <span title="Gönderiliyor">⋯</span>;
+  if (status === "received") return null;
+  const label = STATUS_LABEL[status] ?? status;
+  if (status === "read") {
+    return (
+      <span className="text-sky-500" title={label}>
+        ✓✓
+      </span>
+    );
+  }
+  const marks = status === "delivered" || status === "sent" ? "✓✓" : "✓";
+  return <span title={label}>{marks}</span>;
+}
+
 function formatPhone(digits: string) {
   if (digits.startsWith("90") && digits.length === 12) {
     return `+90 ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 10)} ${digits.slice(10)}`;
@@ -174,10 +191,20 @@ function MessagesPanel() {
                       <span className="shrink-0 text-xs text-muted-foreground">{formatTime(c.last.created_at)}</span>
                     </div>
                     <div className="mt-0.5 flex items-center justify-between gap-2">
-                      <span className="truncate text-xs text-muted-foreground">
+                      <span
+                        className={cn(
+                          "truncate text-xs",
+                          c.last.direction === "in" ? "font-medium text-foreground" : "text-muted-foreground",
+                        )}
+                      >
                         {c.last.direction === "in" ? "" : "Siz: "}
                         {c.last.body ?? ""}
                       </span>
+                      {c.last.direction === "in" ? (
+                        <span className="shrink-0 rounded-full bg-primary/15 px-2 py-0.5 text-[10px] font-medium text-primary">
+                          Yeni
+                        </span>
+                      ) : null}
                       {c.last.status === "failed" ? (
                         <span className="shrink-0 rounded bg-destructive/15 px-1.5 py-0.5 text-[10px] text-destructive">
                           Hata
@@ -237,12 +264,19 @@ function MessagesPanel() {
                         <p className="whitespace-pre-wrap break-words">{m.body}</p>
                         <p
                           className={cn(
-                            "mt-1 text-right text-[10px]",
+                            "mt-1 flex items-center justify-end gap-1 text-right text-[10px]",
                             m.direction === "in" ? "text-muted-foreground" : "text-primary-foreground/70",
                           )}
                         >
                           {formatTime(m.provider_timestamp ?? m.created_at)}
-                          {m.direction === "out" ? ` · ${STATUS_LABEL[m.status] ?? m.status}` : ""}
+                          {m.direction === "out" ? (
+                            <span
+                              className={cn(m.status === "read" && "text-sky-300")}
+                              title={STATUS_LABEL[m.status] ?? m.status}
+                            >
+                              <StatusTicks status={m.status} />
+                            </span>
+                          ) : null}
                         </p>
                         {m.status_error ? (
                           <p className="mt-1 text-[10px] text-destructive">{m.status_error}</p>
