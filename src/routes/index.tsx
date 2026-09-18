@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowUpRight, Building2 } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
+import { EnesEmlakReferral } from "@/components/site/SiteShell";
 import { RequestForm } from "@/components/site/RequestForm";
 import { ChatBubble } from "@/components/site/ChatBubble";
 import { Button } from "@/components/ui/button";
@@ -214,35 +214,7 @@ function HomePage() {
           </div>
         </section>
 
-        {/* Enes Emlak yönlendirmesi */}
-        <section className="border-y bg-deep text-deep-foreground">
-          <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:py-12 md:grid-cols-[1fr_auto] md:items-center md:gap-10">
-            <div className="flex items-start gap-4 sm:gap-5">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-md border border-deep-foreground/20 bg-deep-foreground/5 sm:size-12">
-                <Building2 className="size-5 sm:size-6" aria-hidden="true" />
-              </div>
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary">Enes Emlak</p>
-                <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
-                  Yeni Bir Ev mi Arıyorsunuz?
-                </h2>
-                <p className="mt-3 max-w-2xl text-sm leading-relaxed text-deep-foreground/75 sm:text-base">
-                  Satılık ve kiralık gayrimenkul seçeneklerini keşfedin. İzmir’de size uygun mülkü bulmak için Enes
-                  Emlak’a göz atın.
-                </p>
-                <p className="mt-4 text-xs font-medium text-deep-foreground/60 sm:text-sm">
-                  Satılık <span aria-hidden="true">•</span> Kiralık <span aria-hidden="true">•</span> Gayrimenkul Talepleri
-                </p>
-              </div>
-            </div>
-            <Button size="lg" variant="secondary" className="w-full justify-between gap-3 md:w-auto" asChild>
-              <a href="https://izmirenesemlak.com.tr" target="_blank" rel="noopener noreferrer">
-                Enes Emlak’ı Keşfet
-                <ArrowUpRight className="size-4" aria-hidden="true" />
-              </a>
-            </Button>
-          </div>
-        </section>
+        <EnesEmlakReferral />
 
         {/* Hizmet bölgeleri */}
         <section className="border-y bg-muted/30">
