@@ -38,6 +38,7 @@ import { Route as AuthenticatedYonetimFirsatlarRouteImport } from './routes/_aut
 import { Route as AuthenticatedYonetimGayrimenkullerRouteImport } from './routes/_authenticated/yonetim/gayrimenkuller'
 import { Route as AuthenticatedYonetimKesiflerRouteImport } from './routes/_authenticated/yonetim/kesifler'
 import { Route as AuthenticatedYonetimMalzemelerRouteImport } from './routes/_authenticated/yonetim/malzemeler'
+import { Route as AuthenticatedYonetimMesajlarRouteImport } from './routes/_authenticated/yonetim/mesajlar'
 import { Route as AuthenticatedYonetimMusterilerRouteImport } from './routes/_authenticated/yonetim/musteriler'
 import { Route as AuthenticatedYonetimOnceSonraRouteImport } from './routes/_authenticated/yonetim/once-sonra'
 import { Route as AuthenticatedYonetimPersonelRouteImport } from './routes/_authenticated/yonetim/personel'
@@ -56,6 +57,7 @@ import { Route as AuthenticatedYonetimTaleplerIndexRouteImport } from './routes/
 import { Route as AuthenticatedYonetimTaleplerIdRouteImport } from './routes/_authenticated/yonetim/talepler.$id'
 import { Route as AuthenticatedYonetimTekliflerIndexRouteImport } from './routes/_authenticated/yonetim/teklifler.index'
 import { Route as AuthenticatedYonetimTekliflerIdRouteImport } from './routes/_authenticated/yonetim/teklifler.$id'
+import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -219,6 +221,12 @@ const AuthenticatedYonetimMalzemelerRoute =
     path: '/malzemeler',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
+const AuthenticatedYonetimMesajlarRoute =
+  AuthenticatedYonetimMesajlarRouteImport.update({
+    id: '/mesajlar',
+    path: '/mesajlar',
+    getParentRoute: () => AuthenticatedYonetimRouteRoute,
+  } as any)
 const AuthenticatedYonetimMusterilerRoute =
   AuthenticatedYonetimMusterilerRouteImport.update({
     id: '/musteriler',
@@ -323,6 +331,12 @@ const AuthenticatedYonetimTekliflerIdRoute =
     path: '/teklifler/$id',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
+const ApiPublicWhatsappWebhookRoute =
+  ApiPublicWhatsappWebhookRouteImport.update({
+    id: '/api/public/whatsapp/webhook',
+    path: '/api/public/whatsapp/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -351,6 +365,7 @@ export interface FileRoutesByFullPath {
   '/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
   '/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
   '/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
+  '/yonetim/mesajlar': typeof AuthenticatedYonetimMesajlarRoute
   '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
   '/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
@@ -368,6 +383,7 @@ export interface FileRoutesByFullPath {
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
   '/yonetim/projeler/': typeof AuthenticatedYonetimProjelerIndexRoute
   '/yonetim/talepler/': typeof AuthenticatedYonetimTaleplerIndexRoute
   '/yonetim/teklifler/': typeof AuthenticatedYonetimTekliflerIndexRoute
@@ -397,6 +413,7 @@ export interface FileRoutesByTo {
   '/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
   '/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
   '/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
+  '/yonetim/mesajlar': typeof AuthenticatedYonetimMesajlarRoute
   '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
   '/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
@@ -414,6 +431,7 @@ export interface FileRoutesByTo {
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
   '/yonetim/projeler': typeof AuthenticatedYonetimProjelerIndexRoute
   '/yonetim/talepler': typeof AuthenticatedYonetimTaleplerIndexRoute
   '/yonetim/teklifler': typeof AuthenticatedYonetimTekliflerIndexRoute
@@ -447,6 +465,7 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
   '/_authenticated/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
   '/_authenticated/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
+  '/_authenticated/yonetim/mesajlar': typeof AuthenticatedYonetimMesajlarRoute
   '/_authenticated/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
   '/_authenticated/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
   '/_authenticated/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
@@ -464,6 +483,7 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/_authenticated/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/_authenticated/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
   '/_authenticated/yonetim/projeler/': typeof AuthenticatedYonetimProjelerIndexRoute
   '/_authenticated/yonetim/talepler/': typeof AuthenticatedYonetimTaleplerIndexRoute
   '/_authenticated/yonetim/teklifler/': typeof AuthenticatedYonetimTekliflerIndexRoute
@@ -497,6 +517,7 @@ export interface FileRouteTypes {
     | '/yonetim/gayrimenkuller'
     | '/yonetim/kesifler'
     | '/yonetim/malzemeler'
+    | '/yonetim/mesajlar'
     | '/yonetim/musteriler'
     | '/yonetim/once-sonra'
     | '/yonetim/personel'
@@ -514,6 +535,7 @@ export interface FileRouteTypes {
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
     | '/yonetim/teklifler/$id'
+    | '/api/public/whatsapp/webhook'
     | '/yonetim/projeler/'
     | '/yonetim/talepler/'
     | '/yonetim/teklifler/'
@@ -543,6 +565,7 @@ export interface FileRouteTypes {
     | '/yonetim/gayrimenkuller'
     | '/yonetim/kesifler'
     | '/yonetim/malzemeler'
+    | '/yonetim/mesajlar'
     | '/yonetim/musteriler'
     | '/yonetim/once-sonra'
     | '/yonetim/personel'
@@ -560,6 +583,7 @@ export interface FileRouteTypes {
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
     | '/yonetim/teklifler/$id'
+    | '/api/public/whatsapp/webhook'
     | '/yonetim/projeler'
     | '/yonetim/talepler'
     | '/yonetim/teklifler'
@@ -592,6 +616,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/gayrimenkuller'
     | '/_authenticated/yonetim/kesifler'
     | '/_authenticated/yonetim/malzemeler'
+    | '/_authenticated/yonetim/mesajlar'
     | '/_authenticated/yonetim/musteriler'
     | '/_authenticated/yonetim/once-sonra'
     | '/_authenticated/yonetim/personel'
@@ -609,6 +634,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/projeler/$id'
     | '/_authenticated/yonetim/talepler/$id'
     | '/_authenticated/yonetim/teklifler/$id'
+    | '/api/public/whatsapp/webhook'
     | '/_authenticated/yonetim/projeler/'
     | '/_authenticated/yonetim/talepler/'
     | '/_authenticated/yonetim/teklifler/'
@@ -629,6 +655,7 @@ export interface RootRouteChildren {
   ApiPublicSourceResearchRoute: typeof ApiPublicSourceResearchRoute
   BolgelerIlceHizmetRoute: typeof BolgelerIlceHizmetRoute
   BolgelerIlceIndexRoute: typeof BolgelerIlceIndexRoute
+  ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -836,6 +863,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedYonetimMalzemelerRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
+    '/_authenticated/yonetim/mesajlar': {
+      id: '/_authenticated/yonetim/mesajlar'
+      path: '/mesajlar'
+      fullPath: '/yonetim/mesajlar'
+      preLoaderRoute: typeof AuthenticatedYonetimMesajlarRouteImport
+      parentRoute: typeof AuthenticatedYonetimRouteRoute
+    }
     '/_authenticated/yonetim/musteriler': {
       id: '/_authenticated/yonetim/musteriler'
       path: '/musteriler'
@@ -962,6 +996,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedYonetimTekliflerIdRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
+    '/api/public/whatsapp/webhook': {
+      id: '/api/public/whatsapp/webhook'
+      path: '/api/public/whatsapp/webhook'
+      fullPath: '/api/public/whatsapp/webhook'
+      preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -997,6 +1038,7 @@ interface AuthenticatedYonetimRouteRouteChildren {
   AuthenticatedYonetimGayrimenkullerRoute: typeof AuthenticatedYonetimGayrimenkullerRoute
   AuthenticatedYonetimKesiflerRoute: typeof AuthenticatedYonetimKesiflerRoute
   AuthenticatedYonetimMalzemelerRoute: typeof AuthenticatedYonetimMalzemelerRoute
+  AuthenticatedYonetimMesajlarRoute: typeof AuthenticatedYonetimMesajlarRoute
   AuthenticatedYonetimMusterilerRoute: typeof AuthenticatedYonetimMusterilerRoute
   AuthenticatedYonetimOnceSonraRoute: typeof AuthenticatedYonetimOnceSonraRoute
   AuthenticatedYonetimPersonelRoute: typeof AuthenticatedYonetimPersonelRoute
@@ -1031,6 +1073,7 @@ const AuthenticatedYonetimRouteRouteChildren: AuthenticatedYonetimRouteRouteChil
       AuthenticatedYonetimGayrimenkullerRoute,
     AuthenticatedYonetimKesiflerRoute: AuthenticatedYonetimKesiflerRoute,
     AuthenticatedYonetimMalzemelerRoute: AuthenticatedYonetimMalzemelerRoute,
+    AuthenticatedYonetimMesajlarRoute: AuthenticatedYonetimMesajlarRoute,
     AuthenticatedYonetimMusterilerRoute: AuthenticatedYonetimMusterilerRoute,
     AuthenticatedYonetimOnceSonraRoute: AuthenticatedYonetimOnceSonraRoute,
     AuthenticatedYonetimPersonelRoute: AuthenticatedYonetimPersonelRoute,
@@ -1089,6 +1132,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicSourceResearchRoute: ApiPublicSourceResearchRoute,
   BolgelerIlceHizmetRoute: BolgelerIlceHizmetRoute,
   BolgelerIlceIndexRoute: BolgelerIlceIndexRoute,
+  ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
