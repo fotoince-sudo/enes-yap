@@ -47,6 +47,7 @@ import { Route as AuthenticatedYonetimRaporlarRouteImport } from './routes/_auth
 import { Route as AuthenticatedYonetimSeoRouteImport } from './routes/_authenticated/yonetim/seo'
 import { Route as AuthenticatedYonetimTamamlananProjelerRouteImport } from './routes/_authenticated/yonetim/tamamlanan-projeler'
 import { Route as AuthenticatedYonetimTedarikcilerRouteImport } from './routes/_authenticated/yonetim/tedarikciler'
+import { Route as AuthenticatedYonetimWhatsappDurumRouteImport } from './routes/_authenticated/yonetim/whatsapp-durum'
 import { Route as AuthenticatedYonetimZiyaretciIzlemeRouteImport } from './routes/_authenticated/yonetim/ziyaretci-izleme'
 import { Route as ApiPublicSourceResearchRouteImport } from './routes/api/public/source-research'
 import { Route as BolgelerIlceIndexRouteImport } from './routes/bolgeler.$ilce.index'
@@ -274,6 +275,12 @@ const AuthenticatedYonetimTedarikcilerRoute =
     path: '/tedarikciler',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
+const AuthenticatedYonetimWhatsappDurumRoute =
+  AuthenticatedYonetimWhatsappDurumRouteImport.update({
+    id: '/whatsapp-durum',
+    path: '/whatsapp-durum',
+    getParentRoute: () => AuthenticatedYonetimRouteRoute,
+  } as any)
 const AuthenticatedYonetimZiyaretciIzlemeRoute =
   AuthenticatedYonetimZiyaretciIzlemeRouteImport.update({
     id: '/ziyaretci-izleme',
@@ -374,6 +381,7 @@ export interface FileRoutesByFullPath {
   '/yonetim/seo': typeof AuthenticatedYonetimSeoRoute
   '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
+  '/yonetim/whatsapp-durum': typeof AuthenticatedYonetimWhatsappDurumRoute
   '/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
   '/api/public/source-research': typeof ApiPublicSourceResearchRoute
   '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
@@ -422,6 +430,7 @@ export interface FileRoutesByTo {
   '/yonetim/seo': typeof AuthenticatedYonetimSeoRoute
   '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
+  '/yonetim/whatsapp-durum': typeof AuthenticatedYonetimWhatsappDurumRoute
   '/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
   '/api/public/source-research': typeof ApiPublicSourceResearchRoute
   '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
@@ -474,6 +483,7 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/seo': typeof AuthenticatedYonetimSeoRoute
   '/_authenticated/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
   '/_authenticated/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
+  '/_authenticated/yonetim/whatsapp-durum': typeof AuthenticatedYonetimWhatsappDurumRoute
   '/_authenticated/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
   '/api/public/source-research': typeof ApiPublicSourceResearchRoute
   '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
@@ -526,6 +536,7 @@ export interface FileRouteTypes {
     | '/yonetim/seo'
     | '/yonetim/tamamlanan-projeler'
     | '/yonetim/tedarikciler'
+    | '/yonetim/whatsapp-durum'
     | '/yonetim/ziyaretci-izleme'
     | '/api/public/source-research'
     | '/bolgeler/$ilce/$hizmet'
@@ -574,6 +585,7 @@ export interface FileRouteTypes {
     | '/yonetim/seo'
     | '/yonetim/tamamlanan-projeler'
     | '/yonetim/tedarikciler'
+    | '/yonetim/whatsapp-durum'
     | '/yonetim/ziyaretci-izleme'
     | '/api/public/source-research'
     | '/bolgeler/$ilce/$hizmet'
@@ -625,6 +637,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/seo'
     | '/_authenticated/yonetim/tamamlanan-projeler'
     | '/_authenticated/yonetim/tedarikciler'
+    | '/_authenticated/yonetim/whatsapp-durum'
     | '/_authenticated/yonetim/ziyaretci-izleme'
     | '/api/public/source-research'
     | '/bolgeler/$ilce/$hizmet'
@@ -926,6 +939,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedYonetimTedarikcilerRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
+    '/_authenticated/yonetim/whatsapp-durum': {
+      id: '/_authenticated/yonetim/whatsapp-durum'
+      path: '/whatsapp-durum'
+      fullPath: '/yonetim/whatsapp-durum'
+      preLoaderRoute: typeof AuthenticatedYonetimWhatsappDurumRouteImport
+      parentRoute: typeof AuthenticatedYonetimRouteRoute
+    }
     '/_authenticated/yonetim/ziyaretci-izleme': {
       id: '/_authenticated/yonetim/ziyaretci-izleme'
       path: '/ziyaretci-izleme'
@@ -1047,6 +1067,7 @@ interface AuthenticatedYonetimRouteRouteChildren {
   AuthenticatedYonetimSeoRoute: typeof AuthenticatedYonetimSeoRoute
   AuthenticatedYonetimTamamlananProjelerRoute: typeof AuthenticatedYonetimTamamlananProjelerRoute
   AuthenticatedYonetimTedarikcilerRoute: typeof AuthenticatedYonetimTedarikcilerRoute
+  AuthenticatedYonetimWhatsappDurumRoute: typeof AuthenticatedYonetimWhatsappDurumRoute
   AuthenticatedYonetimZiyaretciIzlemeRoute: typeof AuthenticatedYonetimZiyaretciIzlemeRoute
   AuthenticatedYonetimIndexRoute: typeof AuthenticatedYonetimIndexRoute
   AuthenticatedYonetimProjelerIdRoute: typeof AuthenticatedYonetimProjelerIdRoute
@@ -1085,6 +1106,8 @@ const AuthenticatedYonetimRouteRouteChildren: AuthenticatedYonetimRouteRouteChil
       AuthenticatedYonetimTamamlananProjelerRoute,
     AuthenticatedYonetimTedarikcilerRoute:
       AuthenticatedYonetimTedarikcilerRoute,
+    AuthenticatedYonetimWhatsappDurumRoute:
+      AuthenticatedYonetimWhatsappDurumRoute,
     AuthenticatedYonetimZiyaretciIzlemeRoute:
       AuthenticatedYonetimZiyaretciIzlemeRoute,
     AuthenticatedYonetimIndexRoute: AuthenticatedYonetimIndexRoute,
