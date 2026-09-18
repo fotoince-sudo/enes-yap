@@ -7,6 +7,7 @@
 
   - [ ] Bağlantı tamamlandıktan sonra Meta doğrulama akışını bitir: WhatsApp Business hesabı, Facebook Sayfası ve WABA ID (161950678560356) uygulama ayarlarına kaydedilecek; WHATSAPP_API_KEY gizli anahtarı webhook (/api/public/whatsapp/webhook) ve panelden gönderimde kullanılacak.
   - [ ] Sohbet butonu: mesaj gönderip okunma/cevaplanma durumunu canlı izleme (panel sohbetinde ✓/✓✓ okundu işaretleri + yeni gelen mesaj vurgusu).
+  - [x] Meta entegrasyon izleme sayfası (panel): bağlantı durumu, bağlı sayfa/numara, WABA ID ve mesaj akışı tek ekranda.
 
 - [ ] E-posta bildirimleri: gönderen alan adı (örn. bilgi@enesyapi.com) tanımlanmasını bekliyor.
 - [ ] Source Research Motoru: AKTİF (elle çalıştırma + zamanlayıcı ucu hazır). Otomatik saatli/günlük zamanlama kullanıcı onayı bekliyor.
