@@ -39,6 +39,23 @@ const STATUS_LABEL: Record<string, string> = {
   failed: "Başarısız",
 };
 
+/** Giden mesajlar için WhatsApp tarzı durum işaretleri (okundu = mavi). */
+function StatusTicks({ status }: { status: string }) {
+  if (status === "failed") return <span className="text-destructive" title="Başarısız">✕</span>;
+  if (status === "pending") return <span title="Gönderiliyor">⋯</span>;
+  if (status === "received") return null;
+  const label = STATUS_LABEL[status] ?? status;
+  if (status === "read") {
+    return (
+      <span className="text-sky-500" title={label}>
+        ✓✓
+      </span>
+    );
+  }
+  const marks = status === "delivered" || status === "sent" ? "✓✓" : "✓";
+  return <span title={label}>{marks}</span>;
+}
+
 function formatPhone(digits: string) {
   if (digits.startsWith("90") && digits.length === 12) {
     return `+90 ${digits.slice(2, 5)} ${digits.slice(5, 8)} ${digits.slice(8, 10)} ${digits.slice(10)}`;
