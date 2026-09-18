@@ -7,8 +7,8 @@ const GATEWAY_URL = "https://connector-gateway.lovable.dev/whatsapp";
 
 export type SendWhatsappResult = {
   ok: boolean;
-  error?: string;
-  waMessageId?: string;
+  error?: string | undefined;
+  waMessageId?: string | undefined;
 };
 
 /**

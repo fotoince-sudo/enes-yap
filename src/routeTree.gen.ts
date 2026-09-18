@@ -56,6 +56,7 @@ import { Route as AuthenticatedYonetimTaleplerIndexRouteImport } from './routes/
 import { Route as AuthenticatedYonetimTaleplerIdRouteImport } from './routes/_authenticated/yonetim/talepler.$id'
 import { Route as AuthenticatedYonetimTekliflerIndexRouteImport } from './routes/_authenticated/yonetim/teklifler.index'
 import { Route as AuthenticatedYonetimTekliflerIdRouteImport } from './routes/_authenticated/yonetim/teklifler.$id'
+import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -323,6 +324,12 @@ const AuthenticatedYonetimTekliflerIdRoute =
     path: '/teklifler/$id',
     getParentRoute: () => AuthenticatedYonetimRouteRoute,
   } as any)
+const ApiPublicWhatsappWebhookRoute =
+  ApiPublicWhatsappWebhookRouteImport.update({
+    id: '/api/public/whatsapp/webhook',
+    path: '/api/public/whatsapp/webhook',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -368,6 +375,7 @@ export interface FileRoutesByFullPath {
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
   '/yonetim/projeler/': typeof AuthenticatedYonetimProjelerIndexRoute
   '/yonetim/talepler/': typeof AuthenticatedYonetimTaleplerIndexRoute
   '/yonetim/teklifler/': typeof AuthenticatedYonetimTekliflerIndexRoute
@@ -414,6 +422,7 @@ export interface FileRoutesByTo {
   '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
   '/yonetim/projeler': typeof AuthenticatedYonetimProjelerIndexRoute
   '/yonetim/talepler': typeof AuthenticatedYonetimTaleplerIndexRoute
   '/yonetim/teklifler': typeof AuthenticatedYonetimTekliflerIndexRoute
@@ -464,6 +473,7 @@ export interface FileRoutesById {
   '/_authenticated/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
   '/_authenticated/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
   '/_authenticated/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
+  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
   '/_authenticated/yonetim/projeler/': typeof AuthenticatedYonetimProjelerIndexRoute
   '/_authenticated/yonetim/talepler/': typeof AuthenticatedYonetimTaleplerIndexRoute
   '/_authenticated/yonetim/teklifler/': typeof AuthenticatedYonetimTekliflerIndexRoute
@@ -514,6 +524,7 @@ export interface FileRouteTypes {
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
     | '/yonetim/teklifler/$id'
+    | '/api/public/whatsapp/webhook'
     | '/yonetim/projeler/'
     | '/yonetim/talepler/'
     | '/yonetim/teklifler/'
@@ -560,6 +571,7 @@ export interface FileRouteTypes {
     | '/yonetim/projeler/$id'
     | '/yonetim/talepler/$id'
     | '/yonetim/teklifler/$id'
+    | '/api/public/whatsapp/webhook'
     | '/yonetim/projeler'
     | '/yonetim/talepler'
     | '/yonetim/teklifler'
@@ -609,6 +621,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yonetim/projeler/$id'
     | '/_authenticated/yonetim/talepler/$id'
     | '/_authenticated/yonetim/teklifler/$id'
+    | '/api/public/whatsapp/webhook'
     | '/_authenticated/yonetim/projeler/'
     | '/_authenticated/yonetim/talepler/'
     | '/_authenticated/yonetim/teklifler/'
@@ -629,6 +642,7 @@ export interface RootRouteChildren {
   ApiPublicSourceResearchRoute: typeof ApiPublicSourceResearchRoute
   BolgelerIlceHizmetRoute: typeof BolgelerIlceHizmetRoute
   BolgelerIlceIndexRoute: typeof BolgelerIlceIndexRoute
+  ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -962,6 +976,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedYonetimTekliflerIdRouteImport
       parentRoute: typeof AuthenticatedYonetimRouteRoute
     }
+    '/api/public/whatsapp/webhook': {
+      id: '/api/public/whatsapp/webhook'
+      path: '/api/public/whatsapp/webhook'
+      fullPath: '/api/public/whatsapp/webhook'
+      preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -1089,6 +1110,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiPublicSourceResearchRoute: ApiPublicSourceResearchRoute,
   BolgelerIlceHizmetRoute: BolgelerIlceHizmetRoute,
   BolgelerIlceIndexRoute: BolgelerIlceIndexRoute,
+  ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

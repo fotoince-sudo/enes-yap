@@ -19,11 +19,17 @@ export const Route = createFileRoute("/api/public/whatsapp/webhook")({
           return new Response("Missing delivery headers", { status: 400 });
         }
 
+        const waSecret = process.env["WHATSAPP_API_KEY"];
+        if (!waSecret) {
+          console.error("WhatsApp webhook: WHATSAPP_API_KEY is not configured");
+          return new Response("Not configured", { status: 500 });
+        }
+
         let verified;
         try {
           verified = await verifyWebhookRequest({
             req: request,
-            secret: process.env["WHATSAPP_API_KEY"],
+            secret: waSecret,
             maxBodyBytes: 4 * 1024 * 1024,
           });
         } catch (err) {
