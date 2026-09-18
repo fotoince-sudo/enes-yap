@@ -5,6 +5,8 @@
 - [ ] WhatsApp Business bağlantısı (18 Eyl 2026 gece — karar geri alındı, kullanıcı bağlantı istedi): +90 530 764 17 17 gerçek numara bağlanacak; demo/test numarası (+1 555-398-5341) kullanılmayacak. İlerleme: Meta girişi ve Facebook Sayfası erişimi ARTIK ÇALIŞIYOR (18 Eyl 05:29) — numara ekleme ekranına gelindi; kullanıcı numarayı WhatsApp Business uygulamasından ayırdı (18 Eyl). Bağlantı kartı tekrar açılacak; kullanıcı akışı sonuna kadar tamamlamalı. Yeni Facebook Sayfası oluşturulmayacak; mevcut Facebook/Instagram bağlantıları bozulmayacak. Hedef WABA ID: 161950678560356.
   - [x] Mesajlaşma altyapısı panelde hazır (18 Eyl): imzalı webhook alıcısı (/api/public/whatsapp/webhook) + inbox (whatsapp_webhook_events) + mesaj tablosu (whatsapp_messages), yönetim panelinde "WhatsApp Mesajları" sayfası (sohbet listesi, mesaj balonları, panelden yanıt gönderme, 20 sn'de yenilenme). Bağlantı tamamlandığı anda mesajlar akmaya başlar.
 
+  - [ ] Bağlantı tamamlandıktan sonra Meta doğrulama akışını bitir: WhatsApp Business hesabı, Facebook Sayfası ve WABA ID (161950678560356) uygulama ayarlarına kaydedilecek; WHATSAPP_API_KEY gizli anahtarı webhook (/api/public/whatsapp/webhook) ve panelden gönderimde kullanılacak.
+
 - [ ] E-posta bildirimleri: gönderen alan adı (örn. bilgi@enesyapi.com) tanımlanmasını bekliyor.
 - [ ] Source Research Motoru: AKTİF (elle çalıştırma + zamanlayıcı ucu hazır). Otomatik saatli/günlük zamanlama kullanıcı onayı bekliyor.
 - [ ] Dış kaynakların izin durumu "inceleniyor" — kullanıcı hangi kaynakları "izinli" işaretleyeceğini bildirmeli (izinli olmayan kaynak otomatik taranmaz).
