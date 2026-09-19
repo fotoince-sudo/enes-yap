@@ -38,10 +38,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <Button size="sm" asChild>
               <Link to="/iletisim">Teklif alın</Link>
             </Button>
-            <Button size="sm" variant="ghost" asChild aria-label="Üyelik girişi">
-              <Link to="/auth" className="gap-1.5">
+            <Button size="sm" variant="ghost" asChild aria-label="Hesabım">
+              <Link to="/hesabim" className="gap-1.5">
                 <UserRound className="size-4" aria-hidden="true" />
-                <span className="hidden sm:inline">Giriş</span>
+                <span className="hidden sm:inline">Hesabım</span>
               </Link>
             </Button>
           </div>
