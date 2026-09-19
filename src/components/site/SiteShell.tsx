@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, UserRound } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { ChatBubble } from "@/components/site/ChatBubble";
@@ -38,8 +38,11 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <Button size="sm" asChild>
               <Link to="/iletisim">Teklif alın</Link>
             </Button>
-            <Button size="sm" variant="ghost" asChild>
-              <Link to="/auth">Giriş</Link>
+            <Button size="sm" variant="ghost" asChild aria-label="Üyelik girişi">
+              <Link to="/auth" className="gap-1.5">
+                <UserRound className="size-4" aria-hidden="true" />
+                <span className="hidden sm:inline">Giriş</span>
+              </Link>
             </Button>
           </div>
         </div>
