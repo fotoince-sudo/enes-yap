@@ -122,8 +122,11 @@ function HomePage() {
             <Button size="sm" asChild>
               <a href="#talep">Talep oluştur</a>
             </Button>
-            <Button size="sm" variant="ghost" asChild>
-              <Link to="/auth">Giriş</Link>
+            <Button size="sm" variant="ghost" asChild aria-label="Hesabım">
+              <Link to="/hesabim" className="gap-1.5">
+                <UserRound className="size-4" aria-hidden="true" />
+                <span className="hidden sm:inline">Hesabım</span>
+              </Link>
             </Button>
           </div>
         </div>
