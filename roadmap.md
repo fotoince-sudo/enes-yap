@@ -3,6 +3,7 @@
 - [x] WhatsApp Business (Meta Platform API) bağlantısı: KULLANICI KARARI (18 Eyl 2026) — bağlantı/entegrasyon KURULMAYACAK. Site yalnızca doğrudan wa.me/905307641717 sohbet bağlantısı kullanıyor (tüm butonlar + Emir handoff bu numaraya gidiyor; eski 905333992540 sitede yok).
 
 - [ ] WhatsApp Business bağlantısı (18 Eyl 14:20): Meta Embedded Signup ONAYLANDI — WhatsApp Business "İzmir Enes Yapı", WABA "Enes Yapı" (ID 161950678560356), numara +90 530 764 17 17. Kalan sorun: Lovable bağlantı kartı "Complete the WhatsApp signup with Meta" aşamasında kalıyor; Meta'dan dönüş sonrası "Hesabınızı bağlama" ekranında takılıyor. Oturum kimliği (destek talebi için): 01a0b434-3a54-7fb6-828e-7f26c6e515ca. Demo/test numarası kullanılmayacak; yeni Facebook Sayfası oluşturulmayacak; mevcut Facebook/Instagram bağlantıları bozulmayacak.
+  - [ ] Kullanıcının kontörünü tüketen tekrar denemelerini durdur: yeni bağlantı kartı açmadan önce mevcut bağlantı kaydını ücretsiz kontrol et; yalnız kayıt varsa doğrula, yoksa destek yanıtını bekle.
   - [ ] Yeni Meta signup başlatmadan mevcut onaylı oturumun connector kaydı kontrol edilecek; kayıt yoksa backend hatası oturum kimliğiyle destek ekibine iletilecek.
   - [x] Mesajlaşma altyapısı panelde hazır (18 Eyl): imzalı webhook alıcısı (/api/public/whatsapp/webhook) + inbox (whatsapp_webhook_events) + mesaj tablosu (whatsapp_messages), yönetim panelinde "WhatsApp Mesajları" sayfası (sohbet listesi, mesaj balonları, panelden yanıt gönderme, 20 sn'de yenilenme). Bağlantı tamamlandığı anda mesajlar akmaya başlar.
 
