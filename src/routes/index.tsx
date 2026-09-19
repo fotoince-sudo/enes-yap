@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
+import { UserRound } from "lucide-react";
 
 import { supabase } from "@/integrations/supabase/client";
 import { EnesEmlakReferral } from "@/components/site/SiteShell";
@@ -122,8 +123,11 @@ function HomePage() {
             <Button size="sm" asChild>
               <a href="#talep">Talep oluştur</a>
             </Button>
-            <Button size="sm" variant="ghost" asChild>
-              <Link to="/auth">Giriş</Link>
+            <Button size="sm" variant="ghost" asChild aria-label="Hesabım">
+              <Link to="/hesabim" className="gap-1.5">
+                <UserRound className="size-4" aria-hidden="true" />
+                <span className="hidden sm:inline">Hesabım</span>
+              </Link>
             </Button>
           </div>
         </div>
