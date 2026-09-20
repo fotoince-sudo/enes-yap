@@ -355,14 +355,15 @@ export function ChatBubble() {
           </form>
         </div>
       ) : (
-        <button
+        <Button
+          type="button"
           onClick={() => setOpen(true)}
           aria-label="Emir ile yazışmaya başla"
-          className="fixed right-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-2 rounded-full bg-primary px-5 py-3.5 text-sm font-medium text-primary-foreground shadow-lg hover:opacity-90"
+          className="fixed right-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-50 flex items-center gap-2 rounded-full bg-primary px-4 py-3 text-sm font-medium text-primary-foreground shadow-lg hover:opacity-90 sm:right-4 sm:bottom-[max(1rem,env(safe-area-inset-bottom))] sm:px-5 sm:py-3.5"
         >
           <MessageCircle className="h-5 w-5" />
           Emir'e sorun
-        </button>
+        </Button>
       )}
     </>
   );

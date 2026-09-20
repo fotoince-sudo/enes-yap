@@ -123,7 +123,7 @@ export function RequestForm() {
 
   return (
     <form
-      className="grid gap-4 rounded-lg border bg-card p-5 sm:grid-cols-2 sm:p-6"
+      className="grid gap-5 rounded-lg border bg-card p-4 sm:grid-cols-2 sm:p-6"
       onSubmit={(e) => {
         e.preventDefault();
         submit.mutate();
@@ -131,32 +131,33 @@ export function RequestForm() {
     >
       <div>
         <Label htmlFor="f-name">Ad soyad *</Label>
-        <Input id="f-name" value={form.full_name} onChange={(e) => set("full_name")(e.target.value)} required />
+        <Input id="f-name" className="h-11" value={form.full_name} onChange={(e) => set("full_name")(e.target.value)} required />
       </div>
       <div>
         <Label htmlFor="f-phone">Telefon *</Label>
-        <Input id="f-phone" type="tel" value={form.phone} onChange={(e) => set("phone")(e.target.value)} required />
+        <Input id="f-phone" className="h-11" type="tel" value={form.phone} onChange={(e) => set("phone")(e.target.value)} required />
       </div>
       <div className="sm:col-span-2">
         <Label htmlFor="f-email">E-posta</Label>
-        <Input id="f-email" type="email" value={form.email} onChange={(e) => set("email")(e.target.value)} />
+        <Input id="f-email" className="h-11" type="email" value={form.email} onChange={(e) => set("email")(e.target.value)} />
       </div>
       <div>
         <Label htmlFor="f-city">İl</Label>
-        <Input id="f-city" value={form.city} onChange={(e) => set("city")(e.target.value)} />
+        <Input id="f-city" className="h-11" value={form.city} onChange={(e) => set("city")(e.target.value)} />
       </div>
       <div>
         <Label htmlFor="f-district">İlçe</Label>
-        <Input id="f-district" value={form.district} onChange={(e) => set("district")(e.target.value)} />
+        <Input id="f-district" className="h-11" value={form.district} onChange={(e) => set("district")(e.target.value)} />
       </div>
       <div>
         <Label htmlFor="f-hood">Mahalle</Label>
-        <Input id="f-hood" value={form.neighborhood} onChange={(e) => set("neighborhood")(e.target.value)} />
+        <Input id="f-hood" className="h-11" value={form.neighborhood} onChange={(e) => set("neighborhood")(e.target.value)} />
       </div>
       <div className="sm:col-span-2">
         <Label htmlFor="f-address">Açık adres</Label>
         <Input
           id="f-address"
+          className="h-11"
           value={form.address}
           onChange={(e) => set("address")(e.target.value)}
           placeholder="Sokak, bina, daire no"
@@ -166,7 +167,7 @@ export function RequestForm() {
         <Label htmlFor="f-ptype">Gayrimenkul tipi</Label>
         <select
           id="f-ptype"
-          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+          className="h-11 w-full rounded-md border border-input bg-background px-3 text-base sm:text-sm"
           value={form.property_type}
           onChange={(e) => set("property_type")(e.target.value)}
         >
@@ -182,7 +183,7 @@ export function RequestForm() {
         <Label htmlFor="f-cat">Tadilat türü</Label>
         <select
           id="f-cat"
-          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+          className="h-11 w-full rounded-md border border-input bg-background px-3 text-base sm:text-sm"
           value={form.service_category_id}
           onChange={(e) => set("service_category_id")(e.target.value)}
         >
@@ -196,13 +197,13 @@ export function RequestForm() {
       </div>
       <div>
         <Label htmlFor="f-area">Yaklaşık m²</Label>
-        <Input id="f-area" type="number" min="0" value={form.area_m2} onChange={(e) => set("area_m2")(e.target.value)} />
+        <Input id="f-area" className="h-11" type="number" min="0" value={form.area_m2} onChange={(e) => set("area_m2")(e.target.value)} />
       </div>
       <div>
         <Label htmlFor="f-budget">Tahmini bütçe</Label>
         <select
           id="f-budget"
-          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+          className="h-11 w-full rounded-md border border-input bg-background px-3 text-base sm:text-sm"
           value={form.budget_range}
           onChange={(e) => set("budget_range")(e.target.value)}
         >
@@ -218,7 +219,7 @@ export function RequestForm() {
         <Label htmlFor="f-start">İstenen başlangıç</Label>
         <select
           id="f-start"
-          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+          className="h-11 w-full rounded-md border border-input bg-background px-3 text-base sm:text-sm"
           value={form.desired_start}
           onChange={(e) => set("desired_start")(e.target.value)}
         >
@@ -234,7 +235,7 @@ export function RequestForm() {
         <Label htmlFor="f-opp">Amacınız</Label>
         <select
           id="f-opp"
-          className="h-10 w-full rounded-md border border-input bg-background px-3 text-sm"
+          className="h-11 w-full rounded-md border border-input bg-background px-3 text-base sm:text-sm"
           value={form.opportunity_type}
           onChange={(e) => set("opportunity_type")(e.target.value)}
         >
@@ -251,6 +252,7 @@ export function RequestForm() {
         <Textarea
           id="f-desc"
           rows={4}
+          className="min-h-28 text-base sm:text-sm"
           maxLength={2000}
           placeholder="Yapılmasını istediğiniz işleri kısaca anlatın."
           value={form.description}
@@ -261,6 +263,7 @@ export function RequestForm() {
         <Label htmlFor="f-photos">Fotoğraflar (en fazla 15 MB)</Label>
         <Input
           id="f-photos"
+          className="h-11 text-sm"
           type="file"
           accept="image/*"
           multiple
@@ -271,6 +274,7 @@ export function RequestForm() {
         <Label htmlFor="f-videos">Video (en fazla 90 MB)</Label>
         <Input
           id="f-videos"
+          className="h-11 text-sm"
           type="file"
           accept="video/*"
           multiple

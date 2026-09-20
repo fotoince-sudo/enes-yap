@@ -27,6 +27,6 @@
 - [ ] Google İşletme Profili (haritalarda görünürlük) — kullanıcı tarafında yapılacak
 - [ ] Gerçek proje fotoğrafları ve önce/sonra kayıtlarının panelden yayına alınması
 ## Ana sayfa sadeleştirme ve mobil düzenleme
-- [ ] Ana sayfayı belirtilen 7 bölümlü sıraya göre sadeleştir; marka, form, gerçek proje kayıtları ve tüm çalışan bağlantıları koru.
-- [ ] Mobil, tablet ve masaüstü görünümü; hizmet/ilçe bağlantıları; form ve sabit Emir düğmesi çakışmalarını doğrula.
+- [x] Ana sayfayı belirtilen 7 bölümlü sıraya göre sadeleştir; marka, form, gerçek proje kayıtları ve tüm çalışan bağlantıları koru.
+- [x] Mobil, tablet ve masaüstü görünümü; hizmet/ilçe bağlantıları; form ve sabit Emir düğmesi çakışmalarını doğrula.
 

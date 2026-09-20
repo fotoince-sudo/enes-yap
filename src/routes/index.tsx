@@ -1,18 +1,26 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
-import { UserRound } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import {
+  ArrowRight,
+  Bath,
+  ChefHat,
+  Hammer,
+  House,
+  MapPin,
+  PaintRoller,
+  PlugZap,
+  UserRound,
+} from "lucide-react";
 
-import { supabase } from "@/integrations/supabase/client";
-import { EnesEmlakReferral } from "@/components/site/SiteShell";
-import { RequestForm } from "@/components/site/RequestForm";
 import { ChatBubble } from "@/components/site/ChatBubble";
+import { RequestForm } from "@/components/site/RequestForm";
+import { EnesEmlakReferral } from "@/components/site/SiteShell";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
-import { trDate } from "@/lib/domain";
-import { CORE_SERVICES, DISTRICTS, GUIDES, localBusinessJsonLd, pageHead, SERVICES, SITE } from "@/lib/seo";
+import { supabase } from "@/integrations/supabase/client";
+import { localBusinessJsonLd, pageHead, SERVICES, SITE, DISTRICTS } from "@/lib/seo";
 import heroImage from "@/assets/hero.jpg";
 import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
-import beforeImage from "@/assets/proje-tadilat.jpg";
-import afterImage from "@/assets/proje-daire.jpg";
 
 const HOME_TITLE = "İzmir Tadilat, Yenileme ve Dekorasyon — Enes Yapı";
 const HOME_DESCRIPTION =
@@ -41,40 +49,65 @@ export const Route = createFileRoute("/")({
   },
 });
 
+const FEATURED_SERVICE_SLUGS = [
+  "komple-tadilat",
+  "banyo-yenileme",
+  "mutfak-yenileme",
+  "boya-badana",
+  "elektrik-tesisat",
+  "daire-yenileme",
+] as const;
+
+const SERVICE_ICONS = {
+  "komple-tadilat": Hammer,
+  "banyo-yenileme": Bath,
+  "mutfak-yenileme": ChefHat,
+  "boya-badana": PaintRoller,
+  "elektrik-tesisat": PlugZap,
+  "daire-yenileme": House,
+} as const;
+
+const SERVICE_SUMMARIES = {
+  "komple-tadilat": "Tüm iş kalemlerini tek plan ve tek ekip yönetimiyle yürütüyoruz.",
+  "banyo-yenileme": "Tesisat, yalıtım, seramik ve montaj işlerini birlikte planlıyoruz.",
+  "mutfak-yenileme": "Dolap, tezgâh, tesisat ve elektrik düzenini yeniliyoruz.",
+  "boya-badana": "Yüzey hazırlığından son kata kadar temiz uygulama yapıyoruz.",
+  "elektrik-tesisat": "Elektrik, su ve gider hatlarını ihtiyaca göre düzenliyoruz.",
+  "daire-yenileme": "Dairenizi kullanım ihtiyacınıza göre bütüncül biçimde yeniliyoruz.",
+} as const;
+
 const STEPS = [
-  { n: "01", t: "Talep oluşturun", d: "Gayrimenkulünüzü, yapılacak işi, bütçe ve zaman beklentinizi iletin." },
-  { n: "02", t: "Keşif", d: "Sorumlu personel yerinde ölçü alır, işin kapsamını ve maliyetini belirler." },
-  { n: "03", t: "Teklif", d: "Malzeme, işçilik ve ek giderler kalem kalem yazılır; net fiyat sunulur." },
-  { n: "04", t: "Uygulama", d: "İş kalemlerine göre ekipler görevlendirilir, süreç sahada kontrol edilir." },
-  { n: "05", t: "Teslim", d: "Kontrol listesi tamamlanır, önce/sonra kaydı ile iş teslim edilir." },
+  { n: "01", t: "Talep oluşturma", d: "İhtiyacınızı ve iletişim bilgilerinizi bize iletin." },
+  { n: "02", t: "Keşif ve ölçüm", d: "Alanı yerinde inceleyip gerekli ölçüleri alalım." },
+  { n: "03", t: "Teklif hazırlama", d: "İş kapsamını ve kalemleri açık biçimde paylaşalım." },
+  { n: "04", t: "Uygulama", d: "Planlanan işleri saha kontrolüyle tamamlayalım." },
+  { n: "05", t: "Kontrol ve teslim", d: "Son kontrollerin ardından işi teslim edelim." },
 ];
 
-const WHY = [
-  { t: "Tek muhatap", d: "Farklı ustalarla tek tek uğraşmazsınız; işi baştan sona biz organize ederiz." },
-  { t: "Şeffaf teklif", d: "Her iş kalemi miktar, birim fiyat, malzeme ve işçilik olarak ayrı yazılır." },
-  { t: "Kayıtlı süreç", d: "Talep, keşif, teklif ve uygulama adımlarının tamamı sistemde kayıt altındadır." },
-  { t: "Gayrimenkul odaklı", d: "Satışa veya kiraya hazırlık gibi yatırım amaçlı yenilemelerde deneyimliyiz." },
+const FAQS = [
+  {
+    q: "Tadilat fiyatı nasıl belirlenir?",
+    a: "Fiyat; alanın durumu, iş kapsamı, ölçüler ve malzeme tercihleri yerinde değerlendirildikten sonra belirlenir.",
+  },
+  {
+    q: "Keşif süreci nasıl ilerler?",
+    a: "Talebinizi aldıktan sonra sizinle iletişime geçer, uygun zamanı birlikte planlar ve alanı yerinde inceleriz.",
+  },
+  {
+    q: "Hangi bölgelerde hizmet veriyorsunuz?",
+    a: "İzmir merkez ilçeleri ile Urla, Çeşme ve Seferihisar'da hizmet veriyoruz.",
+  },
 ];
 
 function HomePage() {
-  const { data: categories = [] } = useQuery({
-    queryKey: ["public-categories"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("service_categories")
-        .select("id, name, description")
-        .eq("is_active", true)
-        .order("sort_order");
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
+  const featuredServices = FEATURED_SERVICE_SLUGS.map((slug) => SERVICES.find((service) => service.slug === slug)).filter(
+    (service): service is NonNullable<typeof service> => Boolean(service),
+  );
 
   const { data: projects = [] } = useQuery({
     queryKey: ["public-projects"],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .rpc("get_public_project_showcase");
+      const { data, error } = await supabase.rpc("get_public_project_showcase");
       if (error) throw error;
       return data ?? [];
     },
@@ -85,376 +118,222 @@ function HomePage() {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("before_after")
-        .select("id, title, work_type, description, before_url, after_url, happened_on")
+        .select("id, title, work_type, before_url, after_url")
         .eq("is_published", true)
         .order("sort_order")
-        .limit(6);
+        .limit(3);
       if (error) throw error;
-      // Yalnızca herkese açık (http) görsel bağlantıları sitede gösterilebilir.
-      return (data ?? []).filter((r) => r.before_url?.startsWith("http") && r.after_url?.startsWith("http"));
+      return (data ?? []).filter((row) => row.before_url?.startsWith("http") && row.after_url?.startsWith("http"));
     },
   });
+
+  const hasRealApplications = beforeAfter.length > 0 || projects.some((project) => project.photo_urls?.[0]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <span className="flex items-center gap-2.5">
-            <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 object-contain" />
-            <span className="text-lg font-semibold tracking-tight">
+        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-4 py-3 sm:flex sm:justify-between sm:gap-4">
+          <Link to="/" className="flex min-w-0 items-center gap-2.5" aria-label="Enes Yapı ana sayfa">
+            <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 shrink-0 object-contain" />
+            <span className="truncate text-base font-semibold sm:text-lg">
               ENES <span className="text-primary">YAPI</span>
             </span>
-          </span>
+          </Link>
           <nav className="hidden items-center gap-6 text-sm md:flex">
-            <Link to="/hizmetler" className="text-muted-foreground hover:text-foreground">
-              Hizmetler
-            </Link>
-            <Link to="/bolgeler" className="text-muted-foreground hover:text-foreground">
-              Hizmet bölgeleri
-            </Link>
-            <Link to="/rehber" className="text-muted-foreground hover:text-foreground">
-              Rehber
-            </Link>
-            <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">
-              İletişim
-            </Link>
+            <Link to="/hizmetler" className="text-muted-foreground hover:text-foreground">Hizmetler</Link>
+            <Link to="/bolgeler" className="text-muted-foreground hover:text-foreground">Hizmet bölgeleri</Link>
+            <Link to="/rehber" className="text-muted-foreground hover:text-foreground">Rehber</Link>
+            <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">İletişim</Link>
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <Button size="sm" asChild>
-              <a href="#talep">Talep oluştur</a>
+              <a href="#talep"><span className="sm:hidden">Talep</span><span className="hidden sm:inline">Talep oluştur</span></a>
             </Button>
-            <Button size="sm" variant="ghost" asChild aria-label="Hesabım">
-              <Link to="/hesabim" className="gap-1.5">
-                <UserRound className="size-4" aria-hidden="true" />
-                <span className="hidden sm:inline">Hesabım</span>
-              </Link>
+            <Button size="icon" variant="ghost" asChild aria-label="Hesabım">
+              <Link to="/hesabim"><UserRound aria-hidden="true" /></Link>
             </Button>
           </div>
         </div>
       </header>
 
       <main>
-        {/* Hero */}
         <section className="border-b bg-muted/30">
-          <div className="mx-auto grid max-w-6xl gap-6 px-4 py-8 sm:py-12 md:grid-cols-2 md:items-center md:gap-8 md:py-20">
-            <div>
-              <p className="text-xs font-medium uppercase tracking-widest text-primary sm:text-sm">
-                İzmir · Tadilat · Yenileme · Uygulama
-              </p>
-              <h1 className="mt-2 text-2xl font-semibold leading-tight tracking-tight sm:mt-3 sm:text-3xl md:text-5xl">
-                İzmir'de tadilat, yenileme ve dekorasyon çözümleri.
+          <div className="mx-auto grid max-w-6xl gap-6 px-4 py-7 sm:py-12 md:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] md:items-center md:gap-10 md:py-16">
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase text-primary">BİZDE HER ŞEY GERÇEK.</p>
+              <h1 className="mt-2 font-display text-3xl font-semibold leading-tight sm:text-4xl md:text-5xl">
+                İzmir’de tadilat, yenileme ve dekorasyon.
               </h1>
-              <p className="mt-3 max-w-xl text-sm text-muted-foreground sm:text-base">
-                Bayraklı merkezli ekibimizle İzmir'de daire, ev, ofis ve iş yerlerinde tadilat, bakım, onarım ve komple
-                yenileme işlerini planlıyor, ekipleri organize ediyor ve işi teslim edene kadar takip ediyoruz.
+              <p className="mt-3 max-w-lg text-sm leading-relaxed text-muted-foreground sm:text-base">
+                Keşiften uygulamaya, tadilat sürecinizi birlikte yönetiyoruz.
               </p>
-              <div className="mt-4 border-l-4 border-primary pl-4 sm:mt-6 sm:pl-5">
-                <p className="text-lg font-bold uppercase leading-tight tracking-tight sm:text-2xl">
-                  &ldquo;BİZDE HER ŞEY GERÇEK.&rdquo;
-                </p>
-                <p className="mt-1 text-sm text-muted-foreground">Hayal değil, gerçek iş.</p>
-              </div>
-              <div className="mt-5 flex flex-wrap gap-2 sm:mt-6 sm:gap-3">
-                <Button size="lg" asChild>
-                  <a href="#talep">Tadilat talebi oluştur</a>
-                </Button>
-                <Button size="lg" variant="outline" asChild>
-                  <a href="https://wa.me/905307641717" target="_blank" rel="noopener noreferrer">
-                    WhatsApp'tan yazın
-                  </a>
-                </Button>
-                <Button size="lg" variant="ghost" asChild>
-                  <a href="#nasil">Süreci inceleyin</a>
-                </Button>
+              <p className="mt-4 border-l-4 border-primary pl-3 text-sm font-semibold sm:text-base">Hayal değil, gerçek iş.</p>
+              <div className="mt-6 grid grid-cols-2 gap-2 sm:flex sm:gap-3">
+                <Button size="lg" asChild><a href="#talep">Talep oluştur</a></Button>
+                <Button size="lg" variant="outline" asChild><a href="#hizmetler">Hizmetlerimiz</a></Button>
               </div>
             </div>
             <img
               src={heroImage}
-              alt="Tadilat uygulaması yapılan bir iç mekân"
-              className="h-48 w-full rounded-lg border object-cover sm:h-64 md:h-80"
-              loading="lazy"
+              alt="Tadilat uygulaması yapılan aydınlık bir iç mekân"
+              className="aspect-[16/10] w-full rounded-lg border object-cover md:aspect-[4/3]"
             />
           </div>
         </section>
 
-        {/* Hizmetler */}
-        <section id="hizmetler" className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir'de sunduğumuz hizmetler</h2>
-          <p className="mt-2 max-w-2xl text-muted-foreground">
-            Tek bir işten komple yenilemeye kadar tüm kapsamlarda çalışıyoruz. Detay için hizmet sayfalarına
-            bakabilirsiniz.
-          </p>
-          <p className="mt-3 max-w-3xl text-sm text-muted-foreground">
-            İzmir tadilat, yapı ve inşaat işlerinde daire, villa, ofis ve dükkanlarda çalışıyoruz; dekorasyon ve
-            iç mekân yenileme, müteahhitlik ve komple inşaat ile kentsel dönüşüm danışmanlığı da hizmet
-            kapsamımızdadır. Her işte ölçü keşifte alınır, teklif kalem kalem verilir.
-          </p>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {SERVICES.map((s) => (
-              <Link
-                key={s.slug}
-                to="/hizmetler/$slug"
-                params={{ slug: s.slug }}
-                className="rounded-lg border bg-card p-4 transition-colors hover:border-primary"
-              >
-                <h3 className="font-medium">{s.name}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{s.description}</p>
-              </Link>
-            ))}
-          </div>
-          {categories.length > 0 ? (
-            <div className="mt-6 flex flex-wrap gap-2">
-              {categories.map((c) => (
-                <span key={c.id} className="rounded-md border bg-card px-3 py-1.5 text-xs text-muted-foreground">
-                  {c.name}
-                </span>
-              ))}
+        <section id="hizmetler" className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+          <div className="flex items-end justify-between gap-4">
+            <div>
+              <p className="text-xs font-semibold uppercase text-primary">Uzmanlık alanlarımız</p>
+              <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Hizmetlerimiz</h2>
             </div>
-          ) : null}
-          <div className="mt-4">
-            <Button variant="outline" asChild>
-              <Link to="/hizmetler">Tüm hizmetleri görün</Link>
+            <Button variant="ghost" className="hidden sm:inline-flex" asChild>
+              <Link to="/hizmetler">Tüm hizmetler <ArrowRight aria-hidden="true" /></Link>
             </Button>
           </div>
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {featuredServices.map((service) => {
+              const Icon = SERVICE_ICONS[service.slug as keyof typeof SERVICE_ICONS];
+              return (
+                <Link
+                  key={service.slug}
+                  to="/hizmetler/$slug"
+                  params={{ slug: service.slug }}
+                  className="group grid min-h-40 grid-rows-[auto_1fr_auto] rounded-lg border bg-card p-4 transition-colors hover:border-primary sm:p-5"
+                >
+                  <span className="grid size-10 place-items-center rounded-md bg-secondary text-primary">
+                    {Icon ? <Icon aria-hidden="true" /> : <Hammer aria-hidden="true" />}
+                  </span>
+                  <div className="mt-4">
+                    <h3 className="font-display text-lg font-semibold">{service.name}</h3>
+                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
+                      {SERVICE_SUMMARIES[service.slug as keyof typeof SERVICE_SUMMARIES]}
+                    </p>
+                  </div>
+                  <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary">
+                    İncele <ArrowRight className="transition-transform group-hover:translate-x-1" aria-hidden="true" />
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+          <Button variant="outline" className="mt-4 w-full sm:hidden" asChild>
+            <Link to="/hizmetler">Tüm hizmetleri görün</Link>
+          </Button>
         </section>
+
+        <section id="nasil" className="border-y bg-deep text-deep-foreground">
+          <div className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+            <p className="text-xs font-semibold uppercase text-primary">Adım adım</p>
+            <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Nasıl çalışıyoruz?</h2>
+            <ol className="mt-6 grid gap-px overflow-hidden rounded-lg border border-deep-foreground/15 bg-deep-foreground/15 sm:grid-cols-2 lg:grid-cols-5">
+              {STEPS.map((step) => (
+                <li key={step.n} className="min-h-32 bg-deep p-4 sm:p-5">
+                  <span className="font-display text-2xl font-semibold text-primary">{step.n}</span>
+                  <h3 className="mt-3 font-semibold">{step.t}</h3>
+                  <p className="mt-1 text-sm leading-relaxed text-deep-foreground/70">{step.d}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+
+        <section className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+          <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-start">
+            <div>
+              <p className="text-xs font-semibold uppercase text-primary">İzmir</p>
+              <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Hizmet bölgelerimiz</h2>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">Bulunduğunuz ilçedeki tadilat hizmetlerini inceleyin.</p>
+              <Button variant="outline" className="mt-5 hidden lg:inline-flex" asChild><Link to="/bolgeler">Tüm bölgeler</Link></Button>
+            </div>
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+              {DISTRICTS.map((district) => (
+                <Link
+                  key={district.slug}
+                  to="/bolgeler/$ilce"
+                  params={{ ilce: district.slug }}
+                  className="flex min-h-12 items-center gap-2 rounded-md border bg-card px-3 py-2 text-sm font-medium hover:border-primary"
+                >
+                  <MapPin className="shrink-0 text-primary" aria-hidden="true" />
+                  <span className="min-w-0 truncate">{district.name}</span>
+                </Link>
+              ))}
+            </div>
+            <Button variant="outline" className="w-full lg:hidden" asChild><Link to="/bolgeler">Tüm bölgeler</Link></Button>
+          </div>
+        </section>
+
+        {hasRealApplications ? (
+          <section className="border-y bg-muted/30">
+            <div className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
+              <p className="text-xs font-semibold uppercase text-primary">Sahadan</p>
+              <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Gerçek uygulamalar</h2>
+              {beforeAfter.length > 0 ? (
+                <div className="mt-6 grid gap-4 lg:grid-cols-3">
+                  {beforeAfter.map((row) => row.before_url && row.after_url ? (
+                    <article key={row.id} className="overflow-hidden rounded-lg border bg-card">
+                      <div className="grid grid-cols-2">
+                        <figure className="relative"><img src={row.before_url} alt={`${row.title ?? row.work_type ?? "Tadilat"} öncesi`} className="aspect-square w-full object-cover" loading="lazy" /><figcaption className="absolute bottom-2 left-2 rounded bg-deep px-2 py-1 text-xs text-deep-foreground">Önce</figcaption></figure>
+                        <figure className="relative"><img src={row.after_url} alt={`${row.title ?? row.work_type ?? "Tadilat"} sonrası`} className="aspect-square w-full object-cover" loading="lazy" /><figcaption className="absolute bottom-2 left-2 rounded bg-primary px-2 py-1 text-xs text-primary-foreground">Sonra</figcaption></figure>
+                      </div>
+                      <h3 className="p-4 font-medium">{row.title ?? row.work_type ?? "Tadilat uygulaması"}</h3>
+                    </article>
+                  ) : null)}
+                </div>
+              ) : (
+                <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                  {projects.filter((project) => project.photo_urls?.[0]).slice(0, 3).map((project) => (
+                    <article key={project.id} className="overflow-hidden rounded-lg border bg-card">
+                      <img src={project.photo_urls?.[0]} alt={`${project.title} uygulama fotoğrafı`} className="aspect-[4/3] w-full object-cover" loading="lazy" />
+                      <div className="p-4"><h3 className="font-medium">{project.title}</h3>{project.district ? <p className="mt-1 text-sm text-muted-foreground">{project.district} / İzmir</p> : null}</div>
+                    </article>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        ) : null}
 
         <EnesEmlakReferral />
 
-        {/* Hizmet bölgeleri */}
-        <section className="border-y bg-muted/30">
-          <div className="mx-auto max-w-6xl px-4 py-14">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir hizmet bölgelerimiz</h2>
-            <p className="mt-2 max-w-2xl text-muted-foreground">
-              İzmir merkez ilçelerinin tamamında, ayrıca Urla, Çeşme ve Seferihisar'da çalışıyoruz.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-2">
-              {DISTRICTS.map((d) => (
-                <Link
-                  key={d.slug}
-                  to="/bolgeler/$ilce"
-                  params={{ ilce: d.slug }}
-                  className="rounded-md border bg-card px-3 py-1.5 text-sm hover:border-primary"
-                >
-                  {d.name} tadilat
-                </Link>
-              ))}
-            </div>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {CORE_SERVICES.map((s) => (
-                <Link
-                  key={s.slug}
-                  to="/bolgeler/$ilce/$hizmet"
-                  params={{ ilce: "bayrakli", hizmet: s.slug }}
-                  className="rounded-lg border bg-card p-3 text-sm hover:border-primary"
-                >
-                  Bayraklı {s.name.toLocaleLowerCase("tr-TR")}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Rehber */}
-        <section className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İzmir tadilat rehberi</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2">
-            {GUIDES.map((g) => (
-              <Link
-                key={g.slug}
-                to="/rehber/$slug"
-                params={{ slug: g.slug }}
-                className="rounded-lg border bg-card p-4 transition-colors hover:border-primary"
-              >
-                <h3 className="font-medium">{g.h1}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{g.description}</p>
-              </Link>
+        <section className="mx-auto max-w-3xl px-4 py-10 sm:py-14">
+          <p className="text-xs font-semibold uppercase text-primary">Merak edilenler</p>
+          <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Sık sorulan sorular</h2>
+          <Accordion type="single" collapsible className="mt-5 border-t">
+            {FAQS.map((faq, index) => (
+              <AccordionItem key={faq.q} value={`faq-${index}`}>
+                <AccordionTrigger className="text-base no-underline hover:no-underline">{faq.q}</AccordionTrigger>
+                <AccordionContent className="pr-8 leading-relaxed text-muted-foreground">{faq.a}</AccordionContent>
+              </AccordionItem>
             ))}
+          </Accordion>
+        </section>
+
+        <section id="talep" className="border-y bg-muted/30">
+          <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
+            <p className="text-xs font-semibold uppercase text-primary">Keşif talebi</p>
+            <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Tadilat talebi oluştur</h2>
+            <p className="mt-2 text-sm text-muted-foreground sm:text-base">Bilgilerinizi iletin, keşif planlaması için sizi arayalım.</p>
+            <div className="mt-5"><RequestForm /></div>
           </div>
         </section>
 
-        {/* Nasıl çalışıyoruz */}
-        <section id="nasil" className="border-y bg-muted/30">
-          <div className="mx-auto max-w-6xl px-4 py-14">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Nasıl çalışıyoruz?</h2>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-              {STEPS.map((s) => (
-                <div key={s.n} className="rounded-lg border bg-card p-4">
-                  <span className="text-xs font-semibold text-primary">{s.n}</span>
-                  <h3 className="mt-1 font-medium">{s.t}</h3>
-                  <p className="mt-1 text-sm text-muted-foreground">{s.d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Talep formu */}
-        <section id="talep" className="mx-auto max-w-4xl px-4 py-14">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Tadilat talebi oluştur</h2>
-          <p className="mt-2 text-muted-foreground">
-            Formu doldurun; talebiniz kayıt altına alınır, ekibimiz keşif için sizinle iletişime geçer.
-          </p>
-          <div className="mt-6">
-            <RequestForm />
-          </div>
-        </section>
-
-        {/* Önce / Sonra */}
-        <section className="border-y bg-muted/30">
-          <div className="mx-auto max-w-6xl px-4 py-14">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Önce / Sonra</h2>
-            <p className="mt-2 text-muted-foreground">
-              Tamamlanan işlerin önce, uygulama sırası ve sonra kayıtlarını tutuyoruz.
-            </p>
-            {beforeAfter.length > 0 ? (
-              <div className="mt-6 space-y-8">
-                {beforeAfter.map((r) => (
-                  <div key={r.id}>
-                    <h3 className="font-medium">
-                      {r.title ?? r.work_type ?? "Tadilat çalışması"}
-                      {r.happened_on ? (
-                        <span className="text-muted-foreground"> · {trDate(r.happened_on)}</span>
-                      ) : null}
-                    </h3>
-                    <div className="mt-3 grid gap-4 sm:grid-cols-2">
-                      <figure>
-                        <img src={r.before_url!} alt={`${r.title ?? "Tadilat"} öncesi`} className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
-                        <figcaption className="mt-2 text-sm text-muted-foreground">Önce</figcaption>
-                      </figure>
-                      <figure>
-                        <img src={r.after_url!} alt={`${r.title ?? "Tadilat"} sonrası`} className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
-                        <figcaption className="mt-2 text-sm text-muted-foreground">Sonra</figcaption>
-                      </figure>
-                    </div>
-                    {r.description ? <p className="mt-2 text-sm text-muted-foreground">{r.description}</p> : null}
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <figure>
-                  <img src={beforeImage} alt="Tadilat öncesi mekân" className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
-                  <figcaption className="mt-2 text-sm text-muted-foreground">Önce</figcaption>
-                </figure>
-                <figure>
-                  <img src={afterImage} alt="Tadilat sonrası yenilenen mekân" className="h-56 w-full rounded-lg border object-cover" loading="lazy" />
-                  <figcaption className="mt-2 text-sm text-muted-foreground">Sonra</figcaption>
-                </figure>
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* Projeler */}
-        <section id="projeler" className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Tamamlanan projeler</h2>
-          {projects.length === 0 ? (
-            <p className="mt-2 text-muted-foreground">
-              Referans projeler yönetim panelinde işaretlendikçe bu bölümde listelenir.
-            </p>
-          ) : (
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {projects.map((p) => (
-                <div key={p.id} className="overflow-hidden rounded-lg border bg-card">
-                  {p.photo_urls?.[0] ? (
-                    <img
-                      src={p.photo_urls[0]}
-                      alt={`${p.title} proje fotoğrafı`}
-                      className="aspect-[4/3] w-full object-cover"
-                      loading="lazy"
-                    />
-                  ) : null}
-                  <div className="p-4">
-                    <h3 className="font-medium">{p.title}</h3>
-                    {p.district ? <p className="mt-1 text-sm text-muted-foreground">{p.district} / İzmir</p> : null}
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-
-        {/* Çözüm ortakları */}
-        <section className="border-y bg-muted/30">
-          <div className="mx-auto max-w-6xl px-4 py-14">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Çözüm ortaklarımız</h2>
-            <p className="mt-2 max-w-2xl text-muted-foreground">
-              Sıhhi tesisat, elektrik, seramik, boya, alçıpan, mobilya ve dış cephe alanlarında kayıtlı ekiplerle
-              çalışıyoruz. Her iş, kapsamına uygun uzman ekiple eşleştirilir.
-            </p>
-            <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {["Sıhhi tesisat", "Elektrik", "Seramik & zemin", "Boya & alçı", "Alçıpan & asma tavan", "Mutfak & banyo", "Mantolama & dış cephe", "Çatı & izolasyon"].map(
-                (t) => (
-                  <div key={t} className="rounded-lg border bg-card px-4 py-3 text-sm">
-                    {t}
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
-        </section>
-
-        {/* Neden */}
-        <section className="mx-auto max-w-6xl px-4 py-14">
-          <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Neden Enes Yapı?</h2>
-          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {WHY.map((w) => (
-              <div key={w.t} className="rounded-lg border bg-card p-4">
-                <h3 className="font-medium">{w.t}</h3>
-                <p className="mt-1 text-sm text-muted-foreground">{w.d}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* İletişim */}
-        <section id="iletisim" className="border-t bg-muted/30">
-          <div className="mx-auto max-w-6xl px-4 py-14">
-            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">İletişim</h2>
-            <div className="mt-6 grid gap-4 sm:grid-cols-3">
-              <div className="rounded-lg border bg-card p-4">
-                <h3 className="text-sm font-medium text-muted-foreground">Telefon & WhatsApp</h3>
-                <a href="tel:+905307641717" className="mt-1 block font-medium hover:text-primary">
-                  0530 764 17 17
-                </a>
-                <a
-                  href="https://wa.me/905307641717"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="mt-1 block text-sm text-muted-foreground hover:text-foreground"
-                >
-                  WhatsApp'tan yazın
-                </a>
-              </div>
-              <div className="rounded-lg border bg-card p-4">
-                <h3 className="text-sm font-medium text-muted-foreground">Adres & çalışma saatleri</h3>
-                <p className="mt-1 font-medium">Manavkuyu Mah. Sakarya Cad.</p>
-                <p className="mt-1 text-sm text-muted-foreground">Bayraklı / İzmir</p>
-                <p className="mt-1 text-sm text-muted-foreground">Pazartesi – Cumartesi 09:00 – 19:00</p>
-              </div>
-              <div className="rounded-lg border bg-card p-4">
-                <h3 className="text-sm font-medium text-muted-foreground">Hızlı talep</h3>
-                <p className="mt-1 text-sm text-muted-foreground">
-                  Formu doldurun, ekibimiz en kısa sürede sizi arasın.
-                </p>
-                <Button size="sm" className="mt-3" asChild>
-                  <a href="#talep">Tadilat talebi oluştur</a>
-                </Button>
-              </div>
-            </div>
+        <section className="bg-deep text-deep-foreground">
+          <div className="mx-auto max-w-6xl px-4 py-12 text-center sm:py-16">
+            <h2 className="font-display text-2xl font-semibold sm:text-3xl">Tadilat talebinizi bize iletin.</h2>
+            <p className="mx-auto mt-2 max-w-xl text-sm text-deep-foreground/70 sm:text-base">İhtiyacınızı dinleyelim, keşif sürecini birlikte planlayalım.</p>
+            <Button size="lg" className="mt-6" asChild><a href="#talep">Talep oluştur</a></Button>
           </div>
         </section>
       </main>
 
       <footer className="border-t py-8">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 text-sm text-muted-foreground">
-          <span className="flex items-center gap-2">
-            <img src={logoAsset.url} alt="" className="h-6 w-6 object-contain" />
-            <span>{"© 2026 Enes Yapı · Manavkuyu Mah. Sakarya Cad. Bayraklı / İzmir · 0530 764 17 17"}</span>
+        <div className="mx-auto grid max-w-6xl gap-3 px-4 text-sm text-muted-foreground sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+          <span className="flex min-w-0 items-center gap-2">
+            <img src={logoAsset.url} alt="" className="h-6 w-6 shrink-0 object-contain" />
+            <span>© 2026 Enes Yapı · Bayraklı / İzmir · 0530 764 17 17</span>
           </span>
-          <Link to="/auth" className="hover:text-foreground">
-            Müşteri / personel girişi
-          </Link>
+          <Link to="/auth" className="hover:text-foreground">Müşteri / personel girişi</Link>
         </div>
       </footer>
 
