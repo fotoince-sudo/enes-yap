@@ -2,7 +2,6 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight, UserRound } from "lucide-react";
 import type { ReactNode } from "react";
 
-import { ChatBubble } from "@/components/site/ChatBubble";
 import { Button } from "@/components/ui/button";
 import enesEmlakLogoAsset from "@/assets/enes-emlak-logo.png.asset.json";
 import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
@@ -33,16 +32,16 @@ export function SiteShell({ children }: { children: ReactNode }) {
             <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">
               İletişim
             </Link>
+            <a href="https://izmirenesemlak.com.tr" className="text-muted-foreground hover:text-foreground">
+              Enes Emlak
+            </a>
           </nav>
           <div className="flex items-center gap-2">
             <Button size="sm" asChild>
               <Link to="/iletisim">Teklif alın</Link>
             </Button>
-            <Button size="sm" variant="ghost" asChild aria-label="Hesabım">
-              <Link to="/hesabim" className="gap-1.5">
-                <UserRound className="size-4" aria-hidden="true" />
-                <span className="hidden sm:inline">Hesabım</span>
-              </Link>
+            <Button size="sm" variant="ghost" asChild>
+              <a href="https://izmirenesemlak.com.tr">Enes Emlak</a>
             </Button>
           </div>
         </div>
@@ -52,7 +51,6 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
       <EnesEmlakReferral />
       <SiteFooter />
-      <ChatBubble />
     </div>
   );
 }
@@ -131,9 +129,9 @@ export function SiteFooter() {
             İzmir merkez ilçeleri ile Urla, Çeşme ve Seferihisar'da tadilat, yenileme, dekorasyon, dış cephe ve
             uygulama işleri.
           </p>
-          <Link to="/auth" className="mt-3 inline-block hover:text-foreground">
-            Müşteri / personel girişi
-          </Link>
+          <a href="https://izmirenesemlak.com.tr" className="mt-3 inline-block hover:text-foreground">
+            İş ortağımız: Enes Emlak
+          </a>
         </div>
       </div>
       <div className="mx-auto mt-6 max-w-6xl px-4 text-xs text-muted-foreground">

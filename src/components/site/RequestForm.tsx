@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { BUDGET_RANGES, OPPORTUNITY_TYPE, PROPERTY_TYPES, START_TIMES } from "@/lib/domain";
+import { SERVICES } from "@/lib/seo";
 
 const schema = z.object({
   full_name: z.string().trim().min(2, "Ad soyad giriniz.").max(120),
@@ -51,18 +52,9 @@ export function RequestForm() {
   const [videos, setVideos] = useState<File[]>([]);
   const [done, setDone] = useState(false);
 
-  const { data: categories = [] } = useQuery({
-    queryKey: ["public-categories"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("service_categories")
-        .select("id, name")
-        .eq("is_active", true)
-        .order("sort_order");
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
+  // Tadilat türleri sitedeki hizmet listesinden gelir (ayrı veritabanı tablosu gerekmez).
+  const categories = SERVICES.map((service) => ({ id: service.slug, name: service.name }));
+  const [consent, setConsent] = useState(false);
 
   const submit = useMutation({
     mutationFn: async () => {
@@ -74,24 +66,34 @@ export function RequestForm() {
       const videoUploads = videos.length ? await uploadRequestFiles(videos, "video") : [];
       const category = categories.find((c) => c.id === v.service_category_id);
 
-      const { error } = await supabase.from("renovation_requests").insert({
-        full_name: v.full_name,
-        phone: v.phone,
-        email: v.email || null,
-        city: v.city || null,
-        district: v.district || null,
-        neighborhood: v.neighborhood || null,
-        address: v.address || null,
-        property_type: v.property_type || null,
-        service_category_id: v.service_category_id || null,
-        renovation_type: category?.name ?? null,
-        area_m2: v.area_m2 ? Number(v.area_m2) : null,
-        budget_range: v.budget_range || null,
-        desired_start: v.desired_start || null,
-        opportunity_type: (v.opportunity_type || null) as never,
-        description: v.description || null,
-        photo_urls: photoUploads,
-        video_urls: videoUploads,
+      if (!consent) throw new Error("Devam etmek için bilgilendirme onayını işaretleyin.");
+
+      // Talep, Enes Emlak ile ortak CRM'deki Enes Yapı talepleri bölümüne kaydedilir.
+      const details = [
+        v.description,
+        v.city ? `İl: ${v.city}` : null,
+        v.address ? `Adres: ${v.address}` : null,
+        v.area_m2 ? `Yaklaşık alan: ${v.area_m2} m²` : null,
+        v.budget_range ? `Tahmini bütçe: ${v.budget_range}` : null,
+        v.desired_start ? `İstenen başlangıç: ${v.desired_start}` : null,
+        v.opportunity_type
+          ? `Amaç: ${(OPPORTUNITY_TYPE as Record<string, string>)[v.opportunity_type] ?? v.opportunity_type}`
+          : null,
+        videoUploads.length ? `Video sayısı: ${videoUploads.length}` : null,
+      ]
+        .filter(Boolean)
+        .join("\n");
+
+      const { error } = await (supabase as any).rpc("create_yapi_web_talep", {
+        _ad: v.full_name,
+        _telefon: v.phone,
+        _eposta: v.email || null,
+        _ilce: v.district || null,
+        _mahalle: v.neighborhood || null,
+        _gayrimenkul_turu: v.property_type || null,
+        _tadilat_isi: category?.name ?? null,
+        _aciklama: details || null,
+        _gorseller: [...photoUploads, ...videoUploads].map((f) => f.path),
       });
       if (error) throw error;
     },
@@ -99,6 +101,7 @@ export function RequestForm() {
       setForm({ ...initial });
       setPhotos([]);
       setVideos([]);
+      setConsent(false);
       setDone(true);
       toast.success("Talebiniz alındı. En kısa sürede sizi arayacağız.");
     },
@@ -285,9 +288,19 @@ export function RequestForm() {
         <Button type="submit" className="w-full" size="lg" disabled={submit.isPending}>
           {submit.isPending ? "Gönderiliyor…" : "Tadilat talebi oluştur"}
         </Button>
-        <p className="mt-2 text-xs text-muted-foreground">
-          Bilgileriniz yalnızca talebinizin değerlendirilmesi için kullanılır.
-        </p>
+        <label className="mt-3 flex items-start gap-2 text-xs text-muted-foreground">
+          <input
+            type="checkbox"
+            className="mt-0.5 size-4 shrink-0"
+            checked={consent}
+            onChange={(e) => setConsent(e.target.checked)}
+            required
+          />
+          <span>
+            Bilgilerimin talebimin değerlendirilmesi amacıyla Enes Yapı ve iş ortağı Enes Emlak tarafından
+            işlenmesini ve benimle iletişime geçilmesini kabul ediyorum.
+          </span>
+        </label>
       </div>
     </form>
   );

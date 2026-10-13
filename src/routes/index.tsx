@@ -12,7 +12,6 @@ import {
   UserRound,
 } from "lucide-react";
 
-import { ChatBubble } from "@/components/site/ChatBubble";
 import { RequestForm } from "@/components/site/RequestForm";
 import { EnesEmlakReferral } from "@/components/site/SiteShell";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
@@ -104,28 +103,9 @@ function HomePage() {
     (service): service is NonNullable<typeof service> => Boolean(service),
   );
 
-  const { data: projects = [] } = useQuery({
-    queryKey: ["public-projects"],
-    queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_public_project_showcase");
-      if (error) throw error;
-      return data ?? [];
-    },
-  });
-
-  const { data: beforeAfter = [] } = useQuery({
-    queryKey: ["public-before-after"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("before_after")
-        .select("id, title, work_type, before_url, after_url")
-        .eq("is_published", true)
-        .order("sort_order")
-        .limit(3);
-      if (error) throw error;
-      return (data ?? []).filter((row) => row.before_url?.startsWith("http") && row.after_url?.startsWith("http"));
-    },
-  });
+  // Proje vitrini ve önce/sonra kayıtları ileride ortak CRM'den gelecek; şimdilik gösterilmiyor.
+  const projects: { photo_urls?: string[] | null; [key: string]: any }[] = [];
+  const beforeAfter: { id: string; title: string; work_type: string | null; before_url: string; after_url: string }[] = [];
 
   const hasRealApplications = beforeAfter.length > 0 || projects.some((project) => project.photo_urls?.[0]);
 
@@ -144,13 +124,14 @@ function HomePage() {
             <Link to="/bolgeler" className="text-muted-foreground hover:text-foreground">Hizmet bölgeleri</Link>
             <Link to="/rehber" className="text-muted-foreground hover:text-foreground">Rehber</Link>
             <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">İletişim</Link>
+            <a href="https://izmirenesemlak.com.tr" className="text-muted-foreground hover:text-foreground">Enes Emlak</a>
           </nav>
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
             <Button size="sm" asChild>
               <a href="#talep"><span className="sm:hidden">Talep</span><span className="hidden sm:inline">Talep oluştur</span></a>
             </Button>
-            <Button size="icon" variant="ghost" asChild aria-label="Hesabım">
-              <Link to="/hesabim"><UserRound aria-hidden="true" /></Link>
+            <Button size="sm" variant="ghost" asChild>
+              <a href="https://izmirenesemlak.com.tr">Enes Emlak</a>
             </Button>
           </div>
         </div>
@@ -333,11 +314,10 @@ function HomePage() {
             <img src={logoAsset.url} alt="" className="h-6 w-6 shrink-0 object-contain" />
             <span>© 2026 Enes Yapı · Bayraklı / İzmir · 0530 764 17 17</span>
           </span>
-          <Link to="/auth" className="hover:text-foreground">Müşteri / personel girişi</Link>
+          <a href="https://izmirenesemlak.com.tr" className="hover:text-foreground">İş ortağımız: Enes Emlak</a>
         </div>
       </footer>
 
-      <ChatBubble />
     </div>
   );
 }

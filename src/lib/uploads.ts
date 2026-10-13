@@ -1,6 +1,6 @@
 import { supabase } from "@/integrations/supabase/client";
 
-export const UPLOAD_BUCKET = "talep-dosyalari";
+export const UPLOAD_BUCKET = "yapi-talep-gorseller"; // Enes Emlak ortak CRM depolama alanı
 
 const MAX_IMAGE = 15 * 1024 * 1024; // 15 MB
 const MAX_VIDEO = 90 * 1024 * 1024; // 90 MB
