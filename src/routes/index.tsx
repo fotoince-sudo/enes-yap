@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 
 import { RequestForm } from "@/components/site/RequestForm";
-import { EnesEmlakReferral } from "@/components/site/SiteShell";
+import { EnesEmlakReferral, SiteHeader } from "@/components/site/SiteShell";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -111,31 +111,13 @@ function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
-        <div className="mx-auto grid max-w-6xl grid-cols-[minmax(0,1fr)_auto] items-center gap-2 px-4 py-3 sm:flex sm:justify-between sm:gap-4">
-          <Link to="/" className="flex min-w-0 items-center gap-2.5" aria-label="Enes Yapı ana sayfa">
-            <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 shrink-0 object-contain" />
-            <span className="truncate text-base font-semibold sm:text-lg">
-              ENES <span className="text-primary">YAPI</span>
-            </span>
-          </Link>
-          <nav className="hidden items-center gap-6 text-sm md:flex">
-            <Link to="/hizmetler" className="text-muted-foreground hover:text-foreground">Hizmetler</Link>
-            <Link to="/bolgeler" className="text-muted-foreground hover:text-foreground">Hizmet bölgeleri</Link>
-            <Link to="/rehber" className="text-muted-foreground hover:text-foreground">Rehber</Link>
-            <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">İletişim</Link>
-            <a href="https://izmirenesemlak.com.tr" className="text-muted-foreground hover:text-foreground">Enes Emlak</a>
-          </nav>
-          <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-            <Button size="sm" asChild>
-              <a href="#talep"><span className="sm:hidden">Talep</span><span className="hidden sm:inline">Talep oluştur</span></a>
-            </Button>
-            <Button size="sm" variant="ghost" asChild>
-              <a href="https://izmirenesemlak.com.tr">Enes Emlak</a>
-            </Button>
-          </div>
-        </div>
-      </header>
+      <SiteHeader
+        cta={
+          <Button size="sm" asChild>
+            <a href="#talep">Talep oluştur</a>
+          </Button>
+        }
+      />
 
       <main>
         <section className="border-b bg-muted/30">

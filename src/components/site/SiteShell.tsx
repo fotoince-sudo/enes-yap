@@ -1,51 +1,91 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowUpRight, UserRound } from "lucide-react";
-import type { ReactNode } from "react";
+import { ArrowUpRight, Menu, UserRound, X } from "lucide-react";
+import { useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import enesEmlakLogoAsset from "@/assets/enes-emlak-logo.png.asset.json";
 import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 import { SITE } from "@/lib/seo";
 
+const EMLAK = "https://izmirenesemlak.com.tr";
+
+/** Menü: Enes Yapı sayfaları + kardeş firma Enes Emlak'ın ilan sayfaları (yeni sekmede) */
+const MENU_ICI = [
+  { to: "/hizmetler", label: "Hizmetlerimiz" },
+  { to: "/bolgeler", label: "Hizmet bölgeleri" },
+  { to: "/rehber", label: "Rehber" },
+  { to: "/iletisim", label: "İletişim" },
+] as const;
+const MENU_DIS = [
+  { href: `${EMLAK}/ilanlar`, label: "İlan Ara" },
+  { href: `${EMLAK}/ilan-ver`, label: "İlan Ver" },
+  { href: EMLAK, label: "Enes Emlak" },
+] as const;
+
+/** Site geneli başlık: masaüstünde yatay menü, telefonda açılır menü. cta: sağdaki ana düğme */
+export function SiteHeader({ cta }: { cta?: ReactNode }) {
+  const [acik, setAcik] = useState(false);
+  return (
+    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3">
+        <Link to="/" className="flex min-w-0 items-center gap-2.5" aria-label="Enes Yapı ana sayfa" onClick={() => setAcik(false)}>
+          <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 shrink-0 object-contain" />
+          <span className="truncate text-base font-semibold tracking-tight sm:text-lg">
+            ENES <span className="text-primary">YAPI</span>
+          </span>
+        </Link>
+        <nav className="hidden items-center gap-5 text-sm lg:flex">
+          {MENU_ICI.map((m) => (
+            <Link key={m.to} to={m.to} className="text-muted-foreground hover:text-foreground">
+              {m.label}
+            </Link>
+          ))}
+          {MENU_DIS.map((m) => (
+            <a key={m.href} href={m.href} target="_blank" rel="noopener" className="text-muted-foreground hover:text-foreground">
+              {m.label}
+            </a>
+          ))}
+        </nav>
+        <div className="flex shrink-0 items-center gap-2">
+          {cta ?? (
+            <Button size="sm" asChild>
+              <Link to="/iletisim">Teklif alın</Link>
+            </Button>
+          )}
+          <button
+            type="button"
+            aria-label={acik ? "Menüyü kapat" : "Menüyü aç"}
+            onClick={() => setAcik((v) => !v)}
+            className="rounded-full border p-2 text-primary lg:hidden"
+          >
+            {acik ? <X className="size-4" /> : <Menu className="size-4" />}
+          </button>
+        </div>
+      </div>
+      {acik && (
+        <nav className="border-t bg-background px-4 py-2 lg:hidden">
+          {MENU_ICI.map((m) => (
+            <Link key={m.to} to={m.to} onClick={() => setAcik(false)} className="block py-2.5 text-sm">
+              {m.label}
+            </Link>
+          ))}
+          <div className="my-1 border-t" />
+          {MENU_DIS.map((m) => (
+            <a key={m.href} href={m.href} target="_blank" rel="noopener" onClick={() => setAcik(false)} className="block py-2.5 text-sm">
+              {m.label}
+            </a>
+          ))}
+        </nav>
+      )}
+    </header>
+  );
+}
+
 /** Site geneli başlık/altlık — ana sayfanın tasarım diliyle aynıdır. */
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <Link to="/" className="flex items-center gap-2.5">
-            <img src={logoAsset.url} alt="Enes Yapı logosu" className="h-9 w-9 object-contain" />
-            <span className="text-lg font-semibold tracking-tight">
-              ENES <span className="text-primary">YAPI</span>
-            </span>
-          </Link>
-          <nav className="hidden items-center gap-6 text-sm md:flex">
-            <Link to="/hizmetler" className="text-muted-foreground hover:text-foreground">
-              Hizmetler
-            </Link>
-            <Link to="/bolgeler" className="text-muted-foreground hover:text-foreground">
-              Hizmet bölgeleri
-            </Link>
-            <Link to="/rehber" className="text-muted-foreground hover:text-foreground">
-              Rehber
-            </Link>
-            <Link to="/iletisim" className="text-muted-foreground hover:text-foreground">
-              İletişim
-            </Link>
-            <a href="https://izmirenesemlak.com.tr" className="text-muted-foreground hover:text-foreground">
-              Enes Emlak
-            </a>
-          </nav>
-          <div className="flex items-center gap-2">
-            <Button size="sm" asChild>
-              <Link to="/iletisim">Teklif alın</Link>
-            </Button>
-            <Button size="sm" variant="ghost" asChild>
-              <a href="https://izmirenesemlak.com.tr">Enes Emlak</a>
-            </Button>
-          </div>
-        </div>
-      </header>
+      <SiteHeader />
 
       <main>{children}</main>
 
