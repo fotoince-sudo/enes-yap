@@ -294,7 +294,7 @@ function HomePage() {
         <div className="mx-auto grid max-w-6xl gap-3 px-4 text-sm text-muted-foreground sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
           <span className="flex min-w-0 items-center gap-2">
             <img src={logoAsset.url} alt="" className="h-6 w-6 shrink-0 object-contain" />
-            <span>© 2026 Enes Yapı · Bayraklı / İzmir · 0530 764 17 17</span>
+            <span>© 2026 Enes Yapı · Bayraklı / İzmir · 0533 399 25 40</span>
           </span>
           <a href="https://izmirenesemlak.com.tr" className="hover:text-foreground">İş ortağımız: Enes Emlak</a>
         </div>
