@@ -1,0 +1,15 @@
+name: Geçici derleme kontrolü
+on:
+  push:
+    branches: ["gecici-*"]
+jobs:
+  derle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npx tsc --noEmit -p . > tsc.txt 2>&1 || true; grep -E "EmirAsistan|__root|seo\.ts|SiteShell" tsc.txt || echo "BENIM DOSYALARIMDA HATA YOK"; echo "toplam:" $(grep -c "error TS" tsc.txt)
+      - run: npm run build 2>&1 | tail -3
