@@ -9,7 +9,7 @@
 export const SITE = {
   name: "Enes Yapı",
   legalName: "Enes Yapı",
-  url: "https://enes-yap.lovable.app",
+  url: "https://izmirenesyapi.com.tr",
   phoneDisplay: "0530 764 17 17",
   phoneE164: "+905307641717",
   whatsapp: "https://wa.me/905307641717",
