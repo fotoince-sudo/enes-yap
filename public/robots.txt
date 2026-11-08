@@ -6,4 +6,4 @@ Disallow: /auth
 Disallow: /reset-password
 Disallow: /api/
 
-Sitemap: https://enes-yap.lovable.app/sitemap.xml
+Sitemap: https://izmirenesyapi.com.tr/sitemap.xml
