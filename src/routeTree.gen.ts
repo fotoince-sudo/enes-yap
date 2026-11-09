@@ -10,68 +10,19 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
-import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IletisimRouteImport } from './routes/iletisim'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as AuthenticatedHesabimRouteRouteImport } from './routes/_authenticated/hesabim/route'
-import { Route as AuthenticatedYonetimRouteRouteImport } from './routes/_authenticated/yonetim/route'
 import { Route as BolgelerIndexRouteImport } from './routes/bolgeler.index'
 import { Route as HizmetlerIndexRouteImport } from './routes/hizmetler.index'
 import { Route as HizmetlerSlugRouteImport } from './routes/hizmetler.$slug'
 import { Route as RehberIndexRouteImport } from './routes/rehber.index'
 import { Route as RehberSlugRouteImport } from './routes/rehber.$slug'
-import { Route as AuthenticatedHesabimIndexRouteImport } from './routes/_authenticated/hesabim/index'
-import { Route as AuthenticatedHesabimProjelerRouteImport } from './routes/_authenticated/hesabim/projeler'
-import { Route as AuthenticatedHesabimTaleplerRouteImport } from './routes/_authenticated/hesabim/talepler'
-import { Route as AuthenticatedHesabimTekliflerRouteImport } from './routes/_authenticated/hesabim/teklifler'
-import { Route as AuthenticatedYonetimIndexRouteImport } from './routes/_authenticated/yonetim/index'
-import { Route as AuthenticatedYonetimAkisRouteImport } from './routes/_authenticated/yonetim/akis'
-import { Route as AuthenticatedYonetimAyarlarRouteImport } from './routes/_authenticated/yonetim/ayarlar'
-import { Route as AuthenticatedYonetimBildirimlerRouteImport } from './routes/_authenticated/yonetim/bildirimler'
-import { Route as AuthenticatedYonetimCozumOrtaklariRouteImport } from './routes/_authenticated/yonetim/cozum-ortaklari'
-import { Route as AuthenticatedYonetimEkiplerRouteImport } from './routes/_authenticated/yonetim/ekipler'
-import { Route as AuthenticatedYonetimEmirAiRouteImport } from './routes/_authenticated/yonetim/emir-ai'
-import { Route as AuthenticatedYonetimEmirTalepleriRouteImport } from './routes/_authenticated/yonetim/emir-talepleri'
-import { Route as AuthenticatedYonetimFirsatlarRouteImport } from './routes/_authenticated/yonetim/firsatlar'
-import { Route as AuthenticatedYonetimGayrimenkullerRouteImport } from './routes/_authenticated/yonetim/gayrimenkuller'
-import { Route as AuthenticatedYonetimKesiflerRouteImport } from './routes/_authenticated/yonetim/kesifler'
-import { Route as AuthenticatedYonetimMalzemelerRouteImport } from './routes/_authenticated/yonetim/malzemeler'
-import { Route as AuthenticatedYonetimMesajlarRouteImport } from './routes/_authenticated/yonetim/mesajlar'
-import { Route as AuthenticatedYonetimMusterilerRouteImport } from './routes/_authenticated/yonetim/musteriler'
-import { Route as AuthenticatedYonetimOnceSonraRouteImport } from './routes/_authenticated/yonetim/once-sonra'
-import { Route as AuthenticatedYonetimPersonelRouteImport } from './routes/_authenticated/yonetim/personel'
-import { Route as AuthenticatedYonetimPotansiyelMusterilerRouteImport } from './routes/_authenticated/yonetim/potansiyel-musteriler'
-import { Route as AuthenticatedYonetimRaporlarRouteImport } from './routes/_authenticated/yonetim/raporlar'
-import { Route as AuthenticatedYonetimSeoRouteImport } from './routes/_authenticated/yonetim/seo'
-import { Route as AuthenticatedYonetimTamamlananProjelerRouteImport } from './routes/_authenticated/yonetim/tamamlanan-projeler'
-import { Route as AuthenticatedYonetimTedarikcilerRouteImport } from './routes/_authenticated/yonetim/tedarikciler'
-import { Route as AuthenticatedYonetimWhatsappDurumRouteImport } from './routes/_authenticated/yonetim/whatsapp-durum'
-import { Route as AuthenticatedYonetimZiyaretciIzlemeRouteImport } from './routes/_authenticated/yonetim/ziyaretci-izleme'
-import { Route as ApiPublicSourceResearchRouteImport } from './routes/api/public/source-research'
 import { Route as BolgelerIlceIndexRouteImport } from './routes/bolgeler.$ilce.index'
 import { Route as BolgelerIlceHizmetRouteImport } from './routes/bolgeler.$ilce.$hizmet'
-import { Route as AuthenticatedYonetimProjelerIndexRouteImport } from './routes/_authenticated/yonetim/projeler.index'
-import { Route as AuthenticatedYonetimProjelerIdRouteImport } from './routes/_authenticated/yonetim/projeler.$id'
-import { Route as AuthenticatedYonetimTaleplerIndexRouteImport } from './routes/_authenticated/yonetim/talepler.index'
-import { Route as AuthenticatedYonetimTaleplerIdRouteImport } from './routes/_authenticated/yonetim/talepler.$id'
-import { Route as AuthenticatedYonetimTekliflerIndexRouteImport } from './routes/_authenticated/yonetim/teklifler.index'
-import { Route as AuthenticatedYonetimTekliflerIdRouteImport } from './routes/_authenticated/yonetim/teklifler.$id'
-import { Route as ApiPublicWhatsappWebhookRouteImport } from './routes/api/public/whatsapp/webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthRoute = AuthRouteImport.update({
-  id: '/auth',
-  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IletisimRoute = IletisimRouteImport.update({
@@ -79,28 +30,11 @@ const IletisimRoute = IletisimRouteImport.update({
   path: '/iletisim',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedHesabimRouteRoute =
-  AuthenticatedHesabimRouteRouteImport.update({
-    id: '/hesabim',
-    path: '/hesabim',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
-const AuthenticatedYonetimRouteRoute =
-  AuthenticatedYonetimRouteRouteImport.update({
-    id: '/yonetim',
-    path: '/yonetim',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const BolgelerIndexRoute = BolgelerIndexRouteImport.update({
   id: '/bolgeler/',
   path: '/bolgeler/',
@@ -126,172 +60,6 @@ const RehberSlugRoute = RehberSlugRouteImport.update({
   path: '/rehber/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedHesabimIndexRoute =
-  AuthenticatedHesabimIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedHesabimRouteRoute,
-  } as any)
-const AuthenticatedHesabimProjelerRoute =
-  AuthenticatedHesabimProjelerRouteImport.update({
-    id: '/projeler',
-    path: '/projeler',
-    getParentRoute: () => AuthenticatedHesabimRouteRoute,
-  } as any)
-const AuthenticatedHesabimTaleplerRoute =
-  AuthenticatedHesabimTaleplerRouteImport.update({
-    id: '/talepler',
-    path: '/talepler',
-    getParentRoute: () => AuthenticatedHesabimRouteRoute,
-  } as any)
-const AuthenticatedHesabimTekliflerRoute =
-  AuthenticatedHesabimTekliflerRouteImport.update({
-    id: '/teklifler',
-    path: '/teklifler',
-    getParentRoute: () => AuthenticatedHesabimRouteRoute,
-  } as any)
-const AuthenticatedYonetimIndexRoute =
-  AuthenticatedYonetimIndexRouteImport.update({
-    id: '/',
-    path: '/',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimAkisRoute =
-  AuthenticatedYonetimAkisRouteImport.update({
-    id: '/akis',
-    path: '/akis',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimAyarlarRoute =
-  AuthenticatedYonetimAyarlarRouteImport.update({
-    id: '/ayarlar',
-    path: '/ayarlar',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimBildirimlerRoute =
-  AuthenticatedYonetimBildirimlerRouteImport.update({
-    id: '/bildirimler',
-    path: '/bildirimler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimCozumOrtaklariRoute =
-  AuthenticatedYonetimCozumOrtaklariRouteImport.update({
-    id: '/cozum-ortaklari',
-    path: '/cozum-ortaklari',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimEkiplerRoute =
-  AuthenticatedYonetimEkiplerRouteImport.update({
-    id: '/ekipler',
-    path: '/ekipler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimEmirAiRoute =
-  AuthenticatedYonetimEmirAiRouteImport.update({
-    id: '/emir-ai',
-    path: '/emir-ai',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimEmirTalepleriRoute =
-  AuthenticatedYonetimEmirTalepleriRouteImport.update({
-    id: '/emir-talepleri',
-    path: '/emir-talepleri',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimFirsatlarRoute =
-  AuthenticatedYonetimFirsatlarRouteImport.update({
-    id: '/firsatlar',
-    path: '/firsatlar',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimGayrimenkullerRoute =
-  AuthenticatedYonetimGayrimenkullerRouteImport.update({
-    id: '/gayrimenkuller',
-    path: '/gayrimenkuller',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimKesiflerRoute =
-  AuthenticatedYonetimKesiflerRouteImport.update({
-    id: '/kesifler',
-    path: '/kesifler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimMalzemelerRoute =
-  AuthenticatedYonetimMalzemelerRouteImport.update({
-    id: '/malzemeler',
-    path: '/malzemeler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimMesajlarRoute =
-  AuthenticatedYonetimMesajlarRouteImport.update({
-    id: '/mesajlar',
-    path: '/mesajlar',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimMusterilerRoute =
-  AuthenticatedYonetimMusterilerRouteImport.update({
-    id: '/musteriler',
-    path: '/musteriler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimOnceSonraRoute =
-  AuthenticatedYonetimOnceSonraRouteImport.update({
-    id: '/once-sonra',
-    path: '/once-sonra',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimPersonelRoute =
-  AuthenticatedYonetimPersonelRouteImport.update({
-    id: '/personel',
-    path: '/personel',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimPotansiyelMusterilerRoute =
-  AuthenticatedYonetimPotansiyelMusterilerRouteImport.update({
-    id: '/potansiyel-musteriler',
-    path: '/potansiyel-musteriler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimRaporlarRoute =
-  AuthenticatedYonetimRaporlarRouteImport.update({
-    id: '/raporlar',
-    path: '/raporlar',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimSeoRoute = AuthenticatedYonetimSeoRouteImport.update({
-  id: '/seo',
-  path: '/seo',
-  getParentRoute: () => AuthenticatedYonetimRouteRoute,
-} as any)
-const AuthenticatedYonetimTamamlananProjelerRoute =
-  AuthenticatedYonetimTamamlananProjelerRouteImport.update({
-    id: '/tamamlanan-projeler',
-    path: '/tamamlanan-projeler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimTedarikcilerRoute =
-  AuthenticatedYonetimTedarikcilerRouteImport.update({
-    id: '/tedarikciler',
-    path: '/tedarikciler',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimWhatsappDurumRoute =
-  AuthenticatedYonetimWhatsappDurumRouteImport.update({
-    id: '/whatsapp-durum',
-    path: '/whatsapp-durum',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimZiyaretciIzlemeRoute =
-  AuthenticatedYonetimZiyaretciIzlemeRouteImport.update({
-    id: '/ziyaretci-izleme',
-    path: '/ziyaretci-izleme',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const ApiPublicSourceResearchRoute = ApiPublicSourceResearchRouteImport.update({
-  id: '/api/public/source-research',
-  path: '/api/public/source-research',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const BolgelerIlceIndexRoute = BolgelerIlceIndexRouteImport.update({
   id: '/bolgeler/$ilce/',
   path: '/bolgeler/$ilce/',
@@ -302,373 +70,94 @@ const BolgelerIlceHizmetRoute = BolgelerIlceHizmetRouteImport.update({
   path: '/bolgeler/$ilce/$hizmet',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedYonetimProjelerIndexRoute =
-  AuthenticatedYonetimProjelerIndexRouteImport.update({
-    id: '/projeler/',
-    path: '/projeler/',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimProjelerIdRoute =
-  AuthenticatedYonetimProjelerIdRouteImport.update({
-    id: '/projeler/$id',
-    path: '/projeler/$id',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimTaleplerIndexRoute =
-  AuthenticatedYonetimTaleplerIndexRouteImport.update({
-    id: '/talepler/',
-    path: '/talepler/',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimTaleplerIdRoute =
-  AuthenticatedYonetimTaleplerIdRouteImport.update({
-    id: '/talepler/$id',
-    path: '/talepler/$id',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimTekliflerIndexRoute =
-  AuthenticatedYonetimTekliflerIndexRouteImport.update({
-    id: '/teklifler/',
-    path: '/teklifler/',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const AuthenticatedYonetimTekliflerIdRoute =
-  AuthenticatedYonetimTekliflerIdRouteImport.update({
-    id: '/teklifler/$id',
-    path: '/teklifler/$id',
-    getParentRoute: () => AuthenticatedYonetimRouteRoute,
-  } as any)
-const ApiPublicWhatsappWebhookRoute =
-  ApiPublicWhatsappWebhookRouteImport.update({
-    id: '/api/public/whatsapp/webhook',
-    path: '/api/public/whatsapp/webhook',
-    getParentRoute: () => rootRouteImport,
-  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
   '/iletisim': typeof IletisimRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
-  '/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
   '/rehber/$slug': typeof RehberSlugRoute
   '/bolgeler/': typeof BolgelerIndexRoute
   '/hizmetler/': typeof HizmetlerIndexRoute
   '/rehber/': typeof RehberIndexRoute
-  '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
-  '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
-  '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
-  '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
-  '/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
-  '/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
-  '/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
-  '/yonetim/ekipler': typeof AuthenticatedYonetimEkiplerRoute
-  '/yonetim/emir-ai': typeof AuthenticatedYonetimEmirAiRoute
-  '/yonetim/emir-talepleri': typeof AuthenticatedYonetimEmirTalepleriRoute
-  '/yonetim/firsatlar': typeof AuthenticatedYonetimFirsatlarRoute
-  '/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
-  '/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
-  '/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
-  '/yonetim/mesajlar': typeof AuthenticatedYonetimMesajlarRoute
-  '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
-  '/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
-  '/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
-  '/yonetim/potansiyel-musteriler': typeof AuthenticatedYonetimPotansiyelMusterilerRoute
-  '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
-  '/yonetim/seo': typeof AuthenticatedYonetimSeoRoute
-  '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
-  '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
-  '/yonetim/whatsapp-durum': typeof AuthenticatedYonetimWhatsappDurumRoute
-  '/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
-  '/api/public/source-research': typeof ApiPublicSourceResearchRoute
   '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
-  '/hesabim/': typeof AuthenticatedHesabimIndexRoute
-  '/yonetim/': typeof AuthenticatedYonetimIndexRoute
   '/bolgeler/$ilce/': typeof BolgelerIlceIndexRoute
-  '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
-  '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
-  '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
-  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
-  '/yonetim/projeler/': typeof AuthenticatedYonetimProjelerIndexRoute
-  '/yonetim/talepler/': typeof AuthenticatedYonetimTaleplerIndexRoute
-  '/yonetim/teklifler/': typeof AuthenticatedYonetimTekliflerIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/auth': typeof AuthRoute
   '/iletisim': typeof IletisimRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
   '/rehber/$slug': typeof RehberSlugRoute
   '/bolgeler': typeof BolgelerIndexRoute
   '/hizmetler': typeof HizmetlerIndexRoute
   '/rehber': typeof RehberIndexRoute
-  '/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
-  '/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
-  '/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
-  '/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
-  '/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
-  '/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
-  '/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
-  '/yonetim/ekipler': typeof AuthenticatedYonetimEkiplerRoute
-  '/yonetim/emir-ai': typeof AuthenticatedYonetimEmirAiRoute
-  '/yonetim/emir-talepleri': typeof AuthenticatedYonetimEmirTalepleriRoute
-  '/yonetim/firsatlar': typeof AuthenticatedYonetimFirsatlarRoute
-  '/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
-  '/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
-  '/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
-  '/yonetim/mesajlar': typeof AuthenticatedYonetimMesajlarRoute
-  '/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
-  '/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
-  '/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
-  '/yonetim/potansiyel-musteriler': typeof AuthenticatedYonetimPotansiyelMusterilerRoute
-  '/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
-  '/yonetim/seo': typeof AuthenticatedYonetimSeoRoute
-  '/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
-  '/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
-  '/yonetim/whatsapp-durum': typeof AuthenticatedYonetimWhatsappDurumRoute
-  '/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
-  '/api/public/source-research': typeof ApiPublicSourceResearchRoute
   '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
-  '/hesabim': typeof AuthenticatedHesabimIndexRoute
-  '/yonetim': typeof AuthenticatedYonetimIndexRoute
   '/bolgeler/$ilce': typeof BolgelerIlceIndexRoute
-  '/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
-  '/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
-  '/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
-  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
-  '/yonetim/projeler': typeof AuthenticatedYonetimProjelerIndexRoute
-  '/yonetim/talepler': typeof AuthenticatedYonetimTaleplerIndexRoute
-  '/yonetim/teklifler': typeof AuthenticatedYonetimTekliflerIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/auth': typeof AuthRoute
   '/iletisim': typeof IletisimRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
-  '/_authenticated/hesabim': typeof AuthenticatedHesabimRouteRouteWithChildren
-  '/_authenticated/yonetim': typeof AuthenticatedYonetimRouteRouteWithChildren
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
   '/rehber/$slug': typeof RehberSlugRoute
   '/bolgeler/': typeof BolgelerIndexRoute
   '/hizmetler/': typeof HizmetlerIndexRoute
   '/rehber/': typeof RehberIndexRoute
-  '/_authenticated/hesabim/projeler': typeof AuthenticatedHesabimProjelerRoute
-  '/_authenticated/hesabim/talepler': typeof AuthenticatedHesabimTaleplerRoute
-  '/_authenticated/hesabim/teklifler': typeof AuthenticatedHesabimTekliflerRoute
-  '/_authenticated/yonetim/akis': typeof AuthenticatedYonetimAkisRoute
-  '/_authenticated/yonetim/ayarlar': typeof AuthenticatedYonetimAyarlarRoute
-  '/_authenticated/yonetim/bildirimler': typeof AuthenticatedYonetimBildirimlerRoute
-  '/_authenticated/yonetim/cozum-ortaklari': typeof AuthenticatedYonetimCozumOrtaklariRoute
-  '/_authenticated/yonetim/ekipler': typeof AuthenticatedYonetimEkiplerRoute
-  '/_authenticated/yonetim/emir-ai': typeof AuthenticatedYonetimEmirAiRoute
-  '/_authenticated/yonetim/emir-talepleri': typeof AuthenticatedYonetimEmirTalepleriRoute
-  '/_authenticated/yonetim/firsatlar': typeof AuthenticatedYonetimFirsatlarRoute
-  '/_authenticated/yonetim/gayrimenkuller': typeof AuthenticatedYonetimGayrimenkullerRoute
-  '/_authenticated/yonetim/kesifler': typeof AuthenticatedYonetimKesiflerRoute
-  '/_authenticated/yonetim/malzemeler': typeof AuthenticatedYonetimMalzemelerRoute
-  '/_authenticated/yonetim/mesajlar': typeof AuthenticatedYonetimMesajlarRoute
-  '/_authenticated/yonetim/musteriler': typeof AuthenticatedYonetimMusterilerRoute
-  '/_authenticated/yonetim/once-sonra': typeof AuthenticatedYonetimOnceSonraRoute
-  '/_authenticated/yonetim/personel': typeof AuthenticatedYonetimPersonelRoute
-  '/_authenticated/yonetim/potansiyel-musteriler': typeof AuthenticatedYonetimPotansiyelMusterilerRoute
-  '/_authenticated/yonetim/raporlar': typeof AuthenticatedYonetimRaporlarRoute
-  '/_authenticated/yonetim/seo': typeof AuthenticatedYonetimSeoRoute
-  '/_authenticated/yonetim/tamamlanan-projeler': typeof AuthenticatedYonetimTamamlananProjelerRoute
-  '/_authenticated/yonetim/tedarikciler': typeof AuthenticatedYonetimTedarikcilerRoute
-  '/_authenticated/yonetim/whatsapp-durum': typeof AuthenticatedYonetimWhatsappDurumRoute
-  '/_authenticated/yonetim/ziyaretci-izleme': typeof AuthenticatedYonetimZiyaretciIzlemeRoute
-  '/api/public/source-research': typeof ApiPublicSourceResearchRoute
   '/bolgeler/$ilce/$hizmet': typeof BolgelerIlceHizmetRoute
-  '/_authenticated/hesabim/': typeof AuthenticatedHesabimIndexRoute
-  '/_authenticated/yonetim/': typeof AuthenticatedYonetimIndexRoute
   '/bolgeler/$ilce/': typeof BolgelerIlceIndexRoute
-  '/_authenticated/yonetim/projeler/$id': typeof AuthenticatedYonetimProjelerIdRoute
-  '/_authenticated/yonetim/talepler/$id': typeof AuthenticatedYonetimTaleplerIdRoute
-  '/_authenticated/yonetim/teklifler/$id': typeof AuthenticatedYonetimTekliflerIdRoute
-  '/api/public/whatsapp/webhook': typeof ApiPublicWhatsappWebhookRoute
-  '/_authenticated/yonetim/projeler/': typeof AuthenticatedYonetimProjelerIndexRoute
-  '/_authenticated/yonetim/talepler/': typeof AuthenticatedYonetimTaleplerIndexRoute
-  '/_authenticated/yonetim/teklifler/': typeof AuthenticatedYonetimTekliflerIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/auth'
     | '/iletisim'
-    | '/reset-password'
     | '/sitemap.xml'
-    | '/hesabim'
-    | '/yonetim'
     | '/hizmetler/$slug'
     | '/rehber/$slug'
     | '/bolgeler/'
     | '/hizmetler/'
     | '/rehber/'
-    | '/hesabim/projeler'
-    | '/hesabim/talepler'
-    | '/hesabim/teklifler'
-    | '/yonetim/akis'
-    | '/yonetim/ayarlar'
-    | '/yonetim/bildirimler'
-    | '/yonetim/cozum-ortaklari'
-    | '/yonetim/ekipler'
-    | '/yonetim/emir-ai'
-    | '/yonetim/emir-talepleri'
-    | '/yonetim/firsatlar'
-    | '/yonetim/gayrimenkuller'
-    | '/yonetim/kesifler'
-    | '/yonetim/malzemeler'
-    | '/yonetim/mesajlar'
-    | '/yonetim/musteriler'
-    | '/yonetim/once-sonra'
-    | '/yonetim/personel'
-    | '/yonetim/potansiyel-musteriler'
-    | '/yonetim/raporlar'
-    | '/yonetim/seo'
-    | '/yonetim/tamamlanan-projeler'
-    | '/yonetim/tedarikciler'
-    | '/yonetim/whatsapp-durum'
-    | '/yonetim/ziyaretci-izleme'
-    | '/api/public/source-research'
     | '/bolgeler/$ilce/$hizmet'
-    | '/hesabim/'
-    | '/yonetim/'
     | '/bolgeler/$ilce/'
-    | '/yonetim/projeler/$id'
-    | '/yonetim/talepler/$id'
-    | '/yonetim/teklifler/$id'
-    | '/api/public/whatsapp/webhook'
-    | '/yonetim/projeler/'
-    | '/yonetim/talepler/'
-    | '/yonetim/teklifler/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/auth'
     | '/iletisim'
-    | '/reset-password'
     | '/sitemap.xml'
     | '/hizmetler/$slug'
     | '/rehber/$slug'
     | '/bolgeler'
     | '/hizmetler'
     | '/rehber'
-    | '/hesabim/projeler'
-    | '/hesabim/talepler'
-    | '/hesabim/teklifler'
-    | '/yonetim/akis'
-    | '/yonetim/ayarlar'
-    | '/yonetim/bildirimler'
-    | '/yonetim/cozum-ortaklari'
-    | '/yonetim/ekipler'
-    | '/yonetim/emir-ai'
-    | '/yonetim/emir-talepleri'
-    | '/yonetim/firsatlar'
-    | '/yonetim/gayrimenkuller'
-    | '/yonetim/kesifler'
-    | '/yonetim/malzemeler'
-    | '/yonetim/mesajlar'
-    | '/yonetim/musteriler'
-    | '/yonetim/once-sonra'
-    | '/yonetim/personel'
-    | '/yonetim/potansiyel-musteriler'
-    | '/yonetim/raporlar'
-    | '/yonetim/seo'
-    | '/yonetim/tamamlanan-projeler'
-    | '/yonetim/tedarikciler'
-    | '/yonetim/whatsapp-durum'
-    | '/yonetim/ziyaretci-izleme'
-    | '/api/public/source-research'
     | '/bolgeler/$ilce/$hizmet'
-    | '/hesabim'
-    | '/yonetim'
     | '/bolgeler/$ilce'
-    | '/yonetim/projeler/$id'
-    | '/yonetim/talepler/$id'
-    | '/yonetim/teklifler/$id'
-    | '/api/public/whatsapp/webhook'
-    | '/yonetim/projeler'
-    | '/yonetim/talepler'
-    | '/yonetim/teklifler'
   id:
     | '__root__'
     | '/'
-    | '/_authenticated'
-    | '/auth'
     | '/iletisim'
-    | '/reset-password'
     | '/sitemap.xml'
-    | '/_authenticated/hesabim'
-    | '/_authenticated/yonetim'
     | '/hizmetler/$slug'
     | '/rehber/$slug'
     | '/bolgeler/'
     | '/hizmetler/'
     | '/rehber/'
-    | '/_authenticated/hesabim/projeler'
-    | '/_authenticated/hesabim/talepler'
-    | '/_authenticated/hesabim/teklifler'
-    | '/_authenticated/yonetim/akis'
-    | '/_authenticated/yonetim/ayarlar'
-    | '/_authenticated/yonetim/bildirimler'
-    | '/_authenticated/yonetim/cozum-ortaklari'
-    | '/_authenticated/yonetim/ekipler'
-    | '/_authenticated/yonetim/emir-ai'
-    | '/_authenticated/yonetim/emir-talepleri'
-    | '/_authenticated/yonetim/firsatlar'
-    | '/_authenticated/yonetim/gayrimenkuller'
-    | '/_authenticated/yonetim/kesifler'
-    | '/_authenticated/yonetim/malzemeler'
-    | '/_authenticated/yonetim/mesajlar'
-    | '/_authenticated/yonetim/musteriler'
-    | '/_authenticated/yonetim/once-sonra'
-    | '/_authenticated/yonetim/personel'
-    | '/_authenticated/yonetim/potansiyel-musteriler'
-    | '/_authenticated/yonetim/raporlar'
-    | '/_authenticated/yonetim/seo'
-    | '/_authenticated/yonetim/tamamlanan-projeler'
-    | '/_authenticated/yonetim/tedarikciler'
-    | '/_authenticated/yonetim/whatsapp-durum'
-    | '/_authenticated/yonetim/ziyaretci-izleme'
-    | '/api/public/source-research'
     | '/bolgeler/$ilce/$hizmet'
-    | '/_authenticated/hesabim/'
-    | '/_authenticated/yonetim/'
     | '/bolgeler/$ilce/'
-    | '/_authenticated/yonetim/projeler/$id'
-    | '/_authenticated/yonetim/talepler/$id'
-    | '/_authenticated/yonetim/teklifler/$id'
-    | '/api/public/whatsapp/webhook'
-    | '/_authenticated/yonetim/projeler/'
-    | '/_authenticated/yonetim/talepler/'
-    | '/_authenticated/yonetim/teklifler/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  AuthRoute: typeof AuthRoute
   IletisimRoute: typeof IletisimRoute
-  ResetPasswordRoute: typeof ResetPasswordRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   HizmetlerSlugRoute: typeof HizmetlerSlugRoute
   RehberSlugRoute: typeof RehberSlugRoute
   BolgelerIndexRoute: typeof BolgelerIndexRoute
   HizmetlerIndexRoute: typeof HizmetlerIndexRoute
   RehberIndexRoute: typeof RehberIndexRoute
-  ApiPublicSourceResearchRoute: typeof ApiPublicSourceResearchRoute
   BolgelerIlceHizmetRoute: typeof BolgelerIlceHizmetRoute
   BolgelerIlceIndexRoute: typeof BolgelerIlceIndexRoute
-  ApiPublicWhatsappWebhookRoute: typeof ApiPublicWhatsappWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -680,32 +169,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthenticatedRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/iletisim': {
       id: '/iletisim'
       path: '/iletisim'
       fullPath: '/iletisim'
       preLoaderRoute: typeof IletisimRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/sitemap.xml': {
@@ -714,20 +182,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
-    }
-    '/_authenticated/hesabim': {
-      id: '/_authenticated/hesabim'
-      path: '/hesabim'
-      fullPath: '/hesabim'
-      preLoaderRoute: typeof AuthenticatedHesabimRouteRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/yonetim': {
-      id: '/_authenticated/yonetim'
-      path: '/yonetim'
-      fullPath: '/yonetim'
-      preLoaderRoute: typeof AuthenticatedYonetimRouteRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/bolgeler/': {
       id: '/bolgeler/'
@@ -764,202 +218,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RehberSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/hesabim/': {
-      id: '/_authenticated/hesabim/'
-      path: '/'
-      fullPath: '/hesabim/'
-      preLoaderRoute: typeof AuthenticatedHesabimIndexRouteImport
-      parentRoute: typeof AuthenticatedHesabimRouteRoute
-    }
-    '/_authenticated/hesabim/projeler': {
-      id: '/_authenticated/hesabim/projeler'
-      path: '/projeler'
-      fullPath: '/hesabim/projeler'
-      preLoaderRoute: typeof AuthenticatedHesabimProjelerRouteImport
-      parentRoute: typeof AuthenticatedHesabimRouteRoute
-    }
-    '/_authenticated/hesabim/talepler': {
-      id: '/_authenticated/hesabim/talepler'
-      path: '/talepler'
-      fullPath: '/hesabim/talepler'
-      preLoaderRoute: typeof AuthenticatedHesabimTaleplerRouteImport
-      parentRoute: typeof AuthenticatedHesabimRouteRoute
-    }
-    '/_authenticated/hesabim/teklifler': {
-      id: '/_authenticated/hesabim/teklifler'
-      path: '/teklifler'
-      fullPath: '/hesabim/teklifler'
-      preLoaderRoute: typeof AuthenticatedHesabimTekliflerRouteImport
-      parentRoute: typeof AuthenticatedHesabimRouteRoute
-    }
-    '/_authenticated/yonetim/': {
-      id: '/_authenticated/yonetim/'
-      path: '/'
-      fullPath: '/yonetim/'
-      preLoaderRoute: typeof AuthenticatedYonetimIndexRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/akis': {
-      id: '/_authenticated/yonetim/akis'
-      path: '/akis'
-      fullPath: '/yonetim/akis'
-      preLoaderRoute: typeof AuthenticatedYonetimAkisRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/ayarlar': {
-      id: '/_authenticated/yonetim/ayarlar'
-      path: '/ayarlar'
-      fullPath: '/yonetim/ayarlar'
-      preLoaderRoute: typeof AuthenticatedYonetimAyarlarRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/bildirimler': {
-      id: '/_authenticated/yonetim/bildirimler'
-      path: '/bildirimler'
-      fullPath: '/yonetim/bildirimler'
-      preLoaderRoute: typeof AuthenticatedYonetimBildirimlerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/cozum-ortaklari': {
-      id: '/_authenticated/yonetim/cozum-ortaklari'
-      path: '/cozum-ortaklari'
-      fullPath: '/yonetim/cozum-ortaklari'
-      preLoaderRoute: typeof AuthenticatedYonetimCozumOrtaklariRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/ekipler': {
-      id: '/_authenticated/yonetim/ekipler'
-      path: '/ekipler'
-      fullPath: '/yonetim/ekipler'
-      preLoaderRoute: typeof AuthenticatedYonetimEkiplerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/emir-ai': {
-      id: '/_authenticated/yonetim/emir-ai'
-      path: '/emir-ai'
-      fullPath: '/yonetim/emir-ai'
-      preLoaderRoute: typeof AuthenticatedYonetimEmirAiRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/emir-talepleri': {
-      id: '/_authenticated/yonetim/emir-talepleri'
-      path: '/emir-talepleri'
-      fullPath: '/yonetim/emir-talepleri'
-      preLoaderRoute: typeof AuthenticatedYonetimEmirTalepleriRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/firsatlar': {
-      id: '/_authenticated/yonetim/firsatlar'
-      path: '/firsatlar'
-      fullPath: '/yonetim/firsatlar'
-      preLoaderRoute: typeof AuthenticatedYonetimFirsatlarRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/gayrimenkuller': {
-      id: '/_authenticated/yonetim/gayrimenkuller'
-      path: '/gayrimenkuller'
-      fullPath: '/yonetim/gayrimenkuller'
-      preLoaderRoute: typeof AuthenticatedYonetimGayrimenkullerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/kesifler': {
-      id: '/_authenticated/yonetim/kesifler'
-      path: '/kesifler'
-      fullPath: '/yonetim/kesifler'
-      preLoaderRoute: typeof AuthenticatedYonetimKesiflerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/malzemeler': {
-      id: '/_authenticated/yonetim/malzemeler'
-      path: '/malzemeler'
-      fullPath: '/yonetim/malzemeler'
-      preLoaderRoute: typeof AuthenticatedYonetimMalzemelerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/mesajlar': {
-      id: '/_authenticated/yonetim/mesajlar'
-      path: '/mesajlar'
-      fullPath: '/yonetim/mesajlar'
-      preLoaderRoute: typeof AuthenticatedYonetimMesajlarRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/musteriler': {
-      id: '/_authenticated/yonetim/musteriler'
-      path: '/musteriler'
-      fullPath: '/yonetim/musteriler'
-      preLoaderRoute: typeof AuthenticatedYonetimMusterilerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/once-sonra': {
-      id: '/_authenticated/yonetim/once-sonra'
-      path: '/once-sonra'
-      fullPath: '/yonetim/once-sonra'
-      preLoaderRoute: typeof AuthenticatedYonetimOnceSonraRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/personel': {
-      id: '/_authenticated/yonetim/personel'
-      path: '/personel'
-      fullPath: '/yonetim/personel'
-      preLoaderRoute: typeof AuthenticatedYonetimPersonelRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/potansiyel-musteriler': {
-      id: '/_authenticated/yonetim/potansiyel-musteriler'
-      path: '/potansiyel-musteriler'
-      fullPath: '/yonetim/potansiyel-musteriler'
-      preLoaderRoute: typeof AuthenticatedYonetimPotansiyelMusterilerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/raporlar': {
-      id: '/_authenticated/yonetim/raporlar'
-      path: '/raporlar'
-      fullPath: '/yonetim/raporlar'
-      preLoaderRoute: typeof AuthenticatedYonetimRaporlarRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/seo': {
-      id: '/_authenticated/yonetim/seo'
-      path: '/seo'
-      fullPath: '/yonetim/seo'
-      preLoaderRoute: typeof AuthenticatedYonetimSeoRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/tamamlanan-projeler': {
-      id: '/_authenticated/yonetim/tamamlanan-projeler'
-      path: '/tamamlanan-projeler'
-      fullPath: '/yonetim/tamamlanan-projeler'
-      preLoaderRoute: typeof AuthenticatedYonetimTamamlananProjelerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/tedarikciler': {
-      id: '/_authenticated/yonetim/tedarikciler'
-      path: '/tedarikciler'
-      fullPath: '/yonetim/tedarikciler'
-      preLoaderRoute: typeof AuthenticatedYonetimTedarikcilerRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/whatsapp-durum': {
-      id: '/_authenticated/yonetim/whatsapp-durum'
-      path: '/whatsapp-durum'
-      fullPath: '/yonetim/whatsapp-durum'
-      preLoaderRoute: typeof AuthenticatedYonetimWhatsappDurumRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/ziyaretci-izleme': {
-      id: '/_authenticated/yonetim/ziyaretci-izleme'
-      path: '/ziyaretci-izleme'
-      fullPath: '/yonetim/ziyaretci-izleme'
-      preLoaderRoute: typeof AuthenticatedYonetimZiyaretciIzlemeRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/api/public/source-research': {
-      id: '/api/public/source-research'
-      path: '/api/public/source-research'
-      fullPath: '/api/public/source-research'
-      preLoaderRoute: typeof ApiPublicSourceResearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/bolgeler/$ilce/': {
       id: '/bolgeler/$ilce/'
       path: '/bolgeler/$ilce'
@@ -974,188 +232,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BolgelerIlceHizmetRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/yonetim/projeler/': {
-      id: '/_authenticated/yonetim/projeler/'
-      path: '/projeler'
-      fullPath: '/yonetim/projeler/'
-      preLoaderRoute: typeof AuthenticatedYonetimProjelerIndexRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/projeler/$id': {
-      id: '/_authenticated/yonetim/projeler/$id'
-      path: '/projeler/$id'
-      fullPath: '/yonetim/projeler/$id'
-      preLoaderRoute: typeof AuthenticatedYonetimProjelerIdRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/talepler/': {
-      id: '/_authenticated/yonetim/talepler/'
-      path: '/talepler'
-      fullPath: '/yonetim/talepler/'
-      preLoaderRoute: typeof AuthenticatedYonetimTaleplerIndexRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/talepler/$id': {
-      id: '/_authenticated/yonetim/talepler/$id'
-      path: '/talepler/$id'
-      fullPath: '/yonetim/talepler/$id'
-      preLoaderRoute: typeof AuthenticatedYonetimTaleplerIdRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/teklifler/': {
-      id: '/_authenticated/yonetim/teklifler/'
-      path: '/teklifler'
-      fullPath: '/yonetim/teklifler/'
-      preLoaderRoute: typeof AuthenticatedYonetimTekliflerIndexRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/_authenticated/yonetim/teklifler/$id': {
-      id: '/_authenticated/yonetim/teklifler/$id'
-      path: '/teklifler/$id'
-      fullPath: '/yonetim/teklifler/$id'
-      preLoaderRoute: typeof AuthenticatedYonetimTekliflerIdRouteImport
-      parentRoute: typeof AuthenticatedYonetimRouteRoute
-    }
-    '/api/public/whatsapp/webhook': {
-      id: '/api/public/whatsapp/webhook'
-      path: '/api/public/whatsapp/webhook'
-      fullPath: '/api/public/whatsapp/webhook'
-      preLoaderRoute: typeof ApiPublicWhatsappWebhookRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
-
-interface AuthenticatedHesabimRouteRouteChildren {
-  AuthenticatedHesabimProjelerRoute: typeof AuthenticatedHesabimProjelerRoute
-  AuthenticatedHesabimTaleplerRoute: typeof AuthenticatedHesabimTaleplerRoute
-  AuthenticatedHesabimTekliflerRoute: typeof AuthenticatedHesabimTekliflerRoute
-  AuthenticatedHesabimIndexRoute: typeof AuthenticatedHesabimIndexRoute
-}
-
-const AuthenticatedHesabimRouteRouteChildren: AuthenticatedHesabimRouteRouteChildren =
-  {
-    AuthenticatedHesabimProjelerRoute: AuthenticatedHesabimProjelerRoute,
-    AuthenticatedHesabimTaleplerRoute: AuthenticatedHesabimTaleplerRoute,
-    AuthenticatedHesabimTekliflerRoute: AuthenticatedHesabimTekliflerRoute,
-    AuthenticatedHesabimIndexRoute: AuthenticatedHesabimIndexRoute,
-  }
-
-const AuthenticatedHesabimRouteRouteWithChildren =
-  AuthenticatedHesabimRouteRoute._addFileChildren(
-    AuthenticatedHesabimRouteRouteChildren,
-  )
-
-interface AuthenticatedYonetimRouteRouteChildren {
-  AuthenticatedYonetimAkisRoute: typeof AuthenticatedYonetimAkisRoute
-  AuthenticatedYonetimAyarlarRoute: typeof AuthenticatedYonetimAyarlarRoute
-  AuthenticatedYonetimBildirimlerRoute: typeof AuthenticatedYonetimBildirimlerRoute
-  AuthenticatedYonetimCozumOrtaklariRoute: typeof AuthenticatedYonetimCozumOrtaklariRoute
-  AuthenticatedYonetimEkiplerRoute: typeof AuthenticatedYonetimEkiplerRoute
-  AuthenticatedYonetimEmirAiRoute: typeof AuthenticatedYonetimEmirAiRoute
-  AuthenticatedYonetimEmirTalepleriRoute: typeof AuthenticatedYonetimEmirTalepleriRoute
-  AuthenticatedYonetimFirsatlarRoute: typeof AuthenticatedYonetimFirsatlarRoute
-  AuthenticatedYonetimGayrimenkullerRoute: typeof AuthenticatedYonetimGayrimenkullerRoute
-  AuthenticatedYonetimKesiflerRoute: typeof AuthenticatedYonetimKesiflerRoute
-  AuthenticatedYonetimMalzemelerRoute: typeof AuthenticatedYonetimMalzemelerRoute
-  AuthenticatedYonetimMesajlarRoute: typeof AuthenticatedYonetimMesajlarRoute
-  AuthenticatedYonetimMusterilerRoute: typeof AuthenticatedYonetimMusterilerRoute
-  AuthenticatedYonetimOnceSonraRoute: typeof AuthenticatedYonetimOnceSonraRoute
-  AuthenticatedYonetimPersonelRoute: typeof AuthenticatedYonetimPersonelRoute
-  AuthenticatedYonetimPotansiyelMusterilerRoute: typeof AuthenticatedYonetimPotansiyelMusterilerRoute
-  AuthenticatedYonetimRaporlarRoute: typeof AuthenticatedYonetimRaporlarRoute
-  AuthenticatedYonetimSeoRoute: typeof AuthenticatedYonetimSeoRoute
-  AuthenticatedYonetimTamamlananProjelerRoute: typeof AuthenticatedYonetimTamamlananProjelerRoute
-  AuthenticatedYonetimTedarikcilerRoute: typeof AuthenticatedYonetimTedarikcilerRoute
-  AuthenticatedYonetimWhatsappDurumRoute: typeof AuthenticatedYonetimWhatsappDurumRoute
-  AuthenticatedYonetimZiyaretciIzlemeRoute: typeof AuthenticatedYonetimZiyaretciIzlemeRoute
-  AuthenticatedYonetimIndexRoute: typeof AuthenticatedYonetimIndexRoute
-  AuthenticatedYonetimProjelerIdRoute: typeof AuthenticatedYonetimProjelerIdRoute
-  AuthenticatedYonetimTaleplerIdRoute: typeof AuthenticatedYonetimTaleplerIdRoute
-  AuthenticatedYonetimTekliflerIdRoute: typeof AuthenticatedYonetimTekliflerIdRoute
-  AuthenticatedYonetimProjelerIndexRoute: typeof AuthenticatedYonetimProjelerIndexRoute
-  AuthenticatedYonetimTaleplerIndexRoute: typeof AuthenticatedYonetimTaleplerIndexRoute
-  AuthenticatedYonetimTekliflerIndexRoute: typeof AuthenticatedYonetimTekliflerIndexRoute
-}
-
-const AuthenticatedYonetimRouteRouteChildren: AuthenticatedYonetimRouteRouteChildren =
-  {
-    AuthenticatedYonetimAkisRoute: AuthenticatedYonetimAkisRoute,
-    AuthenticatedYonetimAyarlarRoute: AuthenticatedYonetimAyarlarRoute,
-    AuthenticatedYonetimBildirimlerRoute: AuthenticatedYonetimBildirimlerRoute,
-    AuthenticatedYonetimCozumOrtaklariRoute:
-      AuthenticatedYonetimCozumOrtaklariRoute,
-    AuthenticatedYonetimEkiplerRoute: AuthenticatedYonetimEkiplerRoute,
-    AuthenticatedYonetimEmirAiRoute: AuthenticatedYonetimEmirAiRoute,
-    AuthenticatedYonetimEmirTalepleriRoute:
-      AuthenticatedYonetimEmirTalepleriRoute,
-    AuthenticatedYonetimFirsatlarRoute: AuthenticatedYonetimFirsatlarRoute,
-    AuthenticatedYonetimGayrimenkullerRoute:
-      AuthenticatedYonetimGayrimenkullerRoute,
-    AuthenticatedYonetimKesiflerRoute: AuthenticatedYonetimKesiflerRoute,
-    AuthenticatedYonetimMalzemelerRoute: AuthenticatedYonetimMalzemelerRoute,
-    AuthenticatedYonetimMesajlarRoute: AuthenticatedYonetimMesajlarRoute,
-    AuthenticatedYonetimMusterilerRoute: AuthenticatedYonetimMusterilerRoute,
-    AuthenticatedYonetimOnceSonraRoute: AuthenticatedYonetimOnceSonraRoute,
-    AuthenticatedYonetimPersonelRoute: AuthenticatedYonetimPersonelRoute,
-    AuthenticatedYonetimPotansiyelMusterilerRoute:
-      AuthenticatedYonetimPotansiyelMusterilerRoute,
-    AuthenticatedYonetimRaporlarRoute: AuthenticatedYonetimRaporlarRoute,
-    AuthenticatedYonetimSeoRoute: AuthenticatedYonetimSeoRoute,
-    AuthenticatedYonetimTamamlananProjelerRoute:
-      AuthenticatedYonetimTamamlananProjelerRoute,
-    AuthenticatedYonetimTedarikcilerRoute:
-      AuthenticatedYonetimTedarikcilerRoute,
-    AuthenticatedYonetimWhatsappDurumRoute:
-      AuthenticatedYonetimWhatsappDurumRoute,
-    AuthenticatedYonetimZiyaretciIzlemeRoute:
-      AuthenticatedYonetimZiyaretciIzlemeRoute,
-    AuthenticatedYonetimIndexRoute: AuthenticatedYonetimIndexRoute,
-    AuthenticatedYonetimProjelerIdRoute: AuthenticatedYonetimProjelerIdRoute,
-    AuthenticatedYonetimTaleplerIdRoute: AuthenticatedYonetimTaleplerIdRoute,
-    AuthenticatedYonetimTekliflerIdRoute: AuthenticatedYonetimTekliflerIdRoute,
-    AuthenticatedYonetimProjelerIndexRoute:
-      AuthenticatedYonetimProjelerIndexRoute,
-    AuthenticatedYonetimTaleplerIndexRoute:
-      AuthenticatedYonetimTaleplerIndexRoute,
-    AuthenticatedYonetimTekliflerIndexRoute:
-      AuthenticatedYonetimTekliflerIndexRoute,
-  }
-
-const AuthenticatedYonetimRouteRouteWithChildren =
-  AuthenticatedYonetimRouteRoute._addFileChildren(
-    AuthenticatedYonetimRouteRouteChildren,
-  )
-
-interface AuthenticatedRouteRouteChildren {
-  AuthenticatedHesabimRouteRoute: typeof AuthenticatedHesabimRouteRouteWithChildren
-  AuthenticatedYonetimRouteRoute: typeof AuthenticatedYonetimRouteRouteWithChildren
-}
-
-const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedHesabimRouteRoute: AuthenticatedHesabimRouteRouteWithChildren,
-  AuthenticatedYonetimRouteRoute: AuthenticatedYonetimRouteRouteWithChildren,
-}
-
-const AuthenticatedRouteRouteWithChildren =
-  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  AuthRoute: AuthRoute,
   IletisimRoute: IletisimRoute,
-  ResetPasswordRoute: ResetPasswordRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   HizmetlerSlugRoute: HizmetlerSlugRoute,
   RehberSlugRoute: RehberSlugRoute,
   BolgelerIndexRoute: BolgelerIndexRoute,
   HizmetlerIndexRoute: HizmetlerIndexRoute,
   RehberIndexRoute: RehberIndexRoute,
-  ApiPublicSourceResearchRoute: ApiPublicSourceResearchRoute,
   BolgelerIlceHizmetRoute: BolgelerIlceHizmetRoute,
   BolgelerIlceIndexRoute: BolgelerIlceIndexRoute,
-  ApiPublicWhatsappWebhookRoute: ApiPublicWhatsappWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
