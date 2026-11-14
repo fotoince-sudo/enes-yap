@@ -5,6 +5,7 @@ import { toast } from "sonner";
 
 import { supabase } from "@/integrations/supabase/client";
 import { uploadRequestFiles } from "@/lib/uploads";
+import { saveRequestToPlesk } from "@/lib/request.functions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -61,12 +62,11 @@ export function RequestForm() {
       const parsed = schema.safeParse(form);
       if (!parsed.success) throw new Error(parsed.error.issues[0]?.message ?? "Formu kontrol edin.");
       const v = parsed.data;
+      if (!consent) throw new Error("Devam etmek için bilgilendirme onayını işaretleyin.");
 
       const photoUploads = photos.length ? await uploadRequestFiles(photos, "foto") : [];
       const videoUploads = videos.length ? await uploadRequestFiles(videos, "video") : [];
       const category = categories.find((c) => c.id === v.service_category_id);
-
-      if (!consent) throw new Error("Devam etmek için bilgilendirme onayını işaretleyin.");
 
       // Talep, Enes Emlak ile ortak CRM'deki Enes Yapı talepleri bölümüne kaydedilir.
       const details = [
@@ -84,7 +84,7 @@ export function RequestForm() {
         .filter(Boolean)
         .join("\n");
 
-      const { error } = await (supabase as any).rpc("create_yapi_web_talep", {
+      const request = {
         _ad: v.full_name,
         _telefon: v.phone,
         _eposta: v.email || null,
@@ -94,7 +94,10 @@ export function RequestForm() {
         _tadilat_isi: category?.name ?? null,
         _aciklama: details || null,
         _gorseller: [...photoUploads, ...videoUploads].map((f) => f.path),
-      });
+      };
+      const result = await saveRequestToPlesk({ data: { ...request, consent: true } });
+      if (result.handled) return;
+      const { error } = await (supabase as any).rpc("create_yapi_web_talep", request);
       if (error) throw error;
     },
     onSuccess: () => {
