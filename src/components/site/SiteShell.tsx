@@ -3,7 +3,6 @@ import { ArrowUpRight, Menu, UserRound, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
-import enesEmlakLogoAsset from "@/assets/enes-emlak-logo.png.asset.json";
 import logoAsset from "@/assets/enes-yapi-logo.png.asset.json";
 import { SITE } from "@/lib/seo";
 
@@ -15,6 +14,7 @@ const MENU_ICI = [
   { to: "/bolgeler", label: "Hizmet bölgeleri" },
   { to: "/rehber", label: "Rehber" },
   { to: "/iletisim", label: "İletişim" },
+  { to: "/cozum-ortagi", label: "Çözüm Ortağı" },
 ] as const;
 const MENU_DIS = [
   { href: `${EMLAK}/ilanlar`, label: "İlan Ara" },
@@ -97,25 +97,27 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
 export function EnesEmlakReferral() {
   return (
-    <section className="border-y bg-deep text-deep-foreground">
+    <section className="border-y border-white/10 bg-[#141616] text-white">
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:py-12 md:grid-cols-[1fr_auto] md:items-center md:gap-10">
         <div className="flex items-start gap-4 sm:gap-5">
           <img
-            src={enesEmlakLogoAsset.url}
-            alt="Enes Emlak logosu"
-            className="size-16 shrink-0 rounded-full border border-deep-foreground/20 bg-deep-foreground object-contain p-1 shadow-sm sm:size-20"
+            src="/turpa-enes-emlak-logo.webp"
+            alt="Turpa Enes Emlak logosu"
+            width={80}
+            height={80}
+            className="size-16 shrink-0 rounded-full bg-white object-contain sm:size-20"
             loading="lazy"
           />
           <div>
-            <p className="text-base font-extrabold uppercase text-deep-foreground sm:text-lg">Enes Emlak</p>
+            <p className="text-base font-extrabold uppercase sm:text-lg">Enes Emlak</p>
             <h2 className="mt-2 font-display text-2xl font-semibold tracking-tight sm:text-3xl">
               Yeni Bir Ev mi Arıyorsunuz?
             </h2>
-            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-deep-foreground/75 sm:text-base">
+            <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/80 sm:text-base">
               Satılık ve kiralık gayrimenkul seçeneklerini keşfedin. İzmir’de size uygun mülkü bulmak için Enes
               Emlak’a göz atın.
             </p>
-            <p className="mt-4 text-xs font-medium text-deep-foreground/60 sm:text-sm">
+            <p className="mt-4 text-xs font-medium text-white/65 sm:text-sm">
               Satılık <span aria-hidden="true">•</span> Kiralık <span aria-hidden="true">•</span> Gayrimenkul Talepleri
             </p>
           </div>

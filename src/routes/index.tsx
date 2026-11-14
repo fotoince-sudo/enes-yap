@@ -1,9 +1,11 @@
 import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useRef } from "react";
 import {
   ArrowRight,
   Bath,
   ChefHat,
+  ChevronDown,
   Hammer,
   House,
   MapPin,
@@ -99,12 +101,17 @@ const FAQS = [
 ];
 
 function HomePage() {
+  const requestDetails = useRef<HTMLDetailsElement>(null);
+  function openRequest() {
+    if (requestDetails.current) requestDetails.current.open = true;
+  }
+
   const featuredServices = FEATURED_SERVICE_SLUGS.map((slug) => SERVICES.find((service) => service.slug === slug)).filter(
     (service): service is NonNullable<typeof service> => Boolean(service),
   );
 
   // Proje vitrini ve önce/sonra kayıtları ileride ortak CRM'den gelecek; şimdilik gösterilmiyor.
-  const projects: { photo_urls?: string[] | null; [key: string]: any }[] = [];
+  const projects: { id: string; title: string; district: string | null; photo_urls?: string[] | null }[] = [];
   const beforeAfter: { id: string; title: string; work_type: string | null; before_url: string; after_url: string }[] = [];
 
   const hasRealApplications = beforeAfter.length > 0 || projects.some((project) => project.photo_urls?.[0]);
@@ -114,7 +121,7 @@ function HomePage() {
       <SiteHeader
         cta={
           <Button size="sm" asChild>
-            <a href="#talep">Talep oluştur</a>
+            <a href="#talep" onClick={openRequest}>Talep oluştur</a>
           </Button>
         }
       />
@@ -132,7 +139,7 @@ function HomePage() {
               </p>
               <p className="mt-4 border-l-4 border-primary pl-3 text-sm font-semibold sm:text-base">Hayal değil, gerçek iş.</p>
               <div className="mt-6 grid grid-cols-2 gap-2 sm:flex sm:gap-3">
-                <Button size="lg" asChild><a href="#talep">Talep oluştur</a></Button>
+                <Button size="lg" asChild><a href="#talep" onClick={openRequest}>Talep oluştur</a></Button>
                 <Button size="lg" variant="outline" asChild><a href="#hizmetler">Hizmetlerimiz</a></Button>
               </div>
             </div>
@@ -272,21 +279,15 @@ function HomePage() {
           </Accordion>
         </section>
 
-        <section id="talep" className="border-y bg-muted/30">
-          <div className="mx-auto max-w-4xl px-4 py-10 sm:py-14">
-            <p className="text-xs font-semibold uppercase text-primary">Keşif talebi</p>
-            <h2 className="mt-1 font-display text-2xl font-semibold sm:text-3xl">Tadilat talebi oluştur</h2>
-            <p className="mt-2 text-sm text-muted-foreground sm:text-base">Bilgilerinizi iletin, keşif planlaması için sizi arayalım.</p>
-            <div className="mt-5"><RequestForm /></div>
-          </div>
-        </section>
-
-        <section className="bg-deep text-deep-foreground">
-          <div className="mx-auto max-w-6xl px-4 py-12 text-center sm:py-16">
-            <h2 className="font-display text-2xl font-semibold sm:text-3xl">Tadilat talebinizi bize iletin.</h2>
-            <p className="mx-auto mt-2 max-w-xl text-sm text-deep-foreground/70 sm:text-base">İhtiyacınızı dinleyelim, keşif sürecini birlikte planlayalım.</p>
-            <Button size="lg" className="mt-6" asChild><a href="#talep">Talep oluştur</a></Button>
-          </div>
+        <section id="talep" className="scroll-mt-24 border-y bg-muted/30">
+          <details ref={requestDetails} className="group mx-auto max-w-4xl px-4 py-7 sm:py-10">
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg border bg-card px-4 py-3 focus-visible:outline-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
+              <h2 className="font-display text-xl font-semibold sm:text-2xl">Talep oluştur</h2>
+              <ChevronDown className="size-5 shrink-0 text-primary group-open:rotate-180" aria-hidden="true" />
+            </summary>
+            <p className="mt-4 text-sm text-muted-foreground sm:text-base">Bilgilerinizi iletin, keşif planlaması için sizi arayalım.</p>
+            <div className="mt-4"><RequestForm /></div>
+          </details>
         </section>
       </main>
 

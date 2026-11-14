@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import postgres from "postgres";
 import { z } from "zod";
+import { pleskDatabase } from "./plesk-db.server";
 
 const input = z.object({
   _ad: z.string().trim().min(2).max(120),
@@ -15,15 +15,11 @@ const input = z.object({
   consent: z.literal(true),
 });
 
-let sql: ReturnType<typeof postgres> | undefined;
-
 export const saveRequestToPlesk = createServerFn({ method: "POST" })
   .inputValidator((value) => input.parse(value))
   .handler(async ({ data }) => {
-    const url = process.env["ENES_DATABASE_URL"];
-    if (!url) return { handled: false };
-
-    sql ??= postgres(url, { max: 4, connect_timeout: 5, idle_timeout: 20 });
+    const sql = pleskDatabase();
+    if (!sql) return { handled: false };
     try {
       const [result] = await sql<{ talep_id: string }[]>`
         SELECT talep_id FROM public.create_yapi_web_talep(

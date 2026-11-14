@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CozumOrtagiRouteImport } from './routes/cozum-ortagi'
 import { Route as IletisimRouteImport } from './routes/iletisim'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as BolgelerIndexRouteImport } from './routes/bolgeler.index'
@@ -23,6 +24,11 @@ import { Route as BolgelerIlceHizmetRouteImport } from './routes/bolgeler.$ilce.
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CozumOrtagiRoute = CozumOrtagiRouteImport.update({
+  id: '/cozum-ortagi',
+  path: '/cozum-ortagi',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IletisimRoute = IletisimRouteImport.update({
@@ -73,6 +79,7 @@ const BolgelerIlceHizmetRoute = BolgelerIlceHizmetRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/cozum-ortagi': typeof CozumOrtagiRoute
   '/iletisim': typeof IletisimRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
@@ -85,6 +92,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/cozum-ortagi': typeof CozumOrtagiRoute
   '/iletisim': typeof IletisimRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
@@ -98,6 +106,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/cozum-ortagi': typeof CozumOrtagiRoute
   '/iletisim': typeof IletisimRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/hizmetler/$slug': typeof HizmetlerSlugRoute
@@ -112,6 +121,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/cozum-ortagi'
     | '/iletisim'
     | '/sitemap.xml'
     | '/hizmetler/$slug'
@@ -124,6 +134,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/cozum-ortagi'
     | '/iletisim'
     | '/sitemap.xml'
     | '/hizmetler/$slug'
@@ -136,6 +147,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/cozum-ortagi'
     | '/iletisim'
     | '/sitemap.xml'
     | '/hizmetler/$slug'
@@ -149,6 +161,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  CozumOrtagiRoute: typeof CozumOrtagiRoute
   IletisimRoute: typeof IletisimRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   HizmetlerSlugRoute: typeof HizmetlerSlugRoute
@@ -167,6 +180,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/cozum-ortagi': {
+      id: '/cozum-ortagi'
+      path: '/cozum-ortagi'
+      fullPath: '/cozum-ortagi'
+      preLoaderRoute: typeof CozumOrtagiRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/iletisim': {
@@ -237,6 +257,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  CozumOrtagiRoute: CozumOrtagiRoute,
   IletisimRoute: IletisimRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   HizmetlerSlugRoute: HizmetlerSlugRoute,
